@@ -2,19 +2,20 @@
 // This snippet disables/enables them as needed when there's too much dead soldiers.
 // Doesn't touch buildings with extra functions.
 
+const highPopScale = traitVal('high_pop', 0, 1);
 // By rough priority order of which to disable, last ones get disabled first.
 const buildingSoldierCount = {
-    "Barracks": (_("TraitLevel", "chameleon") ? 1 : 2) + (_("ResearchComplete", "tech-bunk_beds") ? 1 : 0), 
-    "RedSpaceBarracks": _("ResearchComplete", "tech-hammocks") ? 4 : 2,
-    "ProximaCruiser": 3,
+    "Barracks": ((_("TraitLevel", "chameleon") ? 1 : 2) + (_("ResearchComplete", "tech-bunk_beds") ? 1 : 0)) * highPopScale,
+    "RedSpaceBarracks": (_("ResearchComplete", "tech-hammocks") ? 4 : 2) * highPopScale,
+    "ProximaCruiser": 3 * highPopScale,
 };
 // Prefer Barracks > RedSpaceBarracks > ProximaCruiser to be enabled in that order.
 // This is only for power purposes and doesn't affect autoBuild priority when its enabled.
 const addOrder = ["Barracks", "RedSpaceBarracks", "ProximaCruiser"];
 
 // Should be at least 5 away from each other to avoid hysteresis when turning off RedSpaceBarracks.
-const targetDeadSoldiers = ui.number("min_dead_soldiers", "Min Dead Soldiers", 6, "Buildings will be turned on if dead soldiers fall below this number.");
-const reduceAt = ui.number("max_dead_soldiers", "Max Dead Soldiers", 11, "Buildings will be turned off if dead soldiers go above this number. If any buildings are off, soldier building autoBuild will be disabled. Should be at least 5 higher than min to avoid flickering with Marine Garrison.");
+const targetDeadSoldiers = ui.number("min_dead_soldiers", "Min Dead Soldiers", 6, "Buildings will be turned on if dead soldiers fall below this number.") * highPopScale;
+const reduceAt = ui.number("max_dead_soldiers", "Max Dead Soldiers", 11, "Buildings will be turned off if dead soldiers go above this number. If any buildings are off, soldier building autoBuild will be disabled. Should be at least 5 higher than min to avoid flickering with Marine Garrison.") * highPopScale;
 
 // The game only updates some soldier data in the daily loop, so once a day is fine.
 const computedTargets = daily(() => {
