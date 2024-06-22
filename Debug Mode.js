@@ -12,6 +12,8 @@ let exportedToWindow = {
     projects,
     SnippetManager,
     SnippetEditorManager,
+    TriggerManager,
+    fastEval,
     get snippetData() { return snippetData; }, // Object changes every tick
 };
 

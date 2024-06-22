@@ -9,11 +9,11 @@ const milestones = [
 const numberAt = {
     t4farm: [20, 41, 52, 60, 66],
     t5micro: [30, 41, 52, 66, 81],
-    pillarupgrade: [21, 33, 42, 48, 0],
+    pillarupgrade: [21, 33, 39, 45, 0],
 };
 
 // Bad runs, disable entirely even if other conditions are met
-if (checkTypes.Challenge.fn("cataclysm") || checkTypes.Challenge.fn("orbit_decay") || checkTypes.Challenge.fn("truepath")) stopRunning();
+if (checkTypes.Challenge.fn("cataclysm") || checkTypes.Challenge.fn("orbit_decay") || checkTypes.Challenge.fn("truepath")) return stopRunning();
 
 // Irrelevant runs, but user settings can still change
 if (!["ascension", "demonic"].includes(String(settings["prestigeType"]))) return;

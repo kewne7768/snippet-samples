@@ -6,10 +6,12 @@
 // Disable in Inflation
 if (_("Challenge", "inflation")) return stopRunning();
 
+once(() => {
+    if (!logIgnore.includes("swarm_satellite")) { logIgnore.push("swarm_satellite"); }
+});
+
 let maxCost = ui.number("maxCost", "Maximum Money cost per sat", 10000);
-// Ugly hack to stop it from spending excess resources early.
-// This buyer doesn't respect autoBuild weightings or anything so it can eat your Iridium stockpile early.
-// Of course, you can just do this with an override on the max cost, too!
+// Ugly hack. Of course, you can just do this with an override, too!
 if (resources.Iridium.currentQuantity < 10000) return;
 
 const howMany = () => {

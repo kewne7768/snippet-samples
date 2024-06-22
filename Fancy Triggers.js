@@ -2,6 +2,7 @@
 // Note that there can be multiple triggers started this way active at once.
 // It'll behave similar to when you manually queue conflicting buildings.
 // But in most of these samples that's good because they don't use the same resources/resource types (or not much).
+const isKnowledgeProdHardRun = (_("Challenge", "orbit_decay") && game.global.race.orbit_decayed) || _("Challenge", "cataclysm");
 
 // Ships required for Second Contact (Gorddon Mission).
 // Missions are only considered "unlocked" while they're clickable; this means it won't re-build them later if they're lost by another mission.
@@ -10,7 +11,7 @@ if (buildings.GorddonMission.isUnlocked()) {
     if (buildings.CorvetteShip.count < 1) trigger(buildings.CorvetteShip);
 }
 
-// Starting at the Embassy: Keep Red Planet strongly supported, and build fabrications.
+// Starting at the Embassy: Keep Red Planet strongly supported, build fabrications, and cap cheap sources of knowledge cap/good knowledge cap using buildings.
 if (buildings.GorddonMission.isComplete()) {
     // 26 to 30 should do the trick.
     if (buildings.RedFabrication.count < (_("Universe", "micro") ? 30 : 26)) {
@@ -29,6 +30,20 @@ if (buildings.GorddonMission.isComplete()) {
         }
         else {
             trigger(buildings.RedSpaceport);
+        }
+    }
+
+    // Cap cheap knowledge and control stations, except post-impact OD and Cata CTFL.
+    // Even if we don't need the knowledge anymore, quantum is worth it.
+    if (!isKnowledgeProdHardRun) {
+        const knowledgeBuildings = [buildings.SpaceSatellite, buildings.BioLab, buildings.BlackholeFarReach, buildings.MoonObservatory];
+        if (resources.Sun_Support.maxQuantity <= resources.Sun_Support.currentQuantity) {
+            knowledgeBuildings.push(buildings.SunSwarmControl);
+        }
+        for (let building of knowledgeBuildings) {
+            if (building.isUnlocked() && (building.cost?.Knowledge??0) < resources.Knowledge.maxQuantity) {
+                trigger(building);
+            }
         }
     }
 }
@@ -50,5 +65,8 @@ if (!game.global.tech['corrupt'] && buildings.Alien2Mission.isComplete() &&
         )
     )
 ) {
-    if (buildings.PitSoulAttractor.count < 9) trigger(buildings.PitSoulAttractor);
+    if (!buildings.PitMission.isComplete()) trigger(buildings.PitMission);
+    else if (!buildings.PitAssaultForge.isComplete()) trigger(buildings.PitAssaultForge);
+    else if (!buildings.PitSoulForge.count) trigger(buildings.PitSoulForge);
+    else if (buildings.PitSoulAttractor.count < 9) trigger(buildings.PitSoulAttractor);
 }

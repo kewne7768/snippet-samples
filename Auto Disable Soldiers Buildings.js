@@ -16,9 +16,13 @@ const addOrder = ["Barracks", "RedSpaceBarracks", "ProximaCruiser"];
 // Should be at least 5 away from each other to avoid hysteresis when turning off RedSpaceBarracks.
 const targetDeadSoldiers = ui.number("min_dead_soldiers", "Min Dead Soldiers", 6, "Buildings will be turned on if dead soldiers fall below this number.") * highPopScale;
 const reduceAt = ui.number("max_dead_soldiers", "Max Dead Soldiers", 11, "Buildings will be turned off if dead soldiers go above this number. If any buildings are off, soldier building autoBuild will be disabled. Should be at least 5 higher than min to avoid flickering with Marine Garrison.") * highPopScale;
+const hellSoldierLimit = ui.number("hell_soldiers", "Hell Soldier Limit", -1, "If more than this number of soldiers can be assigned to hell, excess buildings will be disabled. No effect in Truepath or if set to <=0.");
 
 // The game only updates some soldier data in the daily loop, so once a day is fine.
 const computedTargets = daily(() => {
+    // Can only work with valid numbers.
+    if (reduceAt < targetDeadSoldiers || targetDeadSoldiers <= 0) return false;
+
     let toggleables = {
         "Barracks": buildings.Barracks.stateOnCount,
         "RedSpaceBarracks": buildings.RedSpaceBarracks.stateOnCount,
@@ -29,7 +33,24 @@ const computedTargets = daily(() => {
     // It's the only way to get them back then!
     if (_("Challenge", "orbit_decay")) delete toggleables.RedSpaceBarracks;
 
-    const deadCount = WarManager.deadSoldiers;
+    // We need to work with the *target* hell soldier count, not how many there actually are.
+    // Major difference is: We need to account for dead soldiers that would go to hell immediately, instead of looking at the current hell number.
+    // Otherwise this whole setup will break very badly at Nanoweave Hammocks research.
+    // Ex: User limit is 256, min 5 dead soldiers, current max 500 soldiers, 50 dead, 60 crew, 10 hellHomeGarrison.
+    // Current hell garrison size: (500 - 50 - 60 - 10) = 380 -> cool but useless info!
+    // Intended soldier cap: 256 + 60 + 10 + targetDeadSoldiers -> 331
+    // Need to turn off 169 slots. The dead soldiers will "heal" as a nice bonus.
+    let hellFakeDeads = 0;
+    if (game.global.portal?.fortress && hellSoldierLimit > 0) {
+        const intendedSoldierCap = hellSoldierLimit + WarManager.crew + settings.hellHomeGarrison + targetDeadSoldiers;
+        const excessSoldiers = WarManager.max - intendedSoldierCap;
+        // If negative, we are nowhere near the limit just yet.
+        if (excessSoldiers > 0) {
+            hellFakeDeads = excessSoldiers;
+        }
+   }
+
+    const deadCount = Math.max(WarManager.deadSoldiers, hellFakeDeads);
     if (deadCount < targetDeadSoldiers) {
         // Can turn on more buildings. Let's see how many...
         let newDeadCount = deadCount;

@@ -23,10 +23,12 @@ once(() => {
     else {
         snippetState.pending.push(...[
             techIds["tech-virtual_reality"],
+            techIds["tech-plasma"],
             techIds["tech-metaphysics"],
             techIds["tech-calibrated_sensors"],
             techIds["tech-gauss_rifles"],
             techIds["tech-scarletite"],
+            techIds["tech-xeno_gift"],
         ]);
     }
 });
@@ -38,7 +40,7 @@ for (let i = 0; i < snippetState.pending.length; ++i) {
         snippetState.pending.splice(i, 1);
         i--;
     }
-    else if (tech.isUnlocked()) {
+    else if (tech.isUnlocked() && (tech.cost?.Knowledge??0) < resources.Knowledge.maxQuantity) {
         trigger(tech);
         return;
     }
