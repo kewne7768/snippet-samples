@@ -25,7 +25,7 @@ if (buildings.GorddonMission.isComplete()) {
         // Of course, this whole snippet is a demonstration of what you _can_ do, not what you _should_ do...
         // Also it's possible to divide by zero and get a NaN. Fun stuff.
         let ratio = buildings.RedSpaceport.count / buildings.RedTower.count;
-        if (isNaN(ratio) || ratio < 1.3) {
+        if (isNaN(ratio) || ratio > 1.3) {
             trigger(buildings.RedTower);
         }
         else {
