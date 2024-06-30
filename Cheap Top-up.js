@@ -1,5 +1,28 @@
 if (resources.Slave.currentQuantity < resources.Slave.maxQuantity && resources.Money.rateOfChange >= (_("Challenge", "truepath") ? 150000 : 50000)) {
-    trigger(buildings.SlaveMarket);
+    let tryBuy = Math.max(resources.Slave.maxQuantity - resources.Slave.currentQuantity, 0);
+    for (let i = 0; i < tryBuy; ++i) {
+        if (buildings.SlaveMarket.click()) {
+            resources.Slave.currentQuantity++;
+        }
+        else {
+            trigger(buildings.SlaveMarket);
+            break;
+        }
+    }
+}
+
+const horseshoeTarget = 15;
+if (_("TraitLevel", "hooved") && resources.Horseshoe.currentQuantity < horseshoeTarget && (resources.Horseshoe.isDemanded() || (buildings.RedSpaceport.count))) {
+    let tryBuy = Math.max(horseshoeTarget - resources.Horseshoe.currentQuantity, 0);
+    for (let i = 0; i < tryBuy; ++i) {
+        if (buildings.ForgeHorseshoe.click()) {
+            resources.Horseshoe.currentQuantity++;
+        }
+        else {
+            trigger(buildings.ForgeHorseshoe);
+            break;
+        }
+    }
 }
 
 // completely untested

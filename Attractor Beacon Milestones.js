@@ -7,9 +7,15 @@ const milestones = [
     techIds["tech-scarletite"].isResearched(),
 ];
 const numberAt = {
-    t4farm: [20, 41, 52, 60, 66],
+    t4farm: [21, 33, 45, 51, 0],
+    //old:
+    //t4farm: [36, 54, 64, 69, 0],
     t5micro: [30, 41, 52, 66, 81],
     pillarupgrade: [21, 33, 39, 45, 0],
+    t4fallback: [18, 24, 30, 36, 0],
+};
+const softtriggerAt = {
+    t4farm: [42, 54, 64, 69, 0],
 };
 
 // Bad runs, disable entirely even if other conditions are met
@@ -18,7 +24,11 @@ if (checkTypes.Challenge.fn("cataclysm") || checkTypes.Challenge.fn("orbit_decay
 // Irrelevant runs, but user settings can still change
 if (!["ascension", "demonic"].includes(String(settings["prestigeType"]))) return;
 
+// User forced max build/power for attractors to zero, let's not build any.
+if (settings["bld_m_portal-attractor"] === 0) return;
+
 // Try to categorize current run type
+/** @type {(keyof numberAt|null)} runType */
 let runType = null;
 if (checkTypes.Universe.fn("micro") && checkTypes.Challenge.fn("no_plasmid")) {
     if (checkTypes.ResetType.fn("ascension") && checkTypes.RaceId.fn("species") !== checkTypes.RaceId.fn("custom")) {
@@ -28,8 +38,12 @@ if (checkTypes.Universe.fn("micro") && checkTypes.Challenge.fn("no_plasmid")) {
         runType = "t5micro";
     }
 }
-else if (checkTypes.Other.fn("rname") === "Numberbirb") {
+// 0*-2*
+else if (checkTypes.Other.fn("rname") === "Numberbirb" && _("ResetType", "ascension") && game.alevel() < 4) {
     runType = "t4farm";
+}
+else if (_("ResetType", "ascension")) {
+    runType = "t4fallback";
 }
 
 if (!runType) return;
@@ -40,6 +54,31 @@ let reachedMilestone = firstFailed === -1 ? milestones.length - 1 : (firstFailed
 if (reachedMilestone < 0) return;
 
 let amountToBuild = numberAt?.[runType]?.[reachedMilestone];
-if (typeof amountToBuild === "number" && buildings.BadlandsAttractor.count < amountToBuild) {
-    trigger(buildings.BadlandsAttractor);
+let softtrigger = softtriggerAt?.[runType]?.[reachedMilestone];
+if (typeof amountToBuild === "number") {
+    // Antimatter is slower paced, -6 seems to be OK from testing.
+    if (_("Universe", "antimatter")) amountToBuild -= 6;
+
+    if (buildings.BadlandsAttractor.count < amountToBuild) {
+        trigger(buildings.BadlandsAttractor);
+    }
+    else if (typeof softtrigger === "number" && buildings.BadlandsAttractor.count < softtrigger) {
+        if (resources.Stanene.currentQuantity >= buildings.BadlandsAttractor.cost.Stanene) {
+            // Try to trigger the rest and get it clicked
+            trigger(buildings.BadlandsAttractor);
+        }
+        else {
+            // Preserve all resources, but do not trigger Stanene. Just preserve all we make naturally.
+            trigger(resourceList({
+                Chrysotile: buildings.BadlandsAttractor.cost?.Chrysotile ?? 0,
+                Aluminium: buildings.BadlandsAttractor.cost.Aluminium,
+                Money: buildings.BadlandsAttractor.cost.Money,
+                // Only hold on to Stanene, don't trigger it. Keeps other factory things flowing.
+                Stanene: Math.min(resources.Stanene.currentQuantity, buildings.BadlandsAttractor.cost.Stanene),
+            }), [buildings.BadlandsAttractor]);
+        }
+        // Main effect of this soft-trigger:
+        settings["production_w_Stanene"] = 450;
+        settings["bld_w_portal-attractor"] = 10000;
+    }
 }

@@ -4,6 +4,9 @@
 // But in most of these samples that's good because they don't use the same resources/resource types (or not much).
 const isKnowledgeProdHardRun = (_("Challenge", "orbit_decay") && game.global.race.orbit_decayed) || _("Challenge", "cataclysm");
 
+// Want to run this in parallel with normal Starbase trigger, so it's here.
+trigger.amount(buildings.BologniumShip, 1);
+
 // Ships required for Second Contact (Gorddon Mission).
 // Missions are only considered "unlocked" while they're clickable; this means it won't re-build them later if they're lost by another mission.
 if (buildings.GorddonMission.isUnlocked()) {
@@ -35,15 +38,44 @@ if (buildings.GorddonMission.isComplete()) {
 
     // Cap cheap knowledge and control stations, except post-impact OD and Cata CTFL.
     // Even if we don't need the knowledge anymore, quantum is worth it.
+    // Also some stuff not needed in those runs.
     if (!isKnowledgeProdHardRun) {
         const knowledgeBuildings = [buildings.SpaceSatellite, buildings.BioLab, buildings.BlackholeFarReach, buildings.MoonObservatory];
         if (resources.Sun_Support.maxQuantity <= resources.Sun_Support.currentQuantity) {
             knowledgeBuildings.push(buildings.SunSwarmControl);
         }
+        let triggered = 0;
         for (let building of knowledgeBuildings) {
             if (building.isUnlocked() && (building.cost?.Knowledge??0) < resources.Knowledge.maxQuantity) {
+                triggered++;
                 trigger(building);
             }
+        }
+
+        // Make 27 of them! We're gonna need the Iridium for excavators and we might as well start stockpiling now.
+        // Second priority after knowledge, though.
+        // 17 space stations = 15 iron, 27 iridium, 0 elerium.
+        if (!triggered) {
+            if (buildings.BeltSpaceStation.count < 14) {
+                trigger(buildings.BeltSpaceStation);
+            }
+            if (buildings.BeltIridiumShip.count < 27 && !resources.Furs.isDemanded() && !resources.Polymer.isDemanded()) {
+                trigger(buildings.BeltIridiumShip);
+            }
+        }
+
+        // And Vit Plants.
+        trigger.amount(buildings.Alien1VitreloyPlant, 9);
+    }
+
+    // Stockpile Furs for the Consulate too so we can proceed immediately.
+    if (!buildings.Alien1Consulate.count) {
+        // Need to use game API because building might not be available yet.
+        let consulateFurCost = poly.adjustCosts(game.actions.galaxy.gxy_alien1.consulate).Furs() ?? 0;
+        if (typeof consulateFurCost === "number" && isFinite(consulateFurCost) && !isNaN(consulateFurCost)) {
+            let embassyFurCost = buildings.GorddonEmbassy.count ? 0 : (buildings.GorddonEmbassy.cost?.Furs??0);
+
+            trigger(resourceList({ Furs: consulateFurCost + embassyFurCost }));
         }
     }
 }

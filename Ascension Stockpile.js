@@ -1,8 +1,11 @@
 // We need to read from the game API because we need costs before the projects are unlocked.
-if (settings["prestigeType"] === "ascension" && buildings.ChthonianExcavator.count && !buildings.SiriusAscensionTrigger.count) {
+if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.count && !buildings.SiriusAscensionTrigger.count) {
     const adjustedElevator = poly.adjustCosts(game.actions.interstellar.int_sirius.space_elevator);
     const adjustedDome = poly.adjustCosts(game.actions.interstellar.int_sirius.gravity_dome);
     const adjustedMachine = poly.adjustCosts(game.actions.interstellar.int_sirius.ascension_machine);
+
+    // "40" thermals (our cost reserves don't account for creep so actual number will be less)
+    const thermalsLeft = Math.max(0, 40 - buildings.SiriusThermalCollector.count);
 
     const machineComplete = !!buildings.SiriusAscensionTrigger.count;
     const machinePartsRemaining = machineComplete ? 0 : (100 - buildings.SiriusAscensionMachine.count);
@@ -10,6 +13,11 @@ if (settings["prestigeType"] === "ascension" && buildings.ChthonianExcavator.cou
     const domePartsRemaining = domeComplete ? 0 : (100 - buildings.SiriusGravityDome.count);
     const elevatorComplete = domeComplete || buildings.SiriusGravityDome.isUnlocked();
     const elevatorPartsRemaining = elevatorComplete ? 0 : (100 - buildings.SiriusSpaceElevator.count);
+
+    // Naaaaaaaaaw we ain't doing it! We ain't!
+    if (_("Universe", "micro") && isPillarFinished() && game.alevel() >= 5) {
+        settings["prestigeType"] = "mad";
+    }
 
     // @ts-ignore
     const needVault = !isPillarFinished();
@@ -25,16 +33,37 @@ if (settings["prestigeType"] === "ascension" && buildings.ChthonianExcavator.cou
         Mythril: elevatorPartsRemaining * adjustedElevator.Mythril(),
         Aerogel: domePartsRemaining * adjustedDome.Aerogel(),
         Nanoweave: machinePartsRemaining * adjustedMachine.Nanoweave(),
+        Infernite: thermalsLeft * 22500, // Base cost for #1 assuming heat. There is cost creep but w/e.
+        Vitreloy: thermalsLeft * 90000, // Kinda randomly chosen number. W/e.
     });
 
-    // Start making Aerogel and Nanoweave only if Mythril is complete. Otherwise, "hold" the current amount.
+    // Start making Nanoweave only if Mythril is complete. Otherwise, "hold" the current amount.
     if (resources.Mythril.currentQuantity < res.Mythril) {
-        res.Aerogel = Math.min(res.Aerogel, resources.Aerogel.currentQuantity);
+        // We can replicate Aerogel easily, it's fine. Just leave it in the list up there and get working on it ASAP.
+        // But this would be necessary without replicator:
+        //res.Aerogel = Math.min(res.Aerogel, resources.Aerogel.currentQuantity);
         res.Nanoweave = Math.min(res.Nanoweave, resources.Nanoweave.currentQuantity);
     }
 
-    // If we have all the Bolognium, move replicator priority to Orichalcum instead.
-    if (resources.Bolognium.currentQuantity >= res.Bolognium) settings["replicator_p_Orichalcum"] = 60;
+    // Between Bolog/Orich, calculate which of the two fills last. That one gets 60 prio on the replicator.
+    if (resources.Bolognium.currentQuantity >= res.Bolognium) {
+        // Can be /0, in that case it's infinity.
+        let timeToFillOri = Math.max(((res.Orichalcum??0)-resources.Orichalcum.currentQuantity) / Math.max(0.01, resources.Orichalcum.rateOfChange - (game.breakdown.p.consume?.Orichalcum?.Replicator??0)), 0);
+        let timeToFillBolog = Math.max(((res.Bolognium??0)-resources.Bolognium.currentQuantity) / Math.max(0.01, resources.Bolognium.rateOfChange - (game.breakdown.p.consume?.Bolognium?.Replicator??0)), 0);
+        if (resources.Orichalcum.currentQuantity >= res.Orichalcum) timeToFillOri = 0;
+        if (resources.Bolognium.currentQuantity >= res.Bolognium) timeToFillBolog = 0;
+        console.info("Fill times: %o %o", timeToFillBolog, timeToFillOri);
+        if (timeToFillOri > timeToFillBolog && timeToFillOri > 0) {
+            settings["replicator_p_Orichalcum"] = 60;
+            settings["res_alchemy_w_Bolognium"] = 0;
+            settings["res_alchemy_w_Orichalcum"] = 20;
+        }
+        else if (timeToFillBolog > 0) {
+            settings["replicator_p_Bolognium"] = 60;
+            settings["res_alchemy_w_Bolognium"] = 20;
+            settings["res_alchemy_w_Orichalcum"] = 0;
+        }
+    }
 
     // Stuff we don't need anymore
     Object.keys(res).forEach(k => { if(res[k] <= 0) delete res[k]; });
@@ -83,6 +112,7 @@ if (settings["prestigeType"] === "ascension" && buildings.ChthonianExcavator.cou
             buildings.SiriusSpaceElevator,
             buildings.SiriusGravityDome,
             buildings.SiriusAscensionMachine,
+            buildings.SiriusThermalCollector,
             // Technologies: (ignore list still applies)
             techIds["tech-orichalcum_analysis"],
             techIds["tech-orichalcum_capacitor"],
@@ -94,9 +124,11 @@ if (settings["prestigeType"] === "ascension" && buildings.ChthonianExcavator.cou
             techIds["tech-scarletite"],
             // All other things using the listed resources are only allowed to spend excess.
         ]);
+        /*
         daily(() => {
             console.info("Resource list: %s", Object.entries(res).reduce((p, [n, amount]) => { return p + (amount ? `${n}: ${amount}, ` : ""); }, ""));
         });
+        */
     }
 }
 
