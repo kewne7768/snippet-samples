@@ -19,15 +19,21 @@ const evalProxyData = once(() => {
         if (state.milestones) snippetState.milestones = state.milestones;
     }
 
+    // Register with the prestige DB
+    if (typeof PrestigeDBManager !== "undefined" && typeof PrestigeDBManager.registerHook === "function") {
+        PrestigeDBManager.registerHook("milestones", () => snippetState.milestones)
+    }
+
     return {
         milestonesResult: {
             get str() {
-                return milestonesAvail.map(m => snippetState.milestones[m] ? m + ': ' + snippetState.milestones[m] : '').filter(s => s !== '').join(', ');
+                return [...specialMilestones, ...milestonesAvail].map(m => snippetState.milestones[m] ? m + ': ' + snippetState.milestones[m] : '').filter(s => s !== '').join(', ');
             }
         },
         milestones: snippetState.milestones,
     }
 });
+const specialMilestones = ["Womlings"];
 /** @type {(keyof buildings|TechIdKey)[]} state.milestonesAvail */
 const milestonesAvail = [
     "tech-merchandising",
@@ -41,6 +47,7 @@ const milestonesAvail = [
     "GorddonEmbassy",
     "Alien2Foothold",
     "Dreadnought",
+    "ChthonianMission",
     "RuinsArchaeology",
     "TitanSpaceport",
     "TritonFOB",
@@ -49,10 +56,14 @@ const milestonesAvail = [
     "TauRedOrbitalPlatform",
     "tech-space-whaling",
 ];
+if (game.global.race.servants && !('Womlings' in snippetState.milestones)) {
+    snippetState.milestones.Womlings = game.global.stats.days;
+    ui.set("milestonePersist", { run: game.global.stats.reset, m: snippetState.milestones });
+}
 milestonesAvail.forEach((name) => {
     if (!(name in snippetState.milestones) && (buildings[name]?.count || techIds[name]?.isResearched())) {
         snippetState.milestones[name] = game.global.stats.days;
-        ui.set("milestonePersist", {run: game.global.stats.reset, m: snippetState.milestones});
+        ui.set("milestonePersist", { run: game.global.stats.reset, m: snippetState.milestones });
     }
 });
 
