@@ -14,8 +14,8 @@ if (buildings.GorddonMission.isUnlocked()) {
     if (buildings.CorvetteShip.count < 1) trigger(buildings.CorvetteShip);
 }
 
-// Starting at the Embassy: Keep Red Planet strongly supported, build fabrications, and cap cheap sources of knowledge cap/good knowledge cap using buildings.
-if (buildings.GorddonMission.isComplete()) {
+// Starting at the Andromeda scouting event: Keep Red Planet strongly supported, build fabrications, and cap cheap sources of knowledge cap/good knowledge cap using buildings.
+if (buildings.ScoutShip.count >= 1 || buildings.CorvetteShip.isUnlocked()) {
     // 26 to 30 should do the trick.
     if (buildings.RedFabrication.count < (_("Universe", "micro") ? 30 : 26)) {
         trigger(buildings.RedFabrication);
@@ -65,7 +65,7 @@ if (buildings.GorddonMission.isComplete()) {
         }
 
         // And Vit Plants.
-        trigger.amount(buildings.Alien1VitreloyPlant, 9);
+        trigger.amount(buildings.Alien1VitreloyPlant, 8);
     }
 
     // Stockpile Furs for the Consulate too so we can proceed immediately.
