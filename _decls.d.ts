@@ -16,28 +16,47 @@ declare global {
 
     /** A place for your snippet to put any temporary data. Contents will be preserved between runs. */
     const snippetState: {[key: string|number]: any;};
-    /**
-     * Triggers an Action on your snippet's behalf.
-     * It will keep running until you stop making the trigger() call.
-     *
-     * Custom resource lists can be passed too.
-     * Custom resource lists can optionally include a list of permissible buildings that are allowed to spend those resources as second parameter.
-     * (Currently not possible on Actions.)
-     *
-     * @example Example: After Stargate built, build 50 attractors
-     * ```
-     * if (buildings.BlackholeStargateComplete.count && buildings.BadlandsAttractor.count < 50) {
-     *   trigger(buildings.BadlandsAttractor);
-     * }
-     * ```
-     *
-     * @example Custom resource list
-     * ```
-     * trigger({Mythril: 1000000}, [buildings.RedZiggurat, buildings.RuinsArchaeology]);
-     * ```
-     */
-    function trigger<T extends Action|Technology | ResourceList>(action: T): void;
-    function trigger<T extends ResourceList>(action: T, allowedActions?: (Action | Technology)[]|undefined): void;
+
+    // Trigger functions
+    const trigger: {
+        /**
+         * Triggers an Action on your snippet's behalf.
+         * It will keep running until you stop making the trigger() call.
+         *
+         * @example Example: After Stargate built, build 50 attractors
+         * ```
+         * if (buildings.BlackholeStargateComplete.count && buildings.BadlandsAttractor.count < 50) {
+         * trigger(buildings.BadlandsAttractor);
+         * }
+         * ```
+         */
+        <T extends Action | Technology>(action: T): void;
+
+        /**
+         * Triggers an Action up to a given total building number count, inclusive.
+         * This should only be used for buildings and ARPAs. Don't use on research or custom resource lists.
+         * @example Black Hole, No Hole
+         * ```
+         * trigger.amount(projects.SuperCollider, 99);
+         * ```
+         */
+        amount<T extends Action>(action: T, count: number): void;
+
+        /**
+         * Triggers a custom resource list.
+         * This list is an object of resource keys to amounts obtained via resourceList (technically not necessary, it's OK to pass one directly too if you're careful).
+         * The script will work towards obtaining and stockpiling these resources.
+         * Custom resource lists can optionally include a list of permissible buildings that are allowed to spend those resources as second parameter,
+         * which can help if you know some buildings are still worth building despite the stockpiling.
+         * That is also helpful if you already know what you're going to spend it on and are dynamically calculating the required quantities.
+         *
+         * @example Save up Mythril, but Zigs and Archaeology Digs can spend them
+         * ```
+         * trigger.custom(resourceList({ Mythril: 1000000 }), [buildings.RedZiggurat, buildings.RuinsArchaeology]);
+         * ```
+         */
+        custom<T extends ResourceList>(action: T, allowedActions?: (Action | Technology)[] | undefined): boolean;
+    };
 
     /**
      * Stops running your snippet until the page is reloaded.
@@ -51,8 +70,10 @@ declare global {
      * Technically optional.
      *
      * @example Example
-     * ``     * trigger(resourceList({Mythril: 100000, Bolognium: 1234567}));
-     * ``     */
+     * ```
+     * trigger(resourceList({Mythril: 100000, Bolognium: 1234567}));
+     * ```
+     */
     function resourceList<IncludedResources extends ResourceList>(list: IncludedResources): ResourceList&IncludedResources;
     /**
      * UI functions. You must call these on every tick for them to work.
@@ -104,8 +125,8 @@ declare global {
         isAffordable(max?: boolean): boolean;
         /** Whether the action is clickable is determined by whether it is unlocked, affordable and not a "permanently clickable" action */
         isClickable(): boolean;
-        /** ID value including location, as used in setting names, eg "space-space_barracks". */
-        settingId: string;
+        /** ID value including location, as used in setting names and override evals, eg "space-space_barracks". */
+        settingId: BuildingIdKey; // This is a bit of a lie, this is only true for buildings, but buildings use the general Action.
         /** Base no-location ID value, eg "space_barracks". */
         id: string;
         /** Script's name for the building, eg "Red Marine Barracks". */
@@ -168,6 +189,14 @@ declare global {
         requestedQuantity: number;
         /** Some kind of change to production or consumption of this resource was made this tick (informs the script that it should be careful making more changes). */
         incomeAdusted: boolean;
+        /** Range of how much of this resource we have compared to the most expensive autoBuild target. 2.0 means we have 2x the amount of that. */
+        usefulRatio: number;
+        /** Range of how much the storage is filled. 0.6 is 60% full. */
+        storageRatio: number;
+        /** Time in seconds until full */
+        timeToFull: number;
+        /** Time in seconds until we've reached storageRequired */
+        timeToRequired: number;
 
         /** Displayed resource name */
         title: string;
@@ -196,7 +225,11 @@ declare global {
         galaxyMarketPriority: number;
 
         /** Resource treated as if more is required at high priority. */
-        isDemanded: boolean;
+        isDemanded(): boolean;
+        /** Resource production is meaningful. */
+        isUseful(): boolean;
+        /** Is visible. */
+        isUnlocked(): boolean;
 
         /** Many more properties and methods exist and aren't yet documented. */
         [key: string]: any;
@@ -569,7 +602,7 @@ declare global {
         /** RNA */ RNA: Resource;
 /** DNA */ DNA: Resource;
 /** $ */ Money: Resource;
-/** Ogre */ Population: Resource;
+/** Numberbirb */ Population: Resource;
 /** Sandwich */ Slave: Resource;
 /** Mana */ Mana: Resource;
 /** Energy */ Energy: Resource;
@@ -578,10 +611,10 @@ declare global {
 /** Zen Power */ Zen: Resource;
 /** Crate */ Crates: Resource;
 /** Container */ Containers: Resource;
-/** Food */ Food: Resource;
+/** Wireless Signal */ Food: Resource;
 /** Lumber */ Lumber: Resource;
 /** Chrysotile */ Chrysotile: Resource;
-/** Stone */ Stone: Resource;
+/** Clay */ Stone: Resource;
 /** Crystal */ Crystal: Resource;
 /** Furs */ Furs: Resource;
 /** Copper */ Copper: Resource;
@@ -611,12 +644,12 @@ declare global {
 /** Orichalcum */ Orichalcum: Resource;
 /** Unobtainium */ Unobtainium: Resource;
 /** Materials */ Materials: Resource;
-/** Horseshoe */ Horseshoe: Resource;
+/** Battery */ Horseshoe: Resource;
 /** Nanite */ Nanite: Resource;
-/** Genes */ Genes: Resource;
+/** Programs */ Genes: Resource;
 /** Soul Gem */ Soul_Gem: Resource;
 /** Plywood */ Plywood: Resource;
-/** Brick */ Brick: Resource;
+/** Mud Brick */ Brick: Resource;
 /** Wrought Iron */ Wrought_Iron: Resource;
 /** Sheet Metal */ Sheet_Metal: Resource;
 /** Mythril */ Mythril: Resource;
@@ -665,7 +698,7 @@ declare global {
         /** Launch Facility */ LaunchFacility: Project;
 /** Supercollider */ SuperCollider: Project;
 /** Stock Exchange */ StockExchange: Project;
-/** Sculpture */ Monument: Project;
+/** undefined */ Monument: Project;
 /** Railway */ Railway: Project;
 /** Nexus */ Nexus: Project;
 /** Asteroid Redirect */ RoidEject: Project;
@@ -3933,6 +3966,12 @@ declare global {
 "autoSnippet": boolean;
 "snippetSettingsCollapsed": boolean;
 "prioritizeSnippetTriggers": string;
+"arpaDemandWhole": boolean;
+"buildingConsumptionCheck": string;
+"buildingBuildPassCount": number;
+"scriptSettingsExportFilename": string;
+"prestigeDBenabled": boolean;
+"prestigeDBlog": boolean;
         // Generic fallback.
         [key: string]: string|number|boolean|object;
     }
