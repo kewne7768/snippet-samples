@@ -1,8 +1,3 @@
-// This is a little messy because the game doesn't give us a way to read creep from the game data
-// Emulating it (HC, traits, governor, etc) is a massive pain...
-// So we make an approximation.
-// Also, doing it like this is a fun demo.
-
 // Disable in Inflation
 if (_("Challenge", "inflation")) return stopRunning();
 
@@ -21,6 +16,7 @@ if (resources.Iridium.currentQuantity < 10000) return;
 // Not yet available for purchase.
 if (!buildings.SunSwarmSatellite.vue) return;
 
+// Only free ones if autoBuild is disabled or we're over-cap.
 if((!settings["batspace-swarm_satellite"] || !settings["autoBuild"]) || (buildings.SunSwarmSatellite.count >= resources.Sun_Support.maxQuantity)) {
     maxCost = 1;
 }
@@ -32,7 +28,8 @@ if (buildings.SunSwarmSatellite.cost.Money > maxCost) {
 // Need to use the game API directly so we can use offsets. Offset needs to be calculated to the debug data's last update.
 const building = game.actions.space.spc_sun.swarm_satellite;
 const starterCosts = poly.adjustCosts(game.actions.space.spc_sun.swarm_satellite);
-const maxCount = 200 + (resources.Sun_Support.maxQuantity - buildings.SunSwarmSatellite.count); // Only overbuild 200 sats of support, after that it's negative and nothing happens.
+// Only build up to exact cap while cost is >1. Next tick will get the 200. We could probably swap it while building but eh.
+const maxCount = (maxCost > 1 ? 0 : 200) + (resources.Sun_Support.maxQuantity - buildings.SunSwarmSatellite.count); // Only overbuild 200 sats of support, after that it's negative and nothing happens.
 
 let bought = 0;
 for (let i = 0; i < maxCount; ++i) {

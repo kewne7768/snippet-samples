@@ -4,8 +4,11 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
     const adjustedDome = poly.adjustCosts(game.actions.interstellar.int_sirius.gravity_dome);
     const adjustedMachine = poly.adjustCosts(game.actions.interstellar.int_sirius.ascension_machine);
 
-    // "40" thermals (our cost reserves don't account for creep so actual number will be less)
-    const thermalsLeft = Math.max(0, 40 - buildings.SiriusThermalCollector.count);
+    // "45" thermals (our cost reserves don't account for creep so actual number will be less)
+    // We multibuild or trigger up to 45.
+    const thermalsLeft = Math.max(0, 45 - buildings.SiriusThermalCollector.count);
+    const thermalTarget = 45;
+    const thermalTargetFinal = 69;
 
     const machineComplete = !!buildings.SiriusAscensionTrigger.count;
     const machinePartsRemaining = machineComplete ? 0 : (100 - buildings.SiriusAscensionMachine.count);
@@ -13,11 +16,6 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
     const domePartsRemaining = domeComplete ? 0 : (100 - buildings.SiriusGravityDome.count);
     const elevatorComplete = domeComplete || buildings.SiriusGravityDome.isUnlocked();
     const elevatorPartsRemaining = elevatorComplete ? 0 : (100 - buildings.SiriusSpaceElevator.count);
-
-    // Naaaaaaaaaw we ain't doing it! We ain't!
-    if (_("Universe", "micro") && isPillarFinished() && game.alevel() >= 5) {
-        settings["prestigeType"] = "mad";
-    }
 
     // @ts-ignore
     const needVault = !isPillarFinished();
@@ -48,8 +46,8 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
     // Between Bolog/Orich, calculate which of the two fills last. That one gets 60 prio on the replicator.
     if (resources.Bolognium.currentQuantity >= res.Bolognium) {
         // Can be /0, in that case it's infinity.
-        let timeToFillOri = Math.max(((res.Orichalcum??0)-resources.Orichalcum.currentQuantity) / Math.max(0.01, resources.Orichalcum.rateOfChange - (game.breakdown.p.consume?.Orichalcum?.Replicator??0)), 0);
-        let timeToFillBolog = Math.max(((res.Bolognium??0)-resources.Bolognium.currentQuantity) / Math.max(0.01, resources.Bolognium.rateOfChange - (game.breakdown.p.consume?.Bolognium?.Replicator??0)), 0);
+        let timeToFillOri = Math.max(((res.Orichalcum??0)-resources.Orichalcum.currentQuantity) / Math.max(0.01, resources.Orichalcum.rateOfChange - (game.breakdown.p.consume?.Orichalcum?.Replicator??0) - (game.breakdown.p.consume?.Orichalcum?.Alchemy??0)), 0);
+        let timeToFillBolog = Math.max(((res.Bolognium??0)-resources.Bolognium.currentQuantity) / Math.max(0.01, resources.Bolognium.rateOfChange - (game.breakdown.p.consume?.Bolognium?.Replicator??0) - (game.breakdown.p.consume?.Bolognium?.Alchemy??0)), 0);
         if (resources.Orichalcum.currentQuantity >= res.Orichalcum) timeToFillOri = 0;
         if (resources.Bolognium.currentQuantity >= res.Bolognium) timeToFillBolog = 0;
         console.info("Fill times: %o %o", timeToFillBolog, timeToFillOri);
@@ -90,13 +88,23 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
         trigger(buildings.SiriusAscensionMachine);
     }
 
-    if (buildings.SiriusThermalCollector.count < 69) {
-        trigger(buildings.SiriusThermalCollector);
+    if (buildings.SiriusThermalCollector.count < thermalTargetFinal) {
+        // Doesn't account for cost creep, but it's OK.
+        // Script will just fail at tracking resources but game will reject resources all the same.
+        for (let i = buildings.SiriusThermalCollector.count; i < thermalTarget; ++i) {
+            if (buildings.SiriusThermalCollector.click()) {
+                buildings.SiriusThermalCollector.instance.count++;
+            }
+            else {
+                break;
+            }
+        }
+        trigger.amount(buildings.SiriusThermalCollector, thermalTargetFinal);
     }
 
     // And trigger the resource list.
     if (!machineComplete || pillarOrichalcum) {
-        trigger(res, [
+        trigger.custom(res, [
             // Zigs need Mythril, but generally not much.
             buildings.RedZiggurat,
             buildings.RedExoticLab,

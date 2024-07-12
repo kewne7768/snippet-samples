@@ -7,7 +7,7 @@ const milestones = [
     techIds["tech-scarletite"].isResearched(),
 ];
 const numberAt = {
-    t4farm: [21, 33, 45, 51, 0],
+    t4farm: [30, 39, 54, 66, 0],
     //old:
     //t4farm: [36, 54, 64, 69, 0],
     t5micro: [30, 41, 52, 66, 81],
@@ -15,7 +15,7 @@ const numberAt = {
     t4fallback: [18, 24, 30, 36, 0],
 };
 const softtriggerAt = {
-    t4farm: [42, 54, 64, 69, 0],
+    t4farm: [42, 57, 72, 75, 0],
 };
 
 // Bad runs, disable entirely even if other conditions are met
@@ -55,14 +55,17 @@ if (reachedMilestone < 0) return;
 
 let amountToBuild = numberAt?.[runType]?.[reachedMilestone];
 let softtrigger = softtriggerAt?.[runType]?.[reachedMilestone];
+let pushing = false;
 if (typeof amountToBuild === "number") {
     // Antimatter is slower paced, -6 seems to be OK from testing.
     if (_("Universe", "antimatter")) amountToBuild -= 6;
 
     if (buildings.BadlandsAttractor.count < amountToBuild) {
         trigger(buildings.BadlandsAttractor);
+        pushing = true;
     }
     else if (typeof softtrigger === "number" && buildings.BadlandsAttractor.count < softtrigger) {
+        pushing = true;
         if (resources.Stanene.currentQuantity >= buildings.BadlandsAttractor.cost.Stanene) {
             // Try to trigger the rest and get it clicked
             trigger(buildings.BadlandsAttractor);
@@ -75,10 +78,12 @@ if (typeof amountToBuild === "number") {
                 Money: buildings.BadlandsAttractor.cost.Money,
                 // Only hold on to Stanene, don't trigger it. Keeps other factory things flowing.
                 Stanene: Math.min(resources.Stanene.currentQuantity, buildings.BadlandsAttractor.cost.Stanene),
-            }), [buildings.BadlandsAttractor]);
+            }), [buildings.BadlandsAttractor, buildings.BlackholeStargate]);
         }
         // Main effect of this soft-trigger:
-        settings["production_w_Stanene"] = 450;
+        settings["production_w_Stanene"] = 750;
         settings["bld_w_portal-attractor"] = 10000;
     }
 }
+
+return {pushingBeacons: pushing};

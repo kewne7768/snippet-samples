@@ -20,8 +20,8 @@ const evalProxyData = once(() => {
     }
 
     // Register with the prestige DB
-    if (typeof PrestigeDBManager !== "undefined" && typeof PrestigeDBManager.registerHook === "function") {
-        PrestigeDBManager.registerHook("milestones", () => snippetState.milestones)
+    if (typeof PrestigeDBManager !== "undefined" && typeof PrestigeDBManager.registerEntryHook === "function") {
+        PrestigeDBManager.registerEntryHook("Prestige Log Milestones", () => { return {milestones: snippetState.milestones}; });
     }
 
     return {
@@ -31,31 +31,35 @@ const evalProxyData = once(() => {
             }
         },
         milestones: snippetState.milestones,
+        milestonesAvail: [
+            "tech-merchandising",
+            "TouristCenter",
+            "RedSpaceport",
+            "tech-quantum_manufacturing",
+
+            // Falsepath split
+            "AlphaStarport",
+            //"BlackholeFarReach",
+            "BlackholeMassEjector",
+            "BlackholeStargateComplete",
+            "GorddonEmbassy",
+            "Alien2Foothold",
+            "ChthonianMission",
+            "RuinsArchaeology",
+
+            // Truepath split
+            "TitanSpaceport",
+            "TritonFOB",
+            "TitanAIComplete",
+            "TauColony",
+            "TauRedOrbitalPlatform",
+            "tech-space-whaling",
+        ].filter(e => e !== null)
     }
 });
 const specialMilestones = ["Womlings"];
 /** @type {(keyof buildings|TechIdKey)[]} state.milestonesAvail */
-const milestonesAvail = [
-    "tech-merchandising",
-    "TouristCenter",
-    "RedSpaceport",
-    "tech-quantum_manufacturing",
-    "AlphaStarport",
-    "BlackholeFarReach",
-    "BlackholeMassEjector",
-    "BlackholeStargateComplete",
-    "GorddonEmbassy",
-    "Alien2Foothold",
-    "Dreadnought",
-    "ChthonianMission",
-    "RuinsArchaeology",
-    "TitanSpaceport",
-    "TritonFOB",
-    "TitanAIComplete",
-    "TauColony",
-    "TauRedOrbitalPlatform",
-    "tech-space-whaling",
-];
+const milestonesAvail = evalProxyData.milestonesAvail;
 if (game.global.race.servants && !('Womlings' in snippetState.milestones)) {
     snippetState.milestones.Womlings = game.global.stats.days;
     ui.set("milestonePersist", { run: game.global.stats.reset, m: snippetState.milestones });

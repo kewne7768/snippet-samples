@@ -12,7 +12,6 @@ once(() => {
         techIds["tech-gauss_rifles"],
         techIds["tech-nano_tubes"],
         techIds["tech-quantum_computing"],
-        techIds["tech-swarm_convection"],
     ];
 
     if (_("Challenge", "truepath")) {
@@ -23,14 +22,18 @@ once(() => {
     else {
         snippetState.pending.push(...[
             techIds["tech-virtual_reality"],
+            techIds["tech-stanene"],
+            techIds["tech-swarm_convection"],
             techIds["tech-plasma"],
             techIds["tech-metaphysics"],
             techIds["tech-calibrated_sensors"],
             techIds["tech-gauss_rifles"],
             techIds["tech-scarletite"],
             techIds["tech-xeno_gift"],
+            techIds["tech-nanoweave"], // Not priority so much as needs triggering for Nano Tubes.
         ]);
     }
+    snippetState.multi = ["cambridge_process", "rover"];
 });
 for (let i = 0; i < snippetState.pending.length; ++i) {
     // Know better than the TypeScript analyzer? You can use JSDoc.
@@ -42,7 +45,7 @@ for (let i = 0; i < snippetState.pending.length; ++i) {
     }
     else if (tech.isUnlocked() && (tech.cost?.Knowledge??0) < resources.Knowledge.maxQuantity) {
         trigger(tech);
-        return;
+        if (!snippetState.multi.includes(tech.id)) return;
     }
 }
 

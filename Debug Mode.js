@@ -13,7 +13,10 @@ let exportedToWindow = {
     SnippetManager,
     SnippetEditorManager,
     TriggerManager,
+    WarManager,
     fastEval,
+    poly,
+    PrestigeDBManager: typeof PrestigeDBManager !== "undefined" ? PrestigeDBManager : undefined,
     get snippetData() { return snippetData; }, // Object changes every tick
 };
 

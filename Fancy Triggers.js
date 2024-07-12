@@ -54,12 +54,13 @@ if (buildings.ScoutShip.count >= 1 || buildings.CorvetteShip.isUnlocked()) {
 
         // Make 27 of them! We're gonna need the Iridium for excavators and we might as well start stockpiling now.
         // Second priority after knowledge, though.
-        // 17 space stations = 15 iron, 27 iridium, 0 elerium.
+        // 17 space stations = 15 iron, 21 iridium, 0 elerium.
         if (!triggered) {
-            if (buildings.BeltSpaceStation.count < 14) {
+            if (buildings.BeltSpaceStation.count < 12) {
                 trigger(buildings.BeltSpaceStation);
             }
-            if (buildings.BeltIridiumShip.count < 27 && !resources.Furs.isDemanded() && !resources.Polymer.isDemanded()) {
+            //  && !resources.Furs.isDemanded() && !resources.Polymer.isDemanded()
+            if (buildings.BeltIridiumShip.count < 21) {
                 trigger(buildings.BeltIridiumShip);
             }
         }
@@ -85,6 +86,11 @@ if (buildings.Alien2Mission.isUnlocked()) {
     if (buildings.FrigateShip.count < 2) trigger(buildings.FrigateShip);
     // If the city tab is removed (OD post impact or Cata), I configure the replicator to kick in for Vitreloy instead.
     if (buildings.CruiserShip.count < 2 && (!game.global.settings.showCity || buildings.Alien1VitreloyPlant.count >= 5)) trigger(buildings.CruiserShip);
+}
+
+// Needs to be concurrent with excavators, so it's here.
+if (buildings.ChthonianMission.isComplete()) {
+    trigger.amount(buildings.MassDriver, _("Challenge", "no_crispr") ? 22 : 25);
 }
 
 // Build 9 Soul Attractors if we need to go into the vault, the gem hasn't dropped yet, and we're already in Alien2.
