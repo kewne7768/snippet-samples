@@ -4,6 +4,14 @@
 // But in most of these samples that's good because they don't use the same resources/resource types (or not much).
 const isKnowledgeProdHardRun = (_("Challenge", "orbit_decay") && game.global.race.orbit_decayed) || _("Challenge", "cataclysm");
 
+// A few triggers that don't apply in Cata/OD.
+if (!isKnowledgeProdHardRun) {
+    // Keep belt supported before World Collider/Quantum.
+    if (buildings.BeltEleriumShip.stateOffCount && (!buildings.DwarfWorldController.count || !techIds["tech-quantum_manufacturing"].isResearched())) {
+        trigger(buildings.BeltSpaceStation);
+    }
+}
+
 // Want to run this in parallel with normal Starbase trigger, so it's here.
 trigger.amount(buildings.BologniumShip, 1);
 
@@ -55,7 +63,7 @@ if (buildings.ScoutShip.count >= 1 || buildings.CorvetteShip.isUnlocked()) {
         // Make 27 of them! We're gonna need the Iridium for excavators and we might as well start stockpiling now.
         // Second priority after knowledge, though.
         // 17 space stations = 15 iron, 21 iridium, 0 elerium.
-        if (!triggered) {
+        if (!triggered && !snippetData?.hasTrait?.moon_iridium) {
             if (buildings.BeltSpaceStation.count < 12) {
                 trigger(buildings.BeltSpaceStation);
             }
@@ -76,7 +84,7 @@ if (buildings.ScoutShip.count >= 1 || buildings.CorvetteShip.isUnlocked()) {
         if (typeof consulateFurCost === "number" && isFinite(consulateFurCost) && !isNaN(consulateFurCost)) {
             let embassyFurCost = buildings.GorddonEmbassy.count ? 0 : (buildings.GorddonEmbassy.cost?.Furs??0);
 
-            trigger(resourceList({ Furs: consulateFurCost + embassyFurCost }));
+            trigger.custom(resourceList({ Furs: consulateFurCost + embassyFurCost }));
         }
     }
 }

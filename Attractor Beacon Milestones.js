@@ -7,7 +7,7 @@ const milestones = [
     techIds["tech-scarletite"].isResearched(),
 ];
 const numberAt = {
-    t4farm: [30, 39, 54, 66, 0],
+    t4farm: [33, 42, 57, 69, 0],
     //old:
     //t4farm: [36, 54, 64, 69, 0],
     t5micro: [30, 41, 52, 66, 81],
@@ -15,7 +15,7 @@ const numberAt = {
     t4fallback: [18, 24, 30, 36, 0],
 };
 const softtriggerAt = {
-    t4farm: [42, 57, 72, 75, 0],
+    t4farm: [45, 60, 75, 78, 0],
 };
 
 // Bad runs, disable entirely even if other conditions are met

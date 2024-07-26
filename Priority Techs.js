@@ -10,6 +10,7 @@ once(() => {
         techIds["tech-rover"],
         techIds["tech-probes"],
         techIds["tech-gauss_rifles"],
+        techIds["tech-lasers"],
         techIds["tech-nano_tubes"],
         techIds["tech-quantum_computing"],
     ];

@@ -46,8 +46,8 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
     // Between Bolog/Orich, calculate which of the two fills last. That one gets 60 prio on the replicator.
     if (resources.Bolognium.currentQuantity >= res.Bolognium) {
         // Can be /0, in that case it's infinity.
-        let timeToFillOri = Math.max(((res.Orichalcum??0)-resources.Orichalcum.currentQuantity) / Math.max(0.01, resources.Orichalcum.rateOfChange - (game.breakdown.p.consume?.Orichalcum?.Replicator??0) - (game.breakdown.p.consume?.Orichalcum?.Alchemy??0)), 0);
-        let timeToFillBolog = Math.max(((res.Bolognium??0)-resources.Bolognium.currentQuantity) / Math.max(0.01, resources.Bolognium.rateOfChange - (game.breakdown.p.consume?.Bolognium?.Replicator??0) - (game.breakdown.p.consume?.Bolognium?.Alchemy??0)), 0);
+        let timeToFillOri = Math.max(((res.Orichalcum ?? 0) - resources.Orichalcum.currentQuantity) / Math.max(0.01, resources.Orichalcum.rateOfChange - (game.breakdown.p.consume?.Orichalcum?.Replicator ?? 0) - (game.breakdown.p.consume?.Orichalcum?.Alchemy ?? 0)), 0);
+        let timeToFillBolog = Math.max(((res.Bolognium ?? 0) - resources.Bolognium.currentQuantity) / Math.max(0.01, resources.Bolognium.rateOfChange - (game.breakdown.p.consume?.Bolognium?.Replicator ?? 0) - (game.breakdown.p.consume?.Bolognium?.Alchemy ?? 0)), 0);
         if (resources.Orichalcum.currentQuantity >= res.Orichalcum) timeToFillOri = 0;
         if (resources.Bolognium.currentQuantity >= res.Bolognium) timeToFillBolog = 0;
         console.info("Fill times: %o %o", timeToFillBolog, timeToFillOri);
@@ -64,7 +64,7 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
     }
 
     // Stuff we don't need anymore
-    Object.keys(res).forEach(k => { if(res[k] <= 0) delete res[k]; });
+    Object.keys(res).forEach(k => { if (res[k] <= 0) delete res[k]; });
 
     // Now, we need to trigger all of the relevant buildings, too.
     // Look for Vault
@@ -100,6 +100,12 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
             }
         }
         trigger.amount(buildings.SiriusThermalCollector, thermalTargetFinal);
+
+        // Fix up Infernite by disabling attractors and building new carports.
+        if (!resources.Soul_Gem.isDemanded()) {
+            settings["bld_m_portal-attractor"] = 0;
+            trigger.amount(buildings.PortalCarport, 30);
+        }
     }
 
     // And trigger the resource list.
@@ -137,6 +143,40 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
             console.info("Resource list: %s", Object.entries(res).reduce((p, [n, amount]) => { return p + (amount ? `${n}: ${amount}, ` : ""); }, ""));
         });
         */
+    }
+}
+else if (buildings.SiriusAscensionTrigger.count && settings.autoPrestige) {
+    // **THIS IS MOSTLY UNTESTED**
+    // It happened once and it worked. I also tested it by turning autoPrestige off and removing this check.
+    let now = game.global.stats.days;
+
+    // Currently supposed to be off?
+    if (('ascensionOffUntil' in snippetState)) {
+        if (now <= snippetState.ascensionOffUntil) {
+            // Still gotta be off.
+            settings["bld_m_interstellar-ascension_trigger"] = 0;
+        }
+        else {
+            // Try powering it again.
+            delete snippetState.ascensionOffUntil;
+            delete snippetState.ascensionPowered;
+        }
+    }
+    // Currently powered?
+    else if (buildings.SiriusAscensionTrigger.stateOnCount) {
+        // Add day to state if not yet present, it'll be reset every successful attempt.
+        if (!('ascensionPowered' in snippetState)) {
+            snippetState.ascensionPowered = now;
+        }
+
+        let diff = now - snippetState.ascensionPowered;
+        // Powered for at least 3 days and we're not done yet? Turn it off for 3-4 days.
+        if (diff >= 3) {
+            snippetState.ascensionOffUntil = now + 3;
+            settings["bld_m_interstellar-ascension_trigger"] = 0;
+            delete snippetState.ascensionPowered;
+            GameLog.logWarning("special", `The Ascension Machine bugged out at day #${now}. Trying to auto-recover.`, ['progress', 'achievements']);
+        }
     }
 }
 

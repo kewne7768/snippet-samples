@@ -14,13 +14,14 @@
 - droid_coal: Don't over-stockpile Adamantite, instead, try to focus on Coal production for more factories.
 - biodomes_good: Want lots of Biodomes.
 - global_prod_high: Focus more on global production buffs than usual.
+- moon_iridium: Get Iridium from moon instead of Iridium ships.
 */
 
 if (game.global.race.species === "protoplasm") return;
 
 return once(() => {
     let decidedType = "";
-    /** @type {("specialized"|"stellar_engine_low_value"|"fabrications_low_value"|"replicate_andromeda"|"stocks"|"droid_coal"|"biodomes_good"|"global_prod_high")[]} decidedTraits */
+    /** @type {("specialized"|"stellar_engine_low_value"|"fabrications_low_value"|"replicate_andromeda"|"stocks"|"droid_coal"|"biodomes_good"|"global_prod_high"|"moon_iridium")[]} decidedTraits */
     let decidedTraits = [];
 
     // More specific first.
@@ -33,6 +34,9 @@ return once(() => {
     else if (!_("Universe", "antimatter") && game.alevel() <= 3 && settingsRaw.prestigeType === "ascension" && game.global.race.species === "custom") {
         decidedType = "t4farm";
         decidedTraits.push("stellar_engine_low_value", "stocks", "droid_coal", "biodomes_good", "global_prod_high");
+        if ((game.global?.city?.geology?.Iridium??0) > 3) { // +300%
+            decidedTraits.push("moon_iridium");
+        }
     }
     // Challenge run.
     else if (_("Challenge", "lone_survivor")) {

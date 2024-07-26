@@ -68,22 +68,46 @@ if (snippetData?.hasTrait?.t4farm) {
     settings["bld_m_city-transmitter"] = 2;
 
     // Buy Furs early, and keep it up for a bit. Buy all the furs!
-    if (WarManager.currentSoldiers < 4 && buildings.Temple.count < 20) {
+    if (WarManager.currentSoldiers < 12 && buildings.Temple.count < 20) {
         settings["res_trade_buy_Furs"] = true;
         settings["res_trade_w_Furs"] = 10000;
         settings["res_trade_p_Furs"] = 10000;
-        trigger.amount(buildings.StorageYard, 12);
+        trigger.amount(buildings.StorageYard, 8);
+
+        // Really really hire the first couple of mercs after investing
+        if (WarManager.currentSoldiers < 3 && techIds["tech-investing"].isResearched()) {
+            trigger(techIds["tech-mercs"]);
+            settings["foreignHireMercCostLowerThanIncome"] = 1;
+        }
     }
 
-    // Let's go for 4 Helium mines. At least, after Iridium is set up.
+    // Let's go for 6 Helium mines. At least, after Iridium is set up.
     if (buildings.MoonIridiumMine.count) {
-        trigger.amount(buildings.MoonHeliumMine, 4);
+        trigger.amount(buildings.MoonHeliumMine, 6);
+    }
+
+    // Iridium mine stuff at high enough Iridium deposits.
+    if (snippetData?.hasTrait?.moon_iridium) {
+        settings["batspace-iridium_ship"] = false;
+        if (buildings.DwarfWorldController.count) {
+            if (buildings.BlackholeStargateComplete.count) {
+                trigger.amount(buildings.MoonIridiumMine, 15);
+            }
+            else {
+                trigger.amount(buildings.MoonIridiumMine, 8);
+            }
+        }
+        else {
+            trigger.amount(buildings.MoonIridiumMine, 4);
+        }
     }
 
     // After the initial buildup, push a few things.
     if (techIds["tech-merchandising"].isResearched()) {
         // Some cheap pop
         trigger.amount(buildings.Lodge, 15);
+        // Pump up the knowledge cap
+        trigger.amount(buildings.Library, 20);
 
         // Build ALL the Wardenclyffes.
         if (buildings.Wardenclyffe.cost.Knowledge < resources.Knowledge.maxQuantity) {
@@ -99,7 +123,6 @@ if (snippetData?.hasTrait?.t4farm) {
                 trigger(coalCost > (oilCost * 1.15) ? buildings.OilPower : buildings.CoalPower);
             }
         }
-
     }
 
     // Pump factories when it's time to start working on Alloy.
@@ -112,11 +135,14 @@ if (snippetData?.hasTrait?.t4farm) {
     // And make some biolabs after Uranium. 4 is enough to make Tourism easy to access. We also wanna pump out some factories at the same time.
     if (techIds["tech-uranium_storage"].isResearched()) {
         trigger.amount(buildings.BioLab, 4);
+        trigger.amount(buildings.Library, 30);
     }
 
     // Temples and Casinos will build first, Tourist only after unlocked.
     if (projects.Monument.isUnlocked()) {
+        trigger.amount(buildings.BootCamp, 5);
         trigger.amount(buildings.Apartment, 12);
+        trigger.amount(buildings.Library, 40);
         trigger.amount(buildings.Temple, 35);
         trigger.amount(buildings.Casino, 3);
         // Need to get tourism flowing ASAP once monuments are unlocked.
@@ -128,8 +154,14 @@ if (snippetData?.hasTrait?.t4farm) {
         }
     }
 
+    if (buildings.RedSpaceport.count) {
+        trigger.amount(buildings.BootCamp, 15);
+    }
+
     // Need to enter Hell but not enough soldiers? Remember this interacts with the stress/auto script.
     if (techIds["tech-fortifications"].isResearched()) {
+        trigger.amount(buildings.BootCamp, 25);
+        trigger.amount(projects.SuperCollider, 20);
         if (WarManager.maxSoldiers < 65) {
             settings["bld_w_city-garrison"] = 1000;
             settings["bld_w_space-space_barracks"] = 1000;
@@ -146,12 +178,18 @@ if (snippetData?.hasTrait?.t4farm) {
     if ((game.global.civic?.garrison?.m_use??0) < 1) {
         settings["foreignHireMercDeadSoldiers"] = 0;
     }
+    // Ensure we keep soldiers flowing
+    if ((WarManager.deadSoldiers === 0 || (game.global.civic?.garrison?.m_use??0) < 1) && buildings.Barracks.stateOffCount === 0) {
+        trigger.amount(buildings.Barracks, 15);
+    }
 
     if (buildings.BlackholeMassEjector.count && techIds["tech-calibrated_sensors"].isResearched()) {
         // Make sure we got enough Elerium going on.
         trigger.amount(buildings.NebulaNexus, 5);
         trigger.amount(buildings.NebulaEleriumProspector, 6);
         trigger.amount(buildings.NebulaHarvester, 4);
+
+        trigger.amount(projects.SuperCollider, 40);
 
         // These get a little more expensive than desired after 25. After we have them we can build the gate.
         trigger.amount(buildings.BadlandsSensorDrone, 25);
@@ -163,12 +201,18 @@ if (snippetData?.hasTrait?.t4farm) {
         if (resources.Alloy.currentQuantity < 1000e3) {
             resources.Alloy.requestedQuantity = Math.max(resources.Alloy.requestedQuantity, 1000e3);
         }
+
+        trigger.amount(buildings.BootCamp, 32);
     }
     // 33 is a good max for Sensors.
     settings["bld_m_portal-sensor_drone"] = 33;
 
-    // Run 10 bolog ships early to get enough for a freighter.
-    trigger.amount(buildings.BologniumShip, 10);
+    // Run 10 bolog ships early to get enough for a freighter. Pump 30 after Embassy while waiting on Metaphysics.
+    trigger.amount(buildings.BologniumShip, buildings.GorddonEmbassy.count ? 30 : 10);
+
+    if (buildings.ScoutShip.count) {
+        trigger.amount(projects.SuperCollider, 80);
+    }
 
     // Some misc maxes
     settings["bld_m_space-outpost"] = 22; // Neutronium Miner
@@ -185,6 +229,7 @@ if (snippetData?.hasTrait?.t4farm) {
     settings["bld_m_galaxy-frigate_ship"] = buildings.Alien2Mission.isComplete() ? 3 : 2;
     settings["bld_m_galaxy-cruiser_ship"] = buildings.Alien2Mission.isComplete() ? 4 : 2;
     if (buildings.Alien2Mission.isComplete() && !buildings.ChthonianMission.isComplete()) {
+        trigger.amount(buildings.BootCamp, 40); // don't really care about them after going into chth
         trigger.amount(buildings.FrigateShip, 3);
         trigger.amount(buildings.CruiserShip, 4);
         // If we're ready to attack, herbivore it up
@@ -200,6 +245,11 @@ if (snippetData?.hasTrait?.t4farm) {
         // Back to heat for the machine!
         settings["shifterGenus"] = "ignore";
         getVueById('sshifter')?.setShape("heat");
+    }
+
+    // Prep some more Orichalcum
+    if (buildings.Alien2Mission.isComplete() && _("Universe", "magic")) {
+        trigger.amount(projects.ManaSyphon, 24);
     }
 
     // Quantum Living Quarters
@@ -263,7 +313,7 @@ if (snippetData?.hasTrait?.t4farm) {
             trigger(buildings.RedLivingQuarters);
         }
         else if (buildings.RedLivingQuarters.count < hardCap) {
-            trigger({ Polymer: buildings.RedLivingQuarters.cost.Polymer }, [buildings.RedLivingQuarters, buildings.BadlandsSensorDrone]);
+            trigger.custom({ Polymer: buildings.RedLivingQuarters.cost.Polymer }, [buildings.RedLivingQuarters, buildings.BadlandsSensorDrone]);
         }
     }
 
