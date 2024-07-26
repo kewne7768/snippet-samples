@@ -49,7 +49,6 @@ declare global {
          * Custom resource lists can optionally include a list of permissible buildings that are allowed to spend those resources as second parameter,
          * which can help if you know some buildings are still worth building despite the stockpiling.
          * That is also helpful if you already know what you're going to spend it on and are dynamically calculating the required quantities.
-         *
          * @example Save up Mythril, but Zigs and Archaeology Digs can spend them
          * ```
          * trigger.custom(resourceList({ Mythril: 1000000 }), [buildings.RedZiggurat, buildings.RuinsArchaeology]);
@@ -230,6 +229,9 @@ declare global {
         isUseful(): boolean;
         /** Is visible. */
         isUnlocked(): boolean;
+
+        /** Demand X of this resource to be made. */
+        requestQuantity(req: number): void;
 
         /** Many more properties and methods exist and aren't yet documented. */
         [key: string]: any;
@@ -698,7 +700,7 @@ declare global {
         /** Launch Facility */ LaunchFacility: Project;
 /** Supercollider */ SuperCollider: Project;
 /** Stock Exchange */ StockExchange: Project;
-/** undefined */ Monument: Project;
+/** Sculpture */ Monument: Project;
 /** Railway */ Railway: Project;
 /** Nexus */ Nexus: Project;
 /** Asteroid Redirect */ RoidEject: Project;
@@ -2946,7 +2948,6 @@ declare global {
 "productionSmelting": string;
 "productionSmeltingIridium": number;
 "productionFactoryMinIngredients": number;
-"replicatorResource": string;
 "replicatorAssignGovernorTask": boolean;
 "craftPlywood": boolean;
 "job_Plywood": boolean;
@@ -3972,6 +3973,8 @@ declare global {
 "scriptSettingsExportFilename": string;
 "prestigeDBenabled": boolean;
 "prestigeDBlog": boolean;
+"performanceHackAvoidDrawTech": boolean;
+"productionSmeltingMaxIronRatio": number;
         // Generic fallback.
         [key: string]: string|number|boolean|object;
     }
@@ -4000,7 +4003,7 @@ declare global {
     const snippetData: { [key: string]: any; };
 
     // Part 4: Override Eval/CheckTypes interop. Unknowns get nevered.
-    type EvalFnCheckType = 'String'|'Number'|'Boolean'|'SettingDefault'|'SettingCurrent'|'Eval'|'BuildingUnlocked'|'BuildingClickable'|'BuildingAffordable'|'BuildingCount'|'BuildingEnabled'|'BuildingDisabled'|'BuildingQueued'|'ProjectUnlocked'|'ProjectCount'|'ProjectProgress'|'JobUnlocked'|'JobCount'|'JobMax'|'JobWorkers'|'JobServants'|'ResearchUnlocked'|'ResearchComplete'|'ResourceUnlocked'|'ResourceQuantity'|'ResourceStorage'|'ResourceMaxCost'|'ResourceIncome'|'ResourceRatio'|'ResourceSatisfied'|'ResourceSatisfyRatio'|'ResourceDemanded'|'RaceId'|'RacePillared'|'RaceGenus'|'MimicGenus'|'TraitLevel'|'ResetType'|'Challenge'|'Universe'|'Government'|'Governor'|'Queue'|'Date'|'Soldiers'|'PlanetBiome'|'PlanetTrait'|'Other';
+    type EvalFnCheckType = 'String'|'Number'|'Boolean'|'SettingDefault'|'SettingCurrent'|'Eval'|'BuildingUnlocked'|'BuildingClickable'|'BuildingAffordable'|'BuildingCount'|'BuildingEnabled'|'BuildingDisabled'|'BuildingQueued'|'ProjectUnlocked'|'ProjectCount'|'ProjectProgress'|'JobUnlocked'|'JobCount'|'JobMax'|'JobWorkers'|'JobServants'|'ResearchUnlocked'|'ResearchComplete'|'ResourceUnlocked'|'ResourceQuantity'|'ResourceStorage'|'ResourceMaxCost'|'ResourceIncome'|'ResourceRatio'|'ResourceSatisfied'|'ResourceSatisfyRatio'|'ResourceDemanded'|'RaceId'|'RacePillared'|'RaceGenus'|'MimicGenus'|'TraitLevel'|'ResetType'|'Challenge'|'Universe'|'Government'|'Governor'|'Queue'|'Date'|'Soldiers'|'PlanetBiome'|'PlanetTrait'|'Industry'|'Other';
     type EvalFnArg<EvalFn extends EvalFnCheckType> = EvalFn extends 'String' ? string : 
 EvalFn extends 'Number' ? number : 
 EvalFn extends 'Boolean' ? boolean : 
@@ -4048,6 +4051,7 @@ EvalFn extends 'Date' ? ('day'|'moon'|'total'|'year'|'orbit'|'season'|'temp'|'im
 EvalFn extends 'Soldiers' ? ('workers'|'max'|'currentCityGarrison'|'maxCityGarrison'|'hellSoldiers'|'hellGarrison'|'hellPatrols'|'hellPatrolSize'|'wounded'|'deadSoldiers'|'crew'|'mercenaryCost') : 
 EvalFn extends 'PlanetBiome' ? ('grassland'|'oceanic'|'forest'|'desert'|'volcanic'|'tundra'|'savanna'|'swamp'|'taiga'|'ashland'|'hellscape'|'eden') : 
 EvalFn extends 'PlanetTrait' ? (''|'toxic'|'mellow'|'rage'|'stormy'|'ozone'|'magnetic'|'trashed'|'elliptical'|'flare'|'dense'|'unstable'|'permafrost'|'retrograde') : 
+EvalFn extends 'Industry' ? ('smelters'|'factories') : 
 EvalFn extends 'Other' ? ('rname'|'tpfleet'|'mrelay'|'satcost'|'bcar'|'alevel'|'tknow') :  never;
     // As much as I'd love to generate this, it's impossible unless the script itself is TypeScript-compiled...
     type EvalFnReturn<EvalFn extends EvalFnCheckType> =
@@ -4098,6 +4102,7 @@ EvalFn extends 'Other' ? ('rname'|'tpfleet'|'mrelay'|'satcost'|'bcar'|'alevel'|'
         EvalFn extends 'Soldiers' ? number :
         EvalFn extends 'PlanetBiome' ? boolean :
         EvalFn extends 'PlanetTrait' ? boolean :
+        EvalFn extends 'Industry' ? number :
         EvalFn extends 'Other' ? number|string : never; // TODO: Maybe see a way if we can narrow this (only rname is string)...
 
     function _<EvalFn extends EvalFnCheckType>(checkType: EvalFn, arg: EvalFnArg<EvalFn>): EvalFnReturn<EvalFn>;
