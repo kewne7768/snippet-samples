@@ -1,4 +1,4 @@
-import "./_decls.ts";
+//import "./_decls.ts";
 // @ts-check
 
 // This whole thing will almost certainly require *extensive* tweaking based on overall prestige level.
@@ -14,15 +14,18 @@ if (!_("Challenge", "lone_survivor")) {
 
 /**
  * @typedef {Object} SnipVars
- * @property {'auto'|'science'|'mine'} job
- * @property {string} gov
- * @property {number} redraw
- * @property {number} redrawSequence
- * @property {number} patrolMiningCap
- * @property {string} mimic
- * @property {boolean} spaceStationDecrypt
- * @property {number} factoryLimit
- * @property {boolean} ringworldMode
+ * @property {'auto'|'science'|'mine'} job Job for the lone survivor
+ * @property {string} gov Goverment
+ * @property {number} redraw Force tab redraw
+ * @property {number} redrawSequence Force tab redraw (internal tracking, do not modify)
+ * @property {number} patrolMiningCap Maximum amount of patrol/extractor ships to trigger when Titanium is ready
+ * @property {string} mimic Current mimic
+ * @property {boolean} mimicMonument Mimic is handled by monument handler
+ * @property {boolean} spaceStationDecrypt Use custom logic for space station decrypting
+ * @property {number} factoryLimit Building/power limit for factory
+ * @property {boolean} ringworldMode Pit mine remaining Adamantite for Ringworld
+ * @property {Object|null} autoMonument Settings for monument spammer
+ * @property {boolean} replicateEdenGraphene Replicate Graphene for Garden of Eden
  */
 
 /**
@@ -45,10 +48,13 @@ if (!('step' in snippetState)) {
         redraw: 0,
         redrawSequence: 0,
         patrolMiningCap: 0,
-        mimic: "heat",
+        mimic: "ignore",
+        mimicMonument: false,
         spaceStationDecrypt: false,
         factoryLimit: -1,
         ringworldMode: false,
+        autoMonument: null,
+        replicateEdenGraphene: false,
     };
     snippetState.vars = structuredClone(defaultVars);
     snippetState.stepVars = {};
@@ -61,12 +67,14 @@ settings.autoBuild = false;
 settings.autoARPA = false;
 settings.autoResearch = false;
 settings.autoTrigger = false;
+settings.autoShapeshift = false;
 
 // General setting overrides.
 settings["mutableTrait_reset_dumb"] = true;
 settings["production_Money"] = false; // Luxury Goods
 settings["generalRequestedTaxRate"] = 0;
 settings["geneticsSequence"] = "disabled";
+settings["shifterGenus"] = "ignore";
 settings["naniteMode"] = "capped";
 settings["productionExtWeight_uncommon"] = 1e12; // Full Neutronium
 settings["productionExtWeight_rare"] = 0; // Full Orichalcum
@@ -77,7 +85,12 @@ settings["productionSmeltingIridium"] = 0;
 settings["job_b2_quarry_worker"] = 0;
 settings["job_b2_scavenger"] = -1;
 settings["productionCraftsmen"] = "servants";
+settings["foundry_w_Plywood"] = 0;
 settings["foundry_w_Brick"] = 1e20;
+settings["foundry_w_Wrought_Iron"] = 0;
+settings["foundry_w_Sheet_Metal"] = 0;
+settings["foundry_w_Mythril"] = 0;
+
 // Factory weightings, demand system will still work, this is just leftovers!
 settings["production_p_Money"] = 0;
 settings["production_w_Money"] = 0;
@@ -91,6 +104,11 @@ settings["production_p_Nano_Tube"] = 50;
 settings["production_w_Nano_Tube"] = 1;
 settings["production_p_Stanene"] = 50;
 settings["production_w_Stanene"] = 1;
+
+// Change to default gov if currently Anarchy - this will let us get the first tick researches at discount.
+if (GovernmentManager.isEnabled() && GovernmentManager.currentGovernment() === "anarchy") {
+    GovernmentManager.setGovernment(snippetState.vars.gov);
+}
 
 // Keep a list of our triggers
 let triggers = [];
@@ -302,6 +320,11 @@ const entryTypeHandlers = {
         do: (entry) => entry.variable && ((entry.layer === "step" ? snippetState.stepVars : snippetState.vars)[entry.variable] = entry.val),
         once: true,
     },
+    techComplete: {
+        pre: (entry) => undefined,
+        complete: (entry) => game.global.tech[entry.variable] >= (entry?.amount??1),
+        do: (entry) => undefined,
+    },
 };
 
 // Main stuff.
@@ -309,7 +332,7 @@ const entryTypeHandlers = {
 // StepEntries are one action, or one action up to a specific count.
 // Steps are an array of one or more StepEntries. They are sync points. Everything inside one array happens at the same time.
 // keyof typeof entryTypeHandlers
-/** @typedef {"building"|"tech"|"project"|"variable"} StepType */
+/** @typedef {"building"|"tech"|"project"|"variable"|"techComplete"} StepType */
 /**
  * @typedef {Object} StepEntry
  * @property {StepType} type
@@ -317,30 +340,39 @@ const entryTypeHandlers = {
  * @property {number=} amount type=building/project: Total amount to build
  * @property {Technology=} tech Research a tech. Implies type=tech
  * @property {Project=} project Build ARPA. Implies type=project
- * @property {string=} variable Set a variable. Implies type=variable
+ * @property {string=} variable Set a variable. Implies type=variable, unless type is techComplete, in which case it's the tech to check
  * @property {any=} val Variable value
  * @property {('set'|'step')=} layer Variable layer
  * @property {Action=} orBuildingUnlocked Considered complete if a building is unlocked, used for space station.
- * @property {boolean=} skipIfCement TODO NYI
+ * @property {boolean=} skipIfCement TODO NYI we get stuck on Cement currently!
  * @property {boolean=} opportunistic Allow advancing step even if incomplete
 */
 /**
  * @typedef {Omit<StepEntry, 'type'> & {type?: StepType}} StepEntryTypeless
 */
 
-// %%
+// #region Triggers list
 // For ease of writing, you can list a single StepEntry below.
 // The type will be automatically inferred if not explicitly specified.
 /** @type {(StepEntryTypeless|StepEntryTypeless[])[]} */
 const runBase = [
     // First tick
-    [{ tech: techIds["tech-outpost_boost"] }, { tech: techIds["tech-alt_fanaticism"] }],
-    // Rush Deify
-    [{ tech: techIds["tech-ancient_theology"] }, { tech: techIds["tech-deify"] }, { tech: techIds["tech-governor"] }],
+    [
+        { tech: techIds["tech-outpost_boost"] },
+        { tech: techIds["tech-alt_fanaticism"] },
+    ],
+    // Rush Deify + try to get Replicator early (may fail if we failed to get first tick)
+    [
+        { tech: techIds["tech-ancient_theology"] },
+        { tech: techIds["tech-deify"] },
+        { tech: techIds["tech-governor"] },
+        { tech: techIds["tech-replicator"], opportunistic: true },
+    ],
 
-    // Spend starting mats
+    // Spend some starting mats before engaging heat - Chrysotile production is slow before colonies
     [
         { building: buildings.TauOrbitalStation, amount: 2 },
+        { project: projects.Monument, amount: 8 }, // Fixed amount of starting mats we can lose, dynamic is later
     ],
     [
         { building: buildings.TauColony, amount: 2 },
@@ -351,6 +383,7 @@ const runBase = [
         { building: buildings.TauOrbitalStation, amount: 4 },
     ],
     [
+        { variable: "mimic", val: "heat" },
         { building: buildings.TauColony, amount: 5 },
         { building: buildings.TauOrbitalStation, amount: 5 },
     ],
@@ -360,9 +393,9 @@ const runBase = [
         { building: buildings.TauCasino, amount: 7 },
     ],
     [
-        // Need replicator for more helium for more orbital stations
+        // Need replicator for more helium for more orbital stations, get some more power
         { tech: techIds["tech-replicator"] },
-        { building: buildings.TauFusionGenerator, amount: 3 },
+        { building: buildings.TauFusionGenerator, amount: 2 },
     ],
     [
         // 19/21 when this is done
@@ -370,12 +403,23 @@ const runBase = [
         { building: buildings.TauColony, amount: 9 },
     ],
     [
-        { building: buildings.TauCasino, amount: 12, skipIfCement: true },
-        { project: projects.Monument, amount: 7 }, // Fixed amount for morale cap, dynamic TBD.
+        // Yet more replicator juice + money
+        { building: buildings.TauFusionGenerator, amount: 3 },
+        { building: buildings.TauCasino, amount: 12 },
     ],
 
-    // Factories
+    // Factories + monuments
     [
+        {
+            // Keep making monuments until we would fall below this amount of resources.
+            // This does not block advancing steps.
+            variable: "autoMonument", val: {
+                // 1 hightech farm + 2 womling mines, approx cost
+                keepSteel: 1_580_000 + 1_130_000 + 1_300_000,
+                mineFor: [resources.Stone.id, resources.Aluminium.id],
+                allowAvian: true,
+            }, layer: "step"
+        },
         // 19/22 when this is done
         { tech: techIds["tech-tau_cultivation"] },
         { building: buildings.TauFarm, amount: 1 },
@@ -435,23 +479,41 @@ const runBase = [
         { tech: techIds["tech-womling_fun"] },
     ],
 
-    // More furrets
+    // More furrets + allow spending all steel from now on
     [
+        {
+            // Keep making monuments until we would fall below this amount of resources.
+            // This does not block advancing steps.
+            variable: "autoMonument", val: {
+                keepSteel: 0,
+                mineFor: [resources.Stone.id, resources.Aluminium.id],
+                allowAvian: false,
+            }
+        },
+
         { tech: techIds["tech-womling_lab"] },
         { building: buildings.TauRedOrbitalPlatform, amount: 4 },
         { building: buildings.TauRedWomlingLab, amount: 2 },
-        { building: buildings.TauRedWomlingFun, amount: 3 },
-        { tech: techIds["tech-system_survey"] },
+        { building: buildings.TauRedWomlingFun, amount: 4 },
         { building: buildings.TauCulturalCenter, amount: 8, opportunistic: true },
     ],
 
     // Gotta wait on furret tech 1, get some casinos in with bird powers
     [
         { variable: "mimic", val: "avian", layer: "step" },
+        {
+            // One last round of monuments with avian for just this layer
+            variable: "autoMonument", val: {
+                keepSteel: 0,
+                mineFor: [resources.Stone.id, resources.Aluminium.id],
+                allowAvian: true,
+            }, layer: "step"
+        },
         { building: buildings.TauCasino, amount: 18 },
     ],
-
+    
     [
+        { tech: techIds["tech-system_survey"] },
         // Optional but worth (probably?):
         { tech: techIds["tech-womling_mining"] },
     ],
@@ -512,21 +574,31 @@ const runBase = [
 
     // Data decryption
     // First, force a redraw so we can get the space station in the industry UI
+    // TODO: Maybe put this in the main script but main script doesn't use space station UI
     [{ variable: "redraw", val: "space station complete" }],
+
     // document.getElementById("iAlienSpaceStation").__vue__.focus = 0 .. 100
     [
         // Our code below will only enable the space station while no tech is available to get the techs ASAP
         { variable: "spaceStationDecrypt", val: true },
+        { variable: "job", val: "science", layer: "step" },
         { tech: techIds["tech-food_culture"] }, // Sell food
         //{ tech: techIds["tech-useless_junk"] }, // Useless junk - small benefit not yet? worth
         { tech: techIds["tech-advanced_refinery"] },
         { tech: techIds["tech-advanced_asteroid_mining"] },
+        // Wait for decryption to complete
+        { type: "techComplete", variable: "alien_data", amount: 6 },
     ],
 
     // Finish it!
     [
         { variable: "ringworldMode", val: true },
+        { variable: "replicateEdenGraphene", val: true },
         { building: buildings.TauStarRingworld, amount: 1000, },
+
+        // If we got spare knowledge...
+        { tech: techIds["tech-womling_gene_therapy"], opportunistic: true },
+        { tech: techIds["tech-womling_firstaid"], opportunistic: true },
     ],
     [
         { variable: "gov", val: "technocracy" },
@@ -534,6 +606,7 @@ const runBase = [
         { building: buildings.TauStarEden, amount: 1 },
     ]
 ];
+// #endregion
 /** @type {(StepEntry[])[]} */
 const run = runBase.map(probeType);
 
@@ -569,15 +642,86 @@ for (let i = start; i < run.length; ++i) {
 /** @type {SnipVars} */
 const vars = Object.assign({}, snippetState.vars, snippetState.stepVars);
 
+// #region Vars Handling
 // TEMP TODO - We can do better than hardcoded assignments but this stuff needs to work first
-if (vars.mimic) {
+if (vars.mimic && vars.mimic !== "ignore" && !vars.mimicMonument) {
     doShapeshift(vars.mimic);
 }
 
+// Auto-manage space station focus
 if (vars.spaceStationDecrypt) {
     const station = document.getElementById("iAlienSpaceStation");
     if (station?.__vue__) {
         station.__vue__.focus = triggers.some(trg => trg.cost.Knowledge) ? 0 : 100;
+    }
+}
+
+// Build monuments, let's cap at 30 so we don't spend forever mining in case of good alum/stone luck
+if (vars.autoMonument && projects.Monument.count < 30) {
+    /*
+    // 1 hightech farm + 2 womling mines, approx cost
+    keepSteel: 1_580_000 + 1_130_000 + 1_300_000,
+    mineFor: [resources.Stone.id, resources.Aluminium.id],
+    allowAvian: true,
+    */
+    const elem = document.getElementById("arpamonument");
+    let remainingPartFactor = (100 - elem.__vue__.complete) / 100;
+    // Get real cost for the thing
+    let realCosts = Object.fromEntries(Object.entries(poly.arpaAdjustCosts(evolve.actions.arpa.monument.cost)).map(([k, v]) => {
+        let amount = v() * remainingPartFactor;
+        return amount ? [k, amount] : null;
+    }).filter(e => e !== null));
+
+    // Monument can be free if it's Cement and we just changed to Avian
+    let nextMonumentResourceName = Object.keys(realCosts)[0] ?? null;
+    let nextMonumentResourceCost = Object.values(realCosts)[0] ?? 0;
+    let tryBuy = false;
+    let birdie = false;
+    switch (nextMonumentResourceName) {
+        case 'Stone':
+        case 'Aluminium':
+            if (vars.autoMonument.mineFor.includes(nextMonumentResourceName)) {
+                tryBuy = true;
+            }
+            break;
+
+        case 'Cement':
+            tryBuy = true;
+            if (resources.Cement.currentQuantity < nextMonumentResourceCost) {
+                birdie = true;
+            }
+            break;
+
+        case 'Steel':
+            if (resources.Steel.currentQuantity > (nextMonumentResourceCost + vars.autoMonument.keepSteel)) {
+                tryBuy = true;
+            }
+            break;
+        case null:
+        case undefined:
+            tryBuy = true;
+            break;
+    }
+    //console.info("Next monument: ", nextMonumentResourceName, nextMonumentResourceCost, tryBuy, birdie);
+
+    if (tryBuy) {
+        const curRank = elem.__vue__.rank;
+
+        if (birdie && mimicGenus !== "avian") {
+            doShapeshift('avian');
+            snippetState.stepVars.mimicMonument = true;
+        }
+
+        elem.__vue__.build('monument', 100);
+        let bought = elem.__vue__.rank > curRank;
+
+        if (!bought) {
+            superTrigger(projects.Monument, curRank + 1);
+        }
+        else if (birdie) {
+            doShapeshift(vars.mimic);
+            delete snippetState.stepVars.mimicMonument;
+        }
     }
 }
 
@@ -593,6 +737,7 @@ if (vars.redraw !== vars.redrawSequence) {
 
 // Make more patrol/extractor ships when able
 if (vars.patrolMiningCap) {
+    // TODO: Figure out a (good) way to interrupt building the ringworld so we don't compete for Money.
     let patrolLimit = vars.patrolMiningCap;
     if (buildings.TauBeltPatrolShip.count < buildings.TauBeltMiningShip.count && buildings.TauBeltPatrolShip.count < patrolLimit) {
         superTrigger(buildings.TauBeltPatrolShip, buildings.TauBeltPatrolShip.count + 1);
@@ -602,19 +747,22 @@ if (vars.patrolMiningCap) {
     }
 }
 
-// End vars block
+// #endregion
 
-// Calc ringworld costs
+// Calc ringworld costs, to be used for job + replicator
 const ringworldPartsLeft = 1000 - buildings.TauStarRingworld.count;
 const ringworldCosts = {
+    Neutronium: 5040 * ringworldPartsLeft,
     Orichalcum: 6300 * ringworldPartsLeft,
     Unobtainium: 91 * ringworldPartsLeft,
     Adamantite: 50400 * ringworldPartsLeft,
     Bolognium: 4435 * ringworldPartsLeft,
     Nano_Tube: 17600 * ringworldPartsLeft,
 
-    // Actually for Garden of Eden
-    //Graphene: 2_550_000
+    // Actually for Garden of Eden, and this purposefully underestimates the amount needed very slightly.
+    // Ideally we build the GoE almost instantly so we don't "waste" Orichalcum we could have gotten from patrols.
+    // Real cost is 2.55M
+    Graphene: vars.replicateEdenGraphene ? 2_500_000 : 0,
 };
 
 // Handle main job: Usually 'auto', sometimes 'science', sometimes 'mine'
@@ -642,6 +790,8 @@ if (targetJob === "auto") {
     let knowledgeFull = resources.Knowledge.storageRatio >= 1;
     let knowledgeMiner = vars.knowledgeFullMining && knowledgeFull;
 
+    let needCement = false && vars.mimic !== "avian" && mimicGenus !== "avian" && mimicGenusStart !== "avian";
+
     // || knowledgeFull
     targetJob = (needPit || needPitRingworld || knowledgeMiner) ? 'mine' : 'science';
 }
@@ -663,12 +813,28 @@ Object.values(jobs).forEach(job => {
     settings[`job_b1_${job._originalId}`] = job === realTargetJob ? 1000 : 0;
 });
 
+// Set Tau Colony power limit based on available support
+// TODO: We can min/max by only having the disease lab OR the pit mine on based on our job
+let requiredTauSupport = 0;
+requiredTauSupport += 1; // Pit mine, always 1
+requiredTauSupport += buildings.TauDiseaseLab.count; // Science lab
+requiredTauSupport += Math.min(vars.factoryLimit > 0 ? vars.factoryLimit : 100, buildings.TauFactory.count); // Factory
+let totalTauSupport = (buildings.TauOrbitalStation.count * 3) + buildings.TauFarm.count;
+let supportableColonies = Math.floor((totalTauSupport - requiredTauSupport) / 2);
+settings["bld_m_tauceti-colony"] = supportableColonies;
+
+// TODO: This is here because we'll need it here for the min/maxing
+settings["bld_m_tauceti-mining_pit"] = 1;
+settings["bld_m_tauceti-infectious_disease_lab"] = 1;
+
 // Handle replicator
 const minHe3 = 5_000;
-const minElerium = 100;
+const minElerium = 500;
 let goodReplicatorResources = [
     resources.Helium_3,
     resources.Elerium,
+    resources.Oil,
+
     buildings.TauGasOreRefinery.count === 0 ? resources.Steel : null,
     resources.Unobtainium,
     resources.Orichalcum,
@@ -711,6 +877,12 @@ if (!replicatorResource) {
 
 // Then finally prep stuff for Ringworld if we still don't have a resource
 if (!replicatorResource) {
+    // Higher = more replicator time spent on it
+    const ttfWeightings = {
+        Orichalcum: 1,
+        Neutronium: 1,
+    };
+
     // Calculate the time-to-fill
     let tryOrder = [
         resources.Neutronium,
@@ -727,6 +899,7 @@ if (!replicatorResource) {
             let replicatingOf = (game.breakdown.p.consume?.[r.id]?.Replicator ?? 0) + (game.breakdown.p.consume?.[r.id]?.Alchemy ?? 0);
             let timeToFill = Math.max((ringworldNeed - r.currentQuantity) / Math.max(0.01, r.rateOfChange - replicatingOf), 0);
             if (!isFinite(timeToFill)) timeToFill = 0;
+            timeToFill *= ttfWeightings[r.id] ?? 1;
 
             return {
                 resource: r,
