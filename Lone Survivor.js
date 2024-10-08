@@ -322,7 +322,7 @@ const entryTypeHandlers = {
     },
     techComplete: {
         pre: (entry) => undefined,
-        complete: (entry) => game.global.tech[entry.variable] >= (entry?.amount??1),
+        complete: (entry) => game.global.tech[entry.variable] >= (entry?.amount ?? 1),
         do: (entry) => undefined,
     },
 };
@@ -361,31 +361,34 @@ const runBase = [
         { tech: techIds["tech-outpost_boost"] },
         { tech: techIds["tech-alt_fanaticism"] },
     ],
-    // Rush Deify + try to get Replicator early (may fail if we failed to get first tick)
+    // Rush Deify + governors, after this we try to get the replicator online
     [
         { tech: techIds["tech-ancient_theology"] },
         { tech: techIds["tech-deify"] },
         { tech: techIds["tech-governor"] },
-        { tech: techIds["tech-replicator"], opportunistic: true },
     ],
 
     // Spend some starting mats before engaging heat - Chrysotile production is slow before colonies
     [
         { building: buildings.TauOrbitalStation, amount: 2 },
         { project: projects.Monument, amount: 8 }, // Fixed amount of starting mats we can lose, dynamic is later
+        { tech: techIds["tech-replicator"], opportunistic: true },
     ],
     [
         { building: buildings.TauColony, amount: 2 },
         { building: buildings.TauOrbitalStation, amount: 3 },
+        { tech: techIds["tech-replicator"], opportunistic: true },
     ],
     [
         { building: buildings.TauColony, amount: 4 },
         { building: buildings.TauOrbitalStation, amount: 4 },
+        { tech: techIds["tech-replicator"], opportunistic: true },
     ],
     [
         { variable: "mimic", val: "heat" },
         { building: buildings.TauColony, amount: 5 },
         { building: buildings.TauOrbitalStation, amount: 5 },
+        { tech: techIds["tech-replicator"] }, // Needed for helium.
     ],
     [
         { building: buildings.TauColony, amount: 7 },
@@ -511,7 +514,7 @@ const runBase = [
         },
         { building: buildings.TauCasino, amount: 18 },
     ],
-    
+
     [
         { tech: techIds["tech-system_survey"] },
         // Optional but worth (probably?):
@@ -763,6 +766,9 @@ const ringworldCosts = {
     // Ideally we build the GoE almost instantly so we don't "waste" Orichalcum we could have gotten from patrols.
     // Real cost is 2.55M
     Graphene: vars.replicateEdenGraphene ? 2_500_000 : 0,
+    // GoE. Start making the Elerium towards the end only
+    // Handled using minElerium
+    //Elerium: ringworldPartsLeft < 50 ? 5090 : 0,
 };
 
 // Handle main job: Usually 'auto', sometimes 'science', sometimes 'mine'
@@ -829,7 +835,7 @@ settings["bld_m_tauceti-infectious_disease_lab"] = 1;
 
 // Handle replicator
 const minHe3 = 5_000;
-const minElerium = 500;
+const minElerium = ringworldPartsLeft < 50 ? 5000 : 500;
 let goodReplicatorResources = [
     resources.Helium_3,
     resources.Elerium,
