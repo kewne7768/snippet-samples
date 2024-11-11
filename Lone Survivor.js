@@ -5,6 +5,9 @@
 // It is nowhere near optimal, but it should function.
 // There are many, many TODOs in this version.
 
+// TODO: replicate Garden Graphene earlier, overriding Ringworld Ori/Neutronium demand system - those scale bad with replicator at 2000+ servants, Graphene is still mostly replicator
+// replicateEdenGraphene doesn't really work if replicator is focused by demand
+
 // As long as we're aiming for LS, adjust our settings.
 if (settings["prestigeType"] !== "eden") { return stopRunning(); }
 
@@ -25,7 +28,9 @@ if (!_("Challenge", "lone_survivor")) {
  * @property {number} factoryLimit Building/power limit for factory
  * @property {boolean} ringworldMode Pit mine remaining Adamantite for Ringworld
  * @property {Object|null} autoMonument Settings for monument spammer
+ * @property {boolean} replicateCement Allow replicating Cement if demanded. This is a workaround for mimic handling being broken
  * @property {boolean} replicateEdenGraphene Replicate Graphene for Garden of Eden
+ * @property {boolean} knowledgeFullMining If knowledge is full, go Pit Miner
  */
 
 /**
@@ -54,7 +59,9 @@ if (!('step' in snippetState)) {
         factoryLimit: -1,
         ringworldMode: false,
         autoMonument: null,
+        replicateCement: false,
         replicateEdenGraphene: false,
+        knowledgeFullMining: false,
     };
     snippetState.vars = structuredClone(defaultVars);
     snippetState.stepVars = {};
@@ -389,15 +396,27 @@ const runBase = [
         { building: buildings.TauColony, amount: 5 },
         { building: buildings.TauOrbitalStation, amount: 5 },
         { tech: techIds["tech-replicator"] }, // Needed for helium.
-    ],
-    [
-        { building: buildings.TauColony, amount: 7 },
-        { building: buildings.TauOrbitalStation, amount: 6 },
+
+        {
+            // First round of automatic monuments. We keep 12 casinos worth of cement (closer to 1.1m).
+            variable: "autoMonument", val: {
+                // 1 hightech farm + 2 womling mines, approx cost
+                keepSteel: 1_580_000 + 1_130_000 + 1_300_000,
+                keepCement: 1_500_000,
+                mineFor: [resources.Stone.id, resources.Aluminium.id],
+                allowAvian: false,
+            }, layer: "step"
+        },
+        // Some casinos too, to get max morale up slightly
         { building: buildings.TauCasino, amount: 7 },
     ],
     [
-        // Need replicator for more helium for more orbital stations, get some more power
-        { tech: techIds["tech-replicator"] },
+        // Enable Cement replication if we get short from here on out. We normally don't, but sometimes it happens for some reason.
+        { variable: "replicateCement", val: true },
+        { building: buildings.TauColony, amount: 7 },
+        { building: buildings.TauOrbitalStation, amount: 6 },
+    ],
+    [
         { building: buildings.TauFusionGenerator, amount: 2 },
     ],
     [
@@ -413,6 +432,7 @@ const runBase = [
 
     // Factories + monuments
     [
+        { variable: "replicateCement", val: false },
         {
             // Keep making monuments until we would fall below this amount of resources.
             // This does not block advancing steps.
@@ -689,7 +709,9 @@ if (vars.autoMonument && projects.Monument.count < 30) {
             break;
 
         case 'Cement':
-            tryBuy = true;
+            if (resources.Cement.currentQuantity > (nextMonumentResourceCost + (vars.autoMonument.keepCement??0))) {
+                tryBuy = true;
+            }
             if (resources.Cement.currentQuantity < nextMonumentResourceCost) {
                 birdie = true;
             }
@@ -765,7 +787,7 @@ const ringworldCosts = {
     // Actually for Garden of Eden, and this purposefully underestimates the amount needed very slightly.
     // Ideally we build the GoE almost instantly so we don't "waste" Orichalcum we could have gotten from patrols.
     // Real cost is 2.55M
-    Graphene: vars.replicateEdenGraphene ? 2_500_000 : 0,
+    Graphene: vars.replicateEdenGraphene ? 2_540_000 : 0,
     // GoE. Start making the Elerium towards the end only
     // Handled using minElerium
     //Elerium: ringworldPartsLeft < 50 ? 5090 : 0,
@@ -791,7 +813,7 @@ if (targetJob === "auto") {
             return pitMinerResources.includes(r) && r.currentQuantity < v;
         });
     });
-    let needPitRingworld = vars.ringworldMode && ringworldCosts.Adamantite > resources.Adamantite.currentQuantity;
+    let needPitRingworld = vars.ringworldMode && (ringworldCosts.Adamantite > resources.Adamantite.currentQuantity || ringworldCosts.Bolognium > resources.Bolognium.currentQuantity);
 
     let knowledgeFull = resources.Knowledge.storageRatio >= 1;
     let knowledgeMiner = vars.knowledgeFullMining && knowledgeFull;
@@ -835,7 +857,7 @@ settings["bld_m_tauceti-infectious_disease_lab"] = 1;
 
 // Handle replicator
 const minHe3 = 5_000;
-const minElerium = ringworldPartsLeft < 50 ? 5000 : 500;
+const minElerium = (ringworldPartsLeft < 50 && resources.Elerium.maxQuantity >= 5000) ? 5000 : 500;
 let goodReplicatorResources = [
     resources.Helium_3,
     resources.Elerium,
@@ -847,6 +869,8 @@ let goodReplicatorResources = [
     resources.Neutronium,
     resources.Graphene,
     resources.Brick, // shouldn't be needed too often
+    // Cement is normally not needed and should be cement workered even if it would be. But this is to avoid getting stuck before we have cement worker unlocked.
+    vars.replicateCement ? resources.Cement : null,
 ].filter(r => r !== null);
 const goodReplicatorResourceNames = goodReplicatorResources.map(r => r.id);
 let replicatorResource = null;
