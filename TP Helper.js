@@ -4,6 +4,7 @@ if (!_("Challenge", "truepath") || _("Challenge", "lone_survivor")) return stopR
 
 if (["bioseed", "mad"].includes(settings.prestigeType)) return;
 
+trigger.amount(buildings.Bank, 1);
 // Instant triggers:
 // 10 temples early on, but we may need a bank
 if (buildings.Temple.cost.Money < resources.Money.maxQuantity) {

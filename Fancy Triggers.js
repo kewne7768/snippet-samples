@@ -7,7 +7,7 @@ const isKnowledgeProdHardRun = (_("Challenge", "orbit_decay") && game.global.rac
 // A few triggers that don't apply in Cata/OD.
 if (!isKnowledgeProdHardRun) {
     // Keep belt supported before World Collider/Quantum.
-    if (buildings.BeltEleriumShip.stateOffCount && (!buildings.DwarfWorldController.count || !techIds["tech-quantum_manufacturing"].isResearched())) {
+    if (buildings.BeltEleriumShip.stateOffCount && !(buildings.DwarfWorldController.count || techIds["tech-quantum_manufacturing"].isResearched()) && resources.Elerium.storageRatio < 0.5) {
         trigger(buildings.BeltSpaceStation);
     }
 }
@@ -22,26 +22,16 @@ if (buildings.GorddonMission.isUnlocked()) {
     if (buildings.CorvetteShip.count < 1) trigger(buildings.CorvetteShip);
 }
 
+let supportRed = false;
 // Starting at the Andromeda scouting event: Keep Red Planet strongly supported, build fabrications, and cap cheap sources of knowledge cap/good knowledge cap using buildings.
 if (buildings.ScoutShip.count >= 1 || buildings.CorvetteShip.isUnlocked()) {
-    // 26 to 30 should do the trick.
-    if (buildings.RedFabrication.count < (_("Universe", "micro") ? 30 : 26)) {
-        trigger(buildings.RedFabrication);
-    }
+    if (!_("Challenge", "fasting")) {
+        // 26 to 30 should do the trick.
+        if (buildings.RedFabrication.count < (_("Universe", "micro") ? 30 : 26)) {
+            trigger(buildings.RedFabrication);
+        }
 
-    // If autoPower is off, this might be incorrect because the player is managing it. Trust them to do the right thing.
-    if (settings.autoPower && buildings.RedFabrication.stateOffCount) {
-        // Build "best" support. Arbitrarily chosen, this will keep around a ratio of 1.3 (26 spaceports / 20 control tower).
-        // YMMV on how correct that ratio is, will depend on HC, in/out of micro universe and junk gene.
-        // Of course, this whole snippet is a demonstration of what you _can_ do, not what you _should_ do...
-        // Also it's possible to divide by zero and get a NaN. Fun stuff.
-        let ratio = buildings.RedSpaceport.count / buildings.RedTower.count;
-        if (isNaN(ratio) || ratio > 1.3) {
-            trigger(buildings.RedTower);
-        }
-        else {
-            trigger(buildings.RedSpaceport);
-        }
+        supportRed = true;
     }
 
     // Cap cheap knowledge and control stations, except post-impact OD and Cata CTFL.
@@ -54,7 +44,7 @@ if (buildings.ScoutShip.count >= 1 || buildings.CorvetteShip.isUnlocked()) {
         }
         let triggered = 0;
         for (let building of knowledgeBuildings) {
-            if (building.isUnlocked() && (building.cost?.Knowledge??0) < resources.Knowledge.maxQuantity) {
+            if (building.isUnlocked() && (building.cost?.Knowledge ?? 0) < resources.Knowledge.maxQuantity) {
                 triggered++;
                 trigger(building);
             }
@@ -82,9 +72,31 @@ if (buildings.ScoutShip.count >= 1 || buildings.CorvetteShip.isUnlocked()) {
         // Need to use game API because building might not be available yet.
         let consulateFurCost = poly.adjustCosts(game.actions.galaxy.gxy_alien1.consulate).Furs() ?? 0;
         if (typeof consulateFurCost === "number" && isFinite(consulateFurCost) && !isNaN(consulateFurCost)) {
-            let embassyFurCost = buildings.GorddonEmbassy.count ? 0 : (buildings.GorddonEmbassy.cost?.Furs??0);
+            let embassyFurCost = buildings.GorddonEmbassy.count ? 0 : (buildings.GorddonEmbassy.cost?.Furs ?? 0);
 
             trigger.custom(resourceList({ Furs: consulateFurCost + embassyFurCost }));
+        }
+    }
+}
+
+// Truepath: Support red starting after our first Adamantite Mine.
+if (buildings.TitanMine.count) {
+    supportRed = true;
+}
+
+if (supportRed) {
+    // If autoPower is off, this might be incorrect because the player is managing it. Trust them to do the right thing.
+    if (settings.autoPower && buildings.RedFabrication.stateOffCount) {
+        // Build "best" support. Arbitrarily chosen, this will keep around a ratio of 1.3 (26 spaceports / 20 control tower).
+        // YMMV on how correct that ratio is, will depend on HC, in/out of micro universe and junk gene.
+        // Of course, this whole snippet is a demonstration of what you _can_ do, not what you _should_ do...
+        // Also it's possible to divide by zero and get a NaN. Fun stuff.
+        let ratio = buildings.RedSpaceport.count / buildings.RedTower.count;
+        if (isNaN(ratio) || ratio > 1.3) {
+            trigger(buildings.RedTower);
+        }
+        else {
+            trigger(buildings.RedSpaceport);
         }
     }
 }

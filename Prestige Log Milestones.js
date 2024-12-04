@@ -6,6 +6,51 @@
 // This will end up in snippetData.milestonesResult.str.
 // It needs to be in another object so our getter only gets called when needed, instead of every tick.
 // But we only have to make the Proxy one time.
+/**
+ * @type {(keyof typeof buildings|keyof typeof techIds)[]}
+ */
+const milestonesAvailNormal = [
+    "tech-merchandising",
+    "TouristCenter",
+    "RedSpaceport",
+    "tech-quantum_manufacturing",
+
+    // Falsepath split
+    "AlphaStarport",
+    //"BlackholeFarReach",
+    "BlackholeMassEjector",
+    "BlackholeStargateComplete",
+    "GorddonEmbassy",
+    "Alien2Foothold",
+    "ChthonianMission",
+    "RuinsArchaeology",
+    "LakeHarbor",
+    "SpireMechBay",
+    "AsphodelEncampment",
+    "ElysiumRushmore",
+    "IsleSpiritVacuum",
+
+    // Truepath split
+    "TitanSpaceport",
+    "TritonFOB",
+    "TitanAIComplete",
+    "ErisDrone",
+    "TauColony",
+    "TauRedOrbitalPlatform",
+    "tech-space-whaling",
+];
+/** @type {(keyof typeof buildings|keyof typeof techIds)[]} */
+const milestonesAvailLS = [
+    "tech-tau_cultivation",
+    "TauDiseaseLab",
+    "TauRedWomlingLab",
+    "TauCulturalCenter",
+    "tech-belt_mining",
+    "tech-adv_belt_mining",
+    "tech-alien_research",
+    "tech-advanced_asteroid_mining",
+];
+const milestonesAvail = _("Challenge", "lone_survivor") ? milestonesAvailLS : milestonesAvailNormal;
 const evalProxyData = once(() => {
     // Load state from ui var.
     if (!snippetState.milestones) {
@@ -31,35 +76,10 @@ const evalProxyData = once(() => {
             }
         },
         milestones: snippetState.milestones,
-        milestonesAvail: [
-            "tech-merchandising",
-            "TouristCenter",
-            "RedSpaceport",
-            "tech-quantum_manufacturing",
-
-            // Falsepath split
-            "AlphaStarport",
-            //"BlackholeFarReach",
-            "BlackholeMassEjector",
-            "BlackholeStargateComplete",
-            "GorddonEmbassy",
-            "Alien2Foothold",
-            "ChthonianMission",
-            "RuinsArchaeology",
-
-            // Truepath split
-            "TitanSpaceport",
-            "TritonFOB",
-            "TitanAIComplete",
-            "TauColony",
-            "TauRedOrbitalPlatform",
-            "tech-space-whaling",
-        ].filter(e => e !== null)
+        milestonesAvail: milestonesAvail
     }
 });
 const specialMilestones = ["Womlings"];
-/** @type {(keyof buildings|TechIdKey)[]} state.milestonesAvail */
-const milestonesAvail = evalProxyData.milestonesAvail;
 if (game.global.race.servants && !('Womlings' in snippetState.milestones)) {
     snippetState.milestones.Womlings = game.global.stats.days;
     ui.set("milestonePersist", { run: game.global.stats.reset, m: snippetState.milestones });

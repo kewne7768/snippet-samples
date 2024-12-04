@@ -50,7 +50,7 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
         let timeToFillBolog = Math.max(((res.Bolognium ?? 0) - resources.Bolognium.currentQuantity) / Math.max(0.01, resources.Bolognium.rateOfChange - (game.breakdown.p.consume?.Bolognium?.Replicator ?? 0) - (game.breakdown.p.consume?.Bolognium?.Alchemy ?? 0)), 0);
         if (resources.Orichalcum.currentQuantity >= res.Orichalcum) timeToFillOri = 0;
         if (resources.Bolognium.currentQuantity >= res.Bolognium) timeToFillBolog = 0;
-        console.info("Fill times: %o %o", timeToFillBolog, timeToFillOri);
+        //console.info("Fill times: Bolog %o / Ori %o", timeToFillBolog, timeToFillOri);
         if (timeToFillOri > timeToFillBolog && timeToFillOri > 0) {
             settings["replicator_p_Orichalcum"] = 60;
             settings["res_alchemy_w_Bolognium"] = 0;
@@ -102,7 +102,7 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
         trigger.amount(buildings.SiriusThermalCollector, thermalTargetFinal);
 
         // Fix up Infernite by disabling attractors and building new carports.
-        if (!resources.Soul_Gem.isDemanded()) {
+        if (!resources.Soul_Gem.isDemanded() && isPillarFinished()) {
             settings["bld_m_portal-attractor"] = 0;
             trigger.amount(buildings.PortalCarport, 30);
         }
@@ -145,9 +145,8 @@ if (settingsRaw["prestigeType"] === "ascension" && buildings.ChthonianExcavator.
         */
     }
 }
-else if (buildings.SiriusAscensionTrigger.count && settings.autoPrestige) {
-    // **THIS IS MOSTLY UNTESTED**
-    // It happened once and it worked. I also tested it by turning autoPrestige off and removing this check.
+else if (buildings.SiriusAscensionTrigger.count && settings.autoPrestige && settings.prestigeType === "ascension") {
+    // Workaround for the bug where it doesn't show up
     let now = game.global.stats.days;
 
     // Currently supposed to be off?
@@ -170,8 +169,8 @@ else if (buildings.SiriusAscensionTrigger.count && settings.autoPrestige) {
         }
 
         let diff = now - snippetState.ascensionPowered;
-        // Powered for at least 3 days and we're not done yet? Turn it off for 3-4 days.
-        if (diff >= 3) {
+        // Powered for at least 3 days and we're not done yet but we should be? Turn it off for 3-4 days.
+        if (diff >= 3 && isPillarFinished()) {
             snippetState.ascensionOffUntil = now + 3;
             settings["bld_m_interstellar-ascension_trigger"] = 0;
             delete snippetState.ascensionPowered;

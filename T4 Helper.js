@@ -1,8 +1,13 @@
 /**
-* @param {Action} buildingBase
-* @param {number} targetCount
-*/
+ * Multi-build to specific target count
+ * @param {Action} buildingBase
+ * @param {number} targetCount
+ */
 function rushBuild(buildingBase, targetCount) {
+    if (!buildingBase || !buildingBase.vue) {
+        console.error("rushBuild error.");
+        return;
+    }
     const building = buildingBase.definition;
     const maxCount = targetCount - buildingBase.count;
     if (maxCount <= 0) return 0;
@@ -88,6 +93,9 @@ if (snippetData?.hasTrait?.t4farm) {
 
     // Iridium mine stuff at high enough Iridium deposits.
     if (snippetData?.hasTrait?.moon_iridium) {
+        // Some mass drivers make things easier too, and they're cheap with deposits
+        trigger.amount(buildings.MassDriver, 6);
+        // No need for Iridium ships
         settings["batspace-iridium_ship"] = false;
         if (buildings.DwarfWorldController.count) {
             if (buildings.BlackholeStargateComplete.count) {
@@ -183,6 +191,8 @@ if (snippetData?.hasTrait?.t4farm) {
         trigger.amount(buildings.Barracks, 15);
     }
 
+    if (settings.prestigeType !== "ascension") return;
+
     if (buildings.BlackholeMassEjector.count && techIds["tech-calibrated_sensors"].isResearched()) {
         // Make sure we got enough Elerium going on.
         trigger.amount(buildings.NebulaNexus, 5);
@@ -233,10 +243,12 @@ if (snippetData?.hasTrait?.t4farm) {
         trigger.amount(buildings.FrigateShip, 3);
         trigger.amount(buildings.CruiserShip, 4);
         // If we're ready to attack, herbivore it up
-        if (buildings.FrigateShip.count >= 3 && buildings.CruiserShip.count >= 4) {
+        // autoBuild breaks on lumber yard
+        if (buildings.FrigateShip.count >= 3 && buildings.CruiserShip.count >= 4 && buildings.ChthonianMission.isUnlocked()) {
             if (game.global.race.shapeshifter) {
                 settings["shifterGenus"] = "ignore";
                 getVueById('sshifter')?.setShape("herbivore");
+                settings["autoBuild"] = false;
             }
             settings["fleetChthonianLoses"] = "high";
         }
@@ -245,12 +257,18 @@ if (snippetData?.hasTrait?.t4farm) {
         // Back to heat for the machine!
         settings["shifterGenus"] = "ignore";
         getVueById('sshifter')?.setShape("heat");
+        settings["autoBuild"] = false;
     }
 
     // Prep some more Orichalcum
     if (buildings.Alien2Mission.isComplete() && _("Universe", "magic")) {
         trigger.amount(projects.ManaSyphon, 24);
     }
+
+    // Trigger Ascension techs
+    trigger(techIds["tech-orichalcum_driver"]);
+    trigger(techIds["tech-incorporeal"]);
+    trigger(techIds["tech-tech_ascension"]);
 
     // Quantum Living Quarters
     function calcQuantum() {
