@@ -500,6 +500,7 @@ declare global {
 /** Proxima Dyson Sphere (Adamantite) */ ProximaDyson: Action;
 /** Proxima Dyson Sphere (Bolognium) */ ProximaDysonSphere: Action;
 /** Proxima Dyson Sphere (Orichalcum) */ ProximaOrichalcumSphere: Action;
+/** Proxima Dyson Sphere (Elysanite) */ ProximaElysaniteSphere: Action;
 /** Nebula Mission */ NebulaMission: Action;
 /** Nebula Nexus */ NebulaNexus: Action;
 /** Nebula Harvester */ NebulaHarvester: Action;
@@ -603,6 +604,53 @@ declare global {
 /** Spire Mech Bay */ SpireMechBay: Action;
 /** Spire Tower */ SpireTower: Action;
 /** Spire Waygate */ SpireWaygate: Action;
+/** Spire Edenic Gate */ SpireEdenicGate: Action;
+/** Asphodel Mission */ AsphodelMission: Action;
+/** Asphodel Encampment */ AsphodelEncampment: Action;
+/** Asphodel Soul Engine */ AsphodelSoulEngine: Action;
+/** Asphodel Mech Station */ AsphodelMechStation: Action;
+/** Asphodel Harvester */ AsphodelHarvester: Action;
+/** Asphodel Muon Processor */ AsphodelProcessor: Action;
+/** Asphodel Research Station */ AsphodelResearchStation: Action;
+/** Asphodel Warehouse */ AsphodelWarehouse: Action;
+/** Asphodel Stabilizer */ AsphodelStabilizer: Action;
+/** Asphodel Rune Gate */ AsphodelRuneGate: Action;
+/** Asphodel Rune Gate (Complete) */ AsphodelRuneGateOpen: Action;
+/** Asphodel Bunker */ AsphodelBunker: Action;
+/** Asphodel Bliss Den */ AsphodelBlissDen: Action;
+/** Asphodel Rectory */ AsphodelRectory: Action;
+/** Elysium Mission */ ElysiumMission: Action;
+/** Elysium Celestial Fortress */ ElysiumFortress: Action;
+/** Elysium Siege Fortress */ ElysiumSiege: Action;
+/** Elysium Raid Supplies */ ElysiumRaid: Action;
+/** Elysium Ambush Patrol */ ElysiumAmbush: Action;
+/** Elysium Ruined Fortress */ ElysiumRuinedFortress: Action;
+/** Elysium Scout */ ElysiumScout: Action;
+/** Elysium Fire Support Base */ ElysiumFireSupportBase: Action;
+/** Elysium Mine */ ElysiumMine: Action;
+/** Elysium Sacred Smelter */ ElysiumSacredSmelter: Action;
+/** Elysium Elerium Containment */ ElysiumEleriumContainment: Action;
+/** Elysium Pillbox */ ElysiumPillbox: Action;
+/** Elysium Restaurant */ ElysiumRestaurant: Action;
+/** Elysium Eternal Bank */ ElysiumEternalBank: Action;
+/** Elysium Archive */ ElysiumArchive: Action;
+/** Elysium North Pier */ ElysiumNorthPier: Action;
+/** Elysium Rushmore */ ElysiumRushmore: Action;
+/** Elysium Reincarnation */ ElysiumReincarnation: Action;
+/** Elysium Cement */ ElysiumCement: Action;
+/** Isle South Pier */ IsleSouthPier: Action;
+/** Isle West Tower */ IsleWestTower: Action;
+/** Isle Garrison */ IsleGarrison: Action;
+/** Isle East Tower */ IsleEastTower: Action;
+/** Isle Spirit Vacuum */ IsleSpiritVacuum: Action;
+/** Isle Spirit Battery */ IsleSpiritBattery: Action;
+/** Isle Soul Compactor */ IsleSoulCompactor: Action;
+/** Palace Mission */ PalaceMission: Action;
+/** Palace Throne */ PalaceThrone: Action;
+/** Palace Infuser */ PalaceInfuser: Action;
+/** Palace Apotheosis */ PalaceApotheosis: Action;
+/** Palace Conduit */ PalaceConduit: Action;
+/** Palace Tomb */ PalaceTomb: Action;
 
     };
     /** Resource objects. */
@@ -610,12 +658,13 @@ declare global {
         /** RNA */ RNA: Resource;
 /** DNA */ DNA: Resource;
 /** $ */ Money: Resource;
-/** Lonelybirb Mark 2 */ Population: Resource;
+/** Sixbirb */ Population: Resource;
 /** Sandwich */ Slave: Resource;
 /** Mana */ Mana: Resource;
 /** Energy */ Energy: Resource;
 /** Suspicion */ Sus: Resource;
 /** Knowledge */ Knowledge: Resource;
+/** Omniscience */ Omniscience: Resource;
 /** Zen Power */ Zen: Resource;
 /** Crate */ Crates: Resource;
 /** Container */ Containers: Resource;
@@ -650,6 +699,8 @@ declare global {
 /** Bolognium */ Bolognium: Resource;
 /** Vitreloy */ Vitreloy: Resource;
 /** Orichalcum */ Orichalcum: Resource;
+/** Asphodel Powder */ Asphodel_Powder: Resource;
+/** Elysanite */ Elysanite: Resource;
 /** Unobtainium */ Unobtainium: Resource;
 /** Materials */ Materials: Resource;
 /** Battery */ Horseshoe: Resource;
@@ -669,14 +720,17 @@ declare global {
 /** Codex */ Codex: Resource;
 /** Encrypted Data */ Cipher: Resource;
 /** Demonic Essence */ Demonic_Essence: Resource;
+/** Blessed Essence */ Blessed_Essence: Resource;
 /** Blood Stone */ Blood_Stone: Resource;
 /** Artifact */ Artifact: Resource;
 /** Plasmid */ Plasmid: Resource;
 /** Anti-Plasmid */ Antiplasmid: Resource;
+/** Supercoiled */ Supercoiled: Resource;
 /** Phage */ Phage: Resource;
 /** Dark */ Dark: Resource;
 /** Harmony */ Harmony: Resource;
 /** AI Core */ AICore: Resource;
+/** Troops */ Troops: Resource;
 /** Supplies */ Supply: Resource;
 /** Power */ Power: Power;
 /** Morale */ Morale: Resource;
@@ -699,6 +753,7 @@ declare global {
 /** Alien Support */ Alien_Support: Support;
 /** Lake Support */ Lake_Support: Support;
 /** Spire Support */ Spire_Support: Support;
+/** Asphodel Support */ Asphodel_Support: Support;
 
     };
     /** ARPA project objects. */
@@ -709,19 +764,19 @@ declare global {
 /** Sculpture */ Monument: Project;
 /** Railway */ Railway: Project;
 /** Nexus */ Nexus: Project;
-/** Asteroid Redirect */ RoidEject: Project;
+/** Stellar Remnant Redirect */ RoidEject: Project;
 /** Mana Syphon */ ManaSyphon: Project;
 /** Depot */ Depot: Project;
 
     };
     /** Access buildings by game ID. */
-    type BuildingIdKey = 'city-food'|'city-lumber'|'city-stone'|'city-chrysotile'|'city-slaughter'|'city-horseshoe'|'city-slave_market'|'city-s_alter'|'city-basic_housing'|'city-cottage'|'city-apartment'|'city-lodge'|'city-smokehouse'|'city-soul_well'|'city-slave_pen'|'city-transmitter'|'city-captive_housing'|'city-farm'|'city-compost'|'city-mill'|'city-windmill'|'city-silo'|'city-assembly'|'city-garrison'|'city-hospital'|'city-boot_camp'|'city-shed'|'city-storage_yard'|'city-warehouse'|'city-bank'|'city-pylon'|'city-conceal_ward'|'city-graveyard'|'city-lumber_yard'|'city-sawmill'|'city-rock_quarry'|'city-cement_plant'|'city-foundry'|'city-factory'|'city-nanite_factory'|'city-smelter'|'city-metal_refinery'|'city-mine'|'city-coal_mine'|'city-oil_well'|'city-oil_depot'|'city-trade'|'city-wharf'|'city-tourist_center'|'city-amphitheatre'|'city-casino'|'city-temple'|'city-shrine'|'city-meditation'|'city-banquet'|'city-university'|'city-library'|'city-wardenclyffe'|'city-biolab'|'city-coal_power'|'city-oil_power'|'city-fission_power'|'city-mass_driver'|'space-test_launch'|'space-satellite'|'space-gps'|'space-propellant_depot'|'space-nav_beacon'|'space-moon_mission'|'space-moon_base'|'space-iridium_mine'|'space-helium_mine'|'space-observatory'|'space-red_mission'|'space-spaceport'|'space-red_tower'|'space-captive_housing'|'space-terraformer'|'space-atmo_terraformer'|'space-terraform'|'space-assembly'|'space-living_quarters'|'space-pylon'|'space-vr_center'|'space-garage'|'space-red_mine'|'space-fabrication'|'space-red_factory'|'space-nanite_factory'|'space-biodome'|'space-red_university'|'space-exotic_lab'|'space-ziggurat'|'space-space_barracks'|'space-horseshoe'|'space-hell_mission'|'space-geothermal'|'space-hell_smelter'|'space-spc_casino'|'space-swarm_plant'|'space-sun_mission'|'space-swarm_control'|'space-swarm_satellite'|'space-jump_gate'|'space-gas_mission'|'space-gas_mining'|'space-gas_storage'|'space-star_dock'|'starDock-probes'|'starDock-geck'|'starDock-seeder'|'starDock-prep_ship'|'starDock-launch_ship'|'space-gas_moon_mission'|'space-outpost'|'space-drone'|'space-oil_extractor'|'space-belt_mission'|'space-space_station'|'space-elerium_ship'|'space-iridium_ship'|'space-iron_ship'|'space-dwarf_mission'|'space-elerium_contain'|'space-e_reactor'|'space-world_collider'|'space-world_controller'|'space-shipyard'|'space-mass_relay'|'space-m_relay'|'space-titan_mission'|'space-titan_spaceport'|'space-electrolysis'|'space-hydrogen_plant'|'space-titan_quarters'|'space-titan_mine'|'space-storehouse'|'space-titan_bank'|'space-g_factory'|'space-sam'|'space-decoder'|'space-ai_core'|'space-ai_core2'|'space-ai_colonist'|'space-enceladus_mission'|'space-water_freighter'|'space-zero_g_lab'|'space-operating_base'|'space-munitions_depot'|'space-triton_mission'|'space-fob'|'space-lander'|'space-crashed_ship'|'space-kuiper_mission'|'space-orichalcum_mine'|'space-uranium_mine'|'space-neutronium_mine'|'space-elerium_mine'|'space-eris_mission'|'space-drone_control'|'space-shock_trooper'|'space-tank'|'space-digsite'|'tauceti-ringworld'|'tauceti-matrix'|'tauceti-blue_pill'|'tauceti-goe_facility'|'tauceti-home_mission'|'tauceti-dismantle'|'tauceti-orbital_station'|'tauceti-colony'|'tauceti-tau_housing'|'tauceti-captive_housing'|'tauceti-pylon'|'tauceti-cloning_facility'|'tauceti-horseshoe'|'tauceti-assembly'|'tauceti-nanite_factory'|'tauceti-tau_farm'|'tauceti-mining_pit'|'tauceti-excavate'|'tauceti-alien_outpost'|'tauceti-jump_gate'|'tauceti-fusion_generator'|'tauceti-repository'|'tauceti-tau_factory'|'tauceti-infectious_disease_lab'|'tauceti-tauceti_casino'|'tauceti-tau_cultural_center'|'tauceti-red_mission'|'tauceti-orbital_platform'|'tauceti-contact'|'tauceti-introduce'|'tauceti-subjugate'|'tauceti-jeff'|'tauceti-overseer'|'tauceti-womling_village'|'tauceti-womling_farm'|'tauceti-womling_mine'|'tauceti-womling_fun'|'tauceti-womling_lab'|'tauceti-gas_contest'|'tauceti-gas_contest-a1'|'tauceti-gas_contest-a2'|'tauceti-gas_contest-a3'|'tauceti-gas_contest-a4'|'tauceti-gas_contest-a5'|'tauceti-gas_contest-a6'|'tauceti-gas_contest-a7'|'tauceti-gas_contest-a8'|'tauceti-refueling_station'|'tauceti-ore_refinery'|'tauceti-whaling_station'|'tauceti-womling_station'|'tauceti-roid_mission'|'tauceti-patrol_ship'|'tauceti-mining_ship'|'tauceti-whaling_ship'|'tauceti-gas_contest2'|'tauceti-gas_contest-b1'|'tauceti-gas_contest-b2'|'tauceti-gas_contest-b3'|'tauceti-gas_contest-b4'|'tauceti-gas_contest-b5'|'tauceti-gas_contest-b6'|'tauceti-gas_contest-b7'|'tauceti-gas_contest-b8'|'tauceti-alien_station_survey'|'tauceti-alien_station'|'tauceti-alien_space_station'|'tauceti-matrioshka_brain'|'tauceti-ignition_device'|'tauceti-ignite_gas_giant'|'interstellar-alpha_mission'|'interstellar-starport'|'interstellar-habitat'|'interstellar-mining_droid'|'interstellar-processing'|'interstellar-fusion'|'interstellar-laboratory'|'interstellar-exchange'|'interstellar-g_factory'|'interstellar-warehouse'|'interstellar-int_factory'|'interstellar-luxury_condo'|'interstellar-zoo'|'interstellar-proxima_mission'|'interstellar-xfer_station'|'interstellar-cargo_yard'|'interstellar-cruiser'|'interstellar-dyson'|'interstellar-dyson_sphere'|'interstellar-orichalcum_sphere'|'interstellar-nebula_mission'|'interstellar-nexus'|'interstellar-harvester'|'interstellar-elerium_prospector'|'interstellar-neutron_mission'|'interstellar-neutron_miner'|'interstellar-citadel'|'interstellar-stellar_forge'|'interstellar-blackhole_mission'|'interstellar-far_reach'|'interstellar-stellar_engine'|'interstellar-mass_ejector'|'interstellar-jump_ship'|'interstellar-wormhole_mission'|'interstellar-stargate'|'interstellar-s_gate'|'interstellar-sirius_mission'|'interstellar-sirius_b'|'interstellar-space_elevator'|'interstellar-gravity_dome'|'interstellar-ascension_machine'|'interstellar-ascension_trigger'|'interstellar-ascend'|'interstellar-thermal_collector'|'galaxy-gateway_mission'|'galaxy-starbase'|'galaxy-ship_dock'|'galaxy-bolognium_ship'|'galaxy-scout_ship'|'galaxy-corvette_ship'|'galaxy-frigate_ship'|'galaxy-cruiser_ship'|'galaxy-dreadnought'|'galaxy-gateway_station'|'galaxy-telemetry_beacon'|'galaxy-gateway_depot'|'galaxy-defense_platform'|'galaxy-gorddon_mission'|'galaxy-embassy'|'galaxy-dormitory'|'galaxy-symposium'|'galaxy-freighter'|'galaxy-consulate'|'galaxy-resort'|'galaxy-vitreloy_plant'|'galaxy-super_freighter'|'galaxy-alien2_mission'|'galaxy-foothold'|'galaxy-armed_miner'|'galaxy-ore_processor'|'galaxy-scavenger'|'galaxy-chthonian_mission'|'galaxy-minelayer'|'galaxy-excavator'|'galaxy-raider'|'portal-turret'|'portal-carport'|'portal-war_droid'|'portal-repair_droid'|'portal-war_drone'|'portal-sensor_drone'|'portal-attractor'|'portal-pit_mission'|'portal-assault_forge'|'portal-soul_forge'|'portal-gun_emplacement'|'portal-soul_attractor'|'portal-soul_capacitor'|'portal-absorption_chamber'|'portal-ruins_mission'|'portal-guard_post'|'portal-vault'|'portal-archaeology'|'portal-arcology'|'portal-hell_forge'|'portal-inferno_power'|'portal-ancient_pillars'|'portal-gate_mission'|'portal-east_tower'|'portal-west_tower'|'portal-gate_turret'|'portal-infernite_mine'|'portal-lake_mission'|'portal-harbor'|'portal-cooling_tower'|'portal-bireme'|'portal-transport'|'portal-oven'|'portal-oven_complete'|'portal-dish_soul_steeper'|'portal-dish_life_infuser'|'portal-devilish_dish'|'portal-spire_mission'|'portal-purifier'|'portal-port'|'portal-base_camp'|'portal-bridge'|'portal-sphinx'|'portal-bribe_sphinx'|'portal-spire_survey'|'portal-mechbay'|'portal-spire'|'portal-waygate';
+    type BuildingIdKey = 'city-food'|'city-lumber'|'city-stone'|'city-chrysotile'|'city-slaughter'|'city-horseshoe'|'city-slave_market'|'city-s_alter'|'city-basic_housing'|'city-cottage'|'city-apartment'|'city-lodge'|'city-smokehouse'|'city-soul_well'|'city-slave_pen'|'city-transmitter'|'city-captive_housing'|'city-farm'|'city-compost'|'city-mill'|'city-windmill'|'city-silo'|'city-assembly'|'city-garrison'|'city-hospital'|'city-boot_camp'|'city-shed'|'city-storage_yard'|'city-warehouse'|'city-bank'|'city-pylon'|'city-conceal_ward'|'city-graveyard'|'city-lumber_yard'|'city-sawmill'|'city-rock_quarry'|'city-cement_plant'|'city-foundry'|'city-factory'|'city-nanite_factory'|'city-smelter'|'city-metal_refinery'|'city-mine'|'city-coal_mine'|'city-oil_well'|'city-oil_depot'|'city-trade'|'city-wharf'|'city-tourist_center'|'city-amphitheatre'|'city-casino'|'city-temple'|'city-shrine'|'city-meditation'|'city-banquet'|'city-university'|'city-library'|'city-wardenclyffe'|'city-biolab'|'city-coal_power'|'city-oil_power'|'city-fission_power'|'city-mass_driver'|'space-test_launch'|'space-satellite'|'space-gps'|'space-propellant_depot'|'space-nav_beacon'|'space-moon_mission'|'space-moon_base'|'space-iridium_mine'|'space-helium_mine'|'space-observatory'|'space-red_mission'|'space-spaceport'|'space-red_tower'|'space-captive_housing'|'space-terraformer'|'space-atmo_terraformer'|'space-terraform'|'space-assembly'|'space-living_quarters'|'space-pylon'|'space-vr_center'|'space-garage'|'space-red_mine'|'space-fabrication'|'space-red_factory'|'space-nanite_factory'|'space-biodome'|'space-red_university'|'space-exotic_lab'|'space-ziggurat'|'space-space_barracks'|'space-horseshoe'|'space-hell_mission'|'space-geothermal'|'space-hell_smelter'|'space-spc_casino'|'space-swarm_plant'|'space-sun_mission'|'space-swarm_control'|'space-swarm_satellite'|'space-jump_gate'|'space-gas_mission'|'space-gas_mining'|'space-gas_storage'|'space-star_dock'|'starDock-probes'|'starDock-geck'|'starDock-seeder'|'starDock-prep_ship'|'starDock-launch_ship'|'space-gas_moon_mission'|'space-outpost'|'space-drone'|'space-oil_extractor'|'space-belt_mission'|'space-space_station'|'space-elerium_ship'|'space-iridium_ship'|'space-iron_ship'|'space-dwarf_mission'|'space-elerium_contain'|'space-e_reactor'|'space-world_collider'|'space-world_controller'|'space-shipyard'|'space-mass_relay'|'space-m_relay'|'space-titan_mission'|'space-titan_spaceport'|'space-electrolysis'|'space-hydrogen_plant'|'space-titan_quarters'|'space-titan_mine'|'space-storehouse'|'space-titan_bank'|'space-g_factory'|'space-sam'|'space-decoder'|'space-ai_core'|'space-ai_core2'|'space-ai_colonist'|'space-enceladus_mission'|'space-water_freighter'|'space-zero_g_lab'|'space-operating_base'|'space-munitions_depot'|'space-triton_mission'|'space-fob'|'space-lander'|'space-crashed_ship'|'space-kuiper_mission'|'space-orichalcum_mine'|'space-uranium_mine'|'space-neutronium_mine'|'space-elerium_mine'|'space-eris_mission'|'space-drone_control'|'space-shock_trooper'|'space-tank'|'space-digsite'|'tauceti-ringworld'|'tauceti-matrix'|'tauceti-blue_pill'|'tauceti-goe_facility'|'tauceti-home_mission'|'tauceti-dismantle'|'tauceti-orbital_station'|'tauceti-colony'|'tauceti-tau_housing'|'tauceti-captive_housing'|'tauceti-pylon'|'tauceti-cloning_facility'|'tauceti-horseshoe'|'tauceti-assembly'|'tauceti-nanite_factory'|'tauceti-tau_farm'|'tauceti-mining_pit'|'tauceti-excavate'|'tauceti-alien_outpost'|'tauceti-jump_gate'|'tauceti-fusion_generator'|'tauceti-repository'|'tauceti-tau_factory'|'tauceti-infectious_disease_lab'|'tauceti-tauceti_casino'|'tauceti-tau_cultural_center'|'tauceti-red_mission'|'tauceti-orbital_platform'|'tauceti-contact'|'tauceti-introduce'|'tauceti-subjugate'|'tauceti-jeff'|'tauceti-overseer'|'tauceti-womling_village'|'tauceti-womling_farm'|'tauceti-womling_mine'|'tauceti-womling_fun'|'tauceti-womling_lab'|'tauceti-gas_contest'|'tauceti-gas_contest-a1'|'tauceti-gas_contest-a2'|'tauceti-gas_contest-a3'|'tauceti-gas_contest-a4'|'tauceti-gas_contest-a5'|'tauceti-gas_contest-a6'|'tauceti-gas_contest-a7'|'tauceti-gas_contest-a8'|'tauceti-refueling_station'|'tauceti-ore_refinery'|'tauceti-whaling_station'|'tauceti-womling_station'|'tauceti-roid_mission'|'tauceti-patrol_ship'|'tauceti-mining_ship'|'tauceti-whaling_ship'|'tauceti-gas_contest2'|'tauceti-gas_contest-b1'|'tauceti-gas_contest-b2'|'tauceti-gas_contest-b3'|'tauceti-gas_contest-b4'|'tauceti-gas_contest-b5'|'tauceti-gas_contest-b6'|'tauceti-gas_contest-b7'|'tauceti-gas_contest-b8'|'tauceti-alien_station_survey'|'tauceti-alien_station'|'tauceti-alien_space_station'|'tauceti-matrioshka_brain'|'tauceti-ignition_device'|'tauceti-ignite_gas_giant'|'interstellar-alpha_mission'|'interstellar-starport'|'interstellar-habitat'|'interstellar-mining_droid'|'interstellar-processing'|'interstellar-fusion'|'interstellar-laboratory'|'interstellar-exchange'|'interstellar-g_factory'|'interstellar-warehouse'|'interstellar-int_factory'|'interstellar-luxury_condo'|'interstellar-zoo'|'interstellar-proxima_mission'|'interstellar-xfer_station'|'interstellar-cargo_yard'|'interstellar-cruiser'|'interstellar-dyson'|'interstellar-dyson_sphere'|'interstellar-orichalcum_sphere'|'interstellar-elysanite_sphere'|'interstellar-nebula_mission'|'interstellar-nexus'|'interstellar-harvester'|'interstellar-elerium_prospector'|'interstellar-neutron_mission'|'interstellar-neutron_miner'|'interstellar-citadel'|'interstellar-stellar_forge'|'interstellar-blackhole_mission'|'interstellar-far_reach'|'interstellar-stellar_engine'|'interstellar-mass_ejector'|'interstellar-jump_ship'|'interstellar-wormhole_mission'|'interstellar-stargate'|'interstellar-s_gate'|'interstellar-sirius_mission'|'interstellar-sirius_b'|'interstellar-space_elevator'|'interstellar-gravity_dome'|'interstellar-ascension_machine'|'interstellar-ascension_trigger'|'interstellar-ascend'|'interstellar-thermal_collector'|'galaxy-gateway_mission'|'galaxy-starbase'|'galaxy-ship_dock'|'galaxy-bolognium_ship'|'galaxy-scout_ship'|'galaxy-corvette_ship'|'galaxy-frigate_ship'|'galaxy-cruiser_ship'|'galaxy-dreadnought'|'galaxy-gateway_station'|'galaxy-telemetry_beacon'|'galaxy-gateway_depot'|'galaxy-defense_platform'|'galaxy-gorddon_mission'|'galaxy-embassy'|'galaxy-dormitory'|'galaxy-symposium'|'galaxy-freighter'|'galaxy-consulate'|'galaxy-resort'|'galaxy-vitreloy_plant'|'galaxy-super_freighter'|'galaxy-alien2_mission'|'galaxy-foothold'|'galaxy-armed_miner'|'galaxy-ore_processor'|'galaxy-scavenger'|'galaxy-chthonian_mission'|'galaxy-minelayer'|'galaxy-excavator'|'galaxy-raider'|'portal-turret'|'portal-carport'|'portal-war_droid'|'portal-repair_droid'|'portal-war_drone'|'portal-sensor_drone'|'portal-attractor'|'portal-pit_mission'|'portal-assault_forge'|'portal-soul_forge'|'portal-gun_emplacement'|'portal-soul_attractor'|'portal-soul_capacitor'|'portal-absorption_chamber'|'portal-ruins_mission'|'portal-guard_post'|'portal-vault'|'portal-archaeology'|'portal-arcology'|'portal-hell_forge'|'portal-inferno_power'|'portal-ancient_pillars'|'portal-gate_mission'|'portal-east_tower'|'portal-west_tower'|'portal-gate_turret'|'portal-infernite_mine'|'portal-lake_mission'|'portal-harbor'|'portal-cooling_tower'|'portal-bireme'|'portal-transport'|'portal-oven'|'portal-oven_complete'|'portal-dish_soul_steeper'|'portal-dish_life_infuser'|'portal-devilish_dish'|'portal-spire_mission'|'portal-purifier'|'portal-port'|'portal-base_camp'|'portal-bridge'|'portal-sphinx'|'portal-bribe_sphinx'|'portal-spire_survey'|'portal-mechbay'|'portal-spire'|'portal-waygate'|'portal-edenic_gate'|'eden-survery_meadows'|'eden-encampment'|'eden-soul_engine'|'eden-mech_station'|'eden-asphodel_harvester'|'eden-ectoplasm_processor'|'eden-research_station'|'eden-warehouse'|'eden-stabilizer'|'eden-rune_gate'|'eden-rune_gate_open'|'eden-bunker'|'eden-bliss_den'|'eden-rectory'|'eden-survey_fields'|'eden-fortress'|'eden-siege_fortress'|'eden-raid_supplies'|'eden-ambush_patrol'|'eden-ruined_fortress'|'eden-scout_elysium'|'eden-fire_support_base'|'eden-elysanite_mine'|'eden-sacred_smelter'|'eden-elerium_containment'|'eden-pillbox'|'eden-restaurant'|'eden-eternal_bank'|'eden-archive'|'eden-north_pier'|'eden-rushmore'|'eden-reincarnation'|'eden-eden_cement'|'eden-south_pier'|'eden-west_tower'|'eden-isle_garrison'|'eden-east_tower'|'eden-spirit_vacuum'|'eden-spirit_battery'|'eden-soul_compactor'|'eden-scout_palace'|'eden-throne'|'eden-infuser'|'eden-apotheosis'|'eden-conduit'|'eden-tomb';
     const buildingIds: { [key in BuildingIdKey]: Action; }
     /** Access ARPA projects by game ID. */
     type ArpaIdKey = 'arpalaunch_facility'|'arpalhc'|'arpastock_exchange'|'arpamonument'|'arparailway'|'arpanexus'|'arparoid_eject'|'arpasyphon'|'arpatp_depot';
     const arpaIds: { [key in ArpaIdKey]: Project; }
     /** Access research by game ID. */
-    type TechIdKey = 'tech-club'|'tech-bone_tools'|'tech-wooden_tools'|'tech-sundial'|'tech-wheel'|'tech-wagon'|'tech-steam_engine'|'tech-combustion_engine'|'tech-hover_cart'|'tech-osha'|'tech-blackmarket'|'tech-pipelines'|'tech-housing'|'tech-cottage'|'tech-apartment'|'tech-arcology'|'tech-steel_beams'|'tech-mythril_beams'|'tech-neutronium_walls'|'tech-bolognium_alloy_beams'|'tech-aphrodisiac'|'tech-fertility_clinic'|'tech-captive_housing'|'tech-torture'|'tech-thrall_quarters'|'tech-psychic_energy'|'tech-psychic_attack'|'tech-psychic_finance'|'tech-psychic_channeling'|'tech-psychic_efficiency'|'tech-mind_break'|'tech-psychic_stun'|'tech-spear'|'tech-bronze_spear'|'tech-iron_spear'|'tech-dowsing_rod'|'tech-metal_detector'|'tech-smokehouse'|'tech-lodge'|'tech-alt_lodge'|'tech-soul_well'|'tech-compost'|'tech-hot_compost'|'tech-mulching'|'tech-adv_mulching'|'tech-agriculture'|'tech-farm_house'|'tech-irrigation'|'tech-silo'|'tech-mill'|'tech-windmill'|'tech-windturbine'|'tech-wind_plant'|'tech-gmfood'|'tech-foundry'|'tech-artisans'|'tech-apprentices'|'tech-carpentry'|'tech-demonic_craftsman'|'tech-master_craftsman'|'tech-banquet'|'tech-brickworks'|'tech-machinery'|'tech-cnc_machine'|'tech-vocational_training'|'tech-stellar_forge'|'tech-stellar_smelting'|'tech-assembly_line'|'tech-automation'|'tech-laser_cutters'|'tech-high_tech_factories'|'tech-theatre'|'tech-playwright'|'tech-magic'|'tech-superstars'|'tech-radio'|'tech-tv'|'tech-vr_center'|'tech-zoo'|'tech-casino'|'tech-dazzle'|'tech-casino_vault'|'tech-otb'|'tech-online_gambling'|'tech-bolognium_vaults'|'tech-mining'|'tech-bayer_process'|'tech-elysis_process'|'tech-smelting'|'tech-steel'|'tech-blast_furnace'|'tech-bessemer_process'|'tech-oxygen_converter'|'tech-electric_arc_furnace'|'tech-hellfire_furnace'|'tech-infernium_fuel'|'tech-iridium_smelting_perk'|'tech-rotary_kiln'|'tech-metal_working'|'tech-iron_mining'|'tech-coal_mining'|'tech-storage'|'tech-reinforced_shed'|'tech-barns'|'tech-warehouse'|'tech-cameras'|'tech-pocket_dimensions'|'tech-ai_logistics'|'tech-containerization'|'tech-reinforced_crates'|'tech-cranes'|'tech-titanium_crates'|'tech-mythril_crates'|'tech-infernite_crates'|'tech-graphene_crates'|'tech-bolognium_crates'|'tech-steel_containers'|'tech-gantry_crane'|'tech-alloy_containers'|'tech-mythril_containers'|'tech-adamantite_containers'|'tech-aerogel_containers'|'tech-bolognium_containers'|'tech-nanoweave_containers'|'tech-evil_planning'|'tech-urban_planning'|'tech-zoning_permits'|'tech-urbanization'|'tech-assistant'|'tech-government'|'tech-theocracy'|'tech-republic'|'tech-socialist'|'tech-corpocracy'|'tech-technocracy'|'tech-federation'|'tech-magocracy'|'tech-governor'|'tech-spy'|'tech-espionage'|'tech-spy_training'|'tech-spy_gadgets'|'tech-code_breakers'|'tech-currency'|'tech-market'|'tech-tax_rates'|'tech-large_trades'|'tech-corruption'|'tech-massive_trades'|'tech-trade'|'tech-diplomacy'|'tech-freight'|'tech-wharf'|'tech-banking'|'tech-investing'|'tech-vault'|'tech-bonds'|'tech-steel_vault'|'tech-eebonds'|'tech-swiss_banking'|'tech-safety_deposit'|'tech-stock_market'|'tech-hedge_funds'|'tech-four_oh_one'|'tech-exchange'|'tech-foreign_investment'|'tech-mythril_vault'|'tech-neutronium_vault'|'tech-adamantite_vault'|'tech-graphene_vault'|'tech-home_safe'|'tech-fire_proof_safe'|'tech-tamper_proof_safe'|'tech-monument'|'tech-tourism'|'tech-xeno_tourism'|'tech-science'|'tech-library'|'tech-thesis'|'tech-research_grant'|'tech-scientific_journal'|'tech-adjunct_professor'|'tech-tesla_coil'|'tech-internet'|'tech-observatory'|'tech-world_collider'|'tech-laboratory'|'tech-virtual_assistant'|'tech-dimensional_readings'|'tech-quantum_entanglement'|'tech-expedition'|'tech-subspace_sensors'|'tech-alien_database'|'tech-orichalcum_capacitor'|'tech-advanced_biotech'|'tech-codex_infinium'|'tech-devilish_dish'|'tech-hell_oven'|'tech-preparation_methods'|'tech-final_ingredient'|'tech-bioscience'|'tech-genetics'|'tech-crispr'|'tech-shotgun_sequencing'|'tech-de_novo_sequencing'|'tech-dna_sequencer'|'tech-rapid_sequencing'|'tech-mad_science'|'tech-electricity'|'tech-matter_replicator'|'tech-industrialization'|'tech-electronics'|'tech-fission'|'tech-arpa'|'tech-rocketry'|'tech-robotics'|'tech-lasers'|'tech-artifical_intelligence'|'tech-quantum_computing'|'tech-virtual_reality'|'tech-plasma'|'tech-shields'|'tech-ai_core'|'tech-metaphysics'|'tech-orichalcum_analysis'|'tech-cybernetics'|'tech-blood_pact'|'tech-purify'|'tech-waygate'|'tech-demonic_infusion'|'tech-gate_key'|'tech-gate_turret'|'tech-infernite_mine'|'tech-study_corrupt_gem'|'tech-soul_binding'|'tech-soul_capacitor'|'tech-absorption_chamber'|'tech-corrupt_gem_analysis'|'tech-hell_search'|'tech-codex_infernium'|'tech-lake_analysis'|'tech-lake_threat'|'tech-lake_transport'|'tech-cooling_tower'|'tech-miasma'|'tech-incorporeal'|'tech-tech_ascension'|'tech-terraforming'|'tech-cement_processing'|'tech-adamantite_processing_flier'|'tech-adamantite_processing'|'tech-graphene_processing'|'tech-fusion_power'|'tech-infernium_power'|'tech-thermomechanics'|'tech-quantum_manufacturing'|'tech-worker_drone'|'tech-uranium'|'tech-uranium_storage'|'tech-uranium_ash'|'tech-breeder_reactor'|'tech-mine_conveyor'|'tech-oil_well'|'tech-oil_depot'|'tech-oil_power'|'tech-titanium_drills'|'tech-alloy_drills'|'tech-fracking'|'tech-mythril_drills'|'tech-mass_driver'|'tech-orichalcum_driver'|'tech-polymer'|'tech-fluidized_bed_reactor'|'tech-synthetic_fur'|'tech-nanoweave'|'tech-stanene'|'tech-nano_tubes'|'tech-scarletite'|'tech-pillars'|'tech-reclaimer'|'tech-shovel'|'tech-iron_shovel'|'tech-steel_shovel'|'tech-titanium_shovel'|'tech-alloy_shovel'|'tech-mythril_shovel'|'tech-adamantite_shovel'|'tech-stone_axe'|'tech-copper_axes'|'tech-iron_saw'|'tech-steel_saw'|'tech-iron_axes'|'tech-steel_axes'|'tech-titanium_axes'|'tech-chainsaws'|'tech-copper_sledgehammer'|'tech-iron_sledgehammer'|'tech-steel_sledgehammer'|'tech-titanium_sledgehammer'|'tech-copper_pickaxe'|'tech-iron_pickaxe'|'tech-steel_pickaxe'|'tech-jackhammer'|'tech-jackhammer_mk2'|'tech-adamantite_hammer'|'tech-copper_hoe'|'tech-iron_hoe'|'tech-steel_hoe'|'tech-titanium_hoe'|'tech-adamantite_hoe'|'tech-cyber_limbs'|'tech-slave_pens'|'tech-slave_market'|'tech-ceremonial_dagger'|'tech-last_rites'|'tech-ancient_infusion'|'tech-garrison'|'tech-mercs'|'tech-signing_bonus'|'tech-hospital'|'tech-bac_tanks'|'tech-boot_camp'|'tech-vr_training'|'tech-bows'|'tech-flintlock_rifle'|'tech-machine_gun'|'tech-bunk_beds'|'tech-rail_guns'|'tech-laser_rifles'|'tech-plasma_rifles'|'tech-disruptor_rifles'|'tech-gauss_rifles'|'tech-cyborg_soldiers'|'tech-space_marines'|'tech-hammocks'|'tech-cruiser'|'tech-armor'|'tech-plate_armor'|'tech-kevlar'|'tech-nanoweave_vest'|'tech-laser_turret'|'tech-plasma_turret'|'tech-black_powder'|'tech-dynamite'|'tech-anfo'|'tech-mad'|'tech-cement'|'tech-rebar'|'tech-steel_rebar'|'tech-portland_cement'|'tech-screw_conveyor'|'tech-adamantite_screws'|'tech-hunter_process'|'tech-kroll_process'|'tech-cambridge_process'|'tech-pynn_partical'|'tech-matter_compression'|'tech-higgs_boson'|'tech-dimensional_compression'|'tech-theology'|'tech-fanaticism'|'tech-alt_fanaticism'|'tech-ancient_theology'|'tech-study'|'tech-encoding'|'tech-deify'|'tech-infusion'|'tech-indoctrination'|'tech-missionary'|'tech-zealotry'|'tech-anthropology'|'tech-alt_anthropology'|'tech-mythology'|'tech-archaeology'|'tech-merchandising'|'tech-astrophysics'|'tech-rover'|'tech-probes'|'tech-starcharts'|'tech-colonization'|'tech-red_tower'|'tech-space_manufacturing'|'tech-exotic_lab'|'tech-hydroponics'|'tech-dyson_sphere'|'tech-dyson_swarm'|'tech-swarm_plant'|'tech-space_sourced'|'tech-swarm_plant_ai'|'tech-swarm_control_ai'|'tech-quantum_swarm'|'tech-perovskite_cell'|'tech-swarm_convection'|'tech-orichalcum_panels'|'tech-dyson_net'|'tech-dyson_sphere2'|'tech-orichalcum_sphere'|'tech-gps'|'tech-nav_beacon'|'tech-subspace_signal'|'tech-atmospheric_mining'|'tech-helium_attractor'|'tech-ram_scoops'|'tech-elerium_prospecting'|'tech-zero_g_mining'|'tech-elerium_mining'|'tech-laser_mining'|'tech-plasma_mining'|'tech-elerium_tech'|'tech-elerium_reactor'|'tech-neutronium_housing'|'tech-unification'|'tech-unification2'|'tech-unite'|'tech-genesis'|'tech-star_dock'|'tech-interstellar'|'tech-genesis_ship'|'tech-geck'|'tech-genetic_decay'|'tech-stabilize_decay'|'tech-tachyon'|'tech-warp_drive'|'tech-habitat'|'tech-graphene'|'tech-aerogel'|'tech-mega_manufacturing'|'tech-luxury_condo'|'tech-stellar_engine'|'tech-mass_ejector'|'tech-asteroid_redirect'|'tech-exotic_infusion'|'tech-infusion_check'|'tech-infusion_confirm'|'tech-stabilize_blackhole'|'tech-veil'|'tech-mana_syphon'|'tech-gravitational_waves'|'tech-gravity_convection'|'tech-wormholes'|'tech-portal'|'tech-fortifications'|'tech-war_drones'|'tech-demon_attractor'|'tech-combat_droids'|'tech-repair_droids'|'tech-advanced_predators'|'tech-enhanced_droids'|'tech-sensor_drone'|'tech-map_terrain'|'tech-calibrated_sensors'|'tech-shield_generator'|'tech-enhanced_sensors'|'tech-xeno_linguistics'|'tech-xeno_culture'|'tech-cultural_exchange'|'tech-shore_leave'|'tech-xeno_gift'|'tech-industrial_partnership'|'tech-embassy_housing'|'tech-advanced_telemetry'|'tech-defense_platform'|'tech-scout_ship'|'tech-corvette_ship'|'tech-frigate_ship'|'tech-cruiser_ship'|'tech-dreadnought'|'tech-ship_dock'|'tech-ore_processor'|'tech-scavenger'|'tech-coordinates'|'tech-chthonian_survey'|'tech-gateway_depot'|'tech-soul_forge'|'tech-soul_attractor'|'tech-soul_absorption'|'tech-soul_link'|'tech-gun_emplacement'|'tech-advanced_emplacement'|'tech-dial_it_to_11'|'tech-limit_collider'|'tech-mana'|'tech-ley_lines'|'tech-rituals'|'tech-crafting_ritual'|'tech-mana_nexus'|'tech-clerics'|'tech-conjuring'|'tech-res_conjuring'|'tech-alchemy'|'tech-transmutation'|'tech-secret_society'|'tech-cultists'|'tech-conceal_ward'|'tech-subtle_rituals'|'tech-pylon_camouflage'|'tech-fake_tech'|'tech-concealment'|'tech-improved_concealment'|'tech-outerplane_summon'|'tech-dark_bomb'|'tech-bribe_sphinx'|'tech-alien_biotech'|'tech-zero_g_lab'|'tech-operating_base'|'tech-munitions_depot'|'tech-fob'|'tech-bac_tanks_tp'|'tech-medkit'|'tech-sam_site'|'tech-data_cracker'|'tech-ai_core_tp'|'tech-ai_optimizations'|'tech-synthetic_life'|'tech-protocol66'|'tech-protocol66a'|'tech-terraforming_tp'|'tech-quantium'|'tech-anitgrav_bunk'|'tech-higgs_boson_tp'|'tech-long_range_probes'|'tech-strange_signal'|'tech-data_analysis'|'tech-mass_relay'|'tech-nav_data'|'tech-sensor_logs'|'tech-dronewar'|'tech-drone_tank'|'tech-stanene_tp'|'tech-graphene_tp'|'tech-virtual_reality_tp'|'tech-electrolysis'|'tech-storehouse'|'tech-adamantite_vault_tp'|'tech-titan_bank'|'tech-hydrogen_plant'|'tech-water_mining'|'tech-mercury_smelting'|'tech-iridium_smelting'|'tech-adamantite_crates'|'tech-bolognium_crates_tp'|'tech-adamantite_containers_tp'|'tech-quantium_containers'|'tech-unobtainium_containers'|'tech-reinforced_shelving'|'tech-garage_shelving'|'tech-warehouse_shelving'|'tech-elerium_extraction'|'tech-orichalcum_panels_tp'|'tech-shipyard'|'tech-ship_lasers'|'tech-pulse_lasers'|'tech-ship_plasma'|'tech-ship_phaser'|'tech-ship_disruptor'|'tech-destroyer_ship'|'tech-cruiser_ship_tp'|'tech-h_cruiser_ship'|'tech-dreadnought_ship'|'tech-pulse_engine'|'tech-photon_engine'|'tech-vacuum_drive'|'tech-ship_fusion'|'tech-ship_elerium'|'tech-quantum_signatures'|'tech-interstellar_drive'|'tech-alien_outpost'|'tech-jumpgates'|'tech-system_survey'|'tech-repository'|'tech-fusion_generator'|'tech-tau_cultivation'|'tech-tau_manufacturing'|'tech-weasels'|'tech-jeff'|'tech-womling_fun'|'tech-womling_lab'|'tech-womling_mining'|'tech-womling_firstaid'|'tech-womling_logistics'|'tech-womling_repulser'|'tech-womling_farming'|'tech-womling_housing'|'tech-womling_support'|'tech-womling_recycling'|'tech-asteroid_analysis'|'tech-shark_repellent'|'tech-belt_mining'|'tech-adv_belt_mining'|'tech-space_whaling'|'tech-infectious_disease_lab'|'tech-isolation_protocol'|'tech-focus_cure'|'tech-decode_virus'|'tech-vaccine_campaign'|'tech-vax_strat1'|'tech-vax_strat2'|'tech-vax_strat3'|'tech-vax_strat4'|'tech-cloning'|'tech-clone_degradation'|'tech-digital_paradise'|'tech-ringworld'|'tech-iso_gambling'|'tech-outpost_boost'|'tech-cultural_center'|'tech-outer_tau_survey'|'tech-alien_research'|'tech-womling_gene_therapy'|'tech-food_culture'|'tech-advanced_refinery'|'tech-advanced_pit_mining'|'tech-useless_junk'|'tech-advanced_asteroid_mining'|'tech-advanced_material_synthesis'|'tech-matrioshka_brain'|'tech-ignition_device'|'tech-replicator'|'tech-womling_unlock'|'tech-garden_of_eden';
+    type TechIdKey = 'tech-club'|'tech-bone_tools'|'tech-wooden_tools'|'tech-sundial'|'tech-wheel'|'tech-wagon'|'tech-steam_engine'|'tech-combustion_engine'|'tech-hover_cart'|'tech-osha'|'tech-blackmarket'|'tech-pipelines'|'tech-housing'|'tech-cottage'|'tech-apartment'|'tech-arcology'|'tech-steel_beams'|'tech-mythril_beams'|'tech-neutronium_walls'|'tech-bolognium_alloy_beams'|'tech-aphrodisiac'|'tech-fertility_clinic'|'tech-captive_housing'|'tech-torture'|'tech-thrall_quarters'|'tech-minor_wish'|'tech-major_wish'|'tech-psychic_energy'|'tech-psychic_attack'|'tech-psychic_finance'|'tech-psychic_channeling'|'tech-psychic_efficiency'|'tech-mind_break'|'tech-psychic_stun'|'tech-spear'|'tech-bronze_spear'|'tech-iron_spear'|'tech-dowsing_rod'|'tech-metal_detector'|'tech-smokehouse'|'tech-lodge'|'tech-alt_lodge'|'tech-soul_well'|'tech-compost'|'tech-hot_compost'|'tech-mulching'|'tech-adv_mulching'|'tech-agriculture'|'tech-farm_house'|'tech-irrigation'|'tech-silo'|'tech-mill'|'tech-windmill'|'tech-windturbine'|'tech-wind_plant'|'tech-gmfood'|'tech-foundry'|'tech-artisans'|'tech-apprentices'|'tech-carpentry'|'tech-demonic_craftsman'|'tech-master_craftsman'|'tech-brickworks'|'tech-machinery'|'tech-cnc_machine'|'tech-vocational_training'|'tech-stellar_forge'|'tech-stellar_smelting'|'tech-assembly_line'|'tech-automation'|'tech-laser_cutters'|'tech-high_tech_factories'|'tech-banquet'|'tech-theatre'|'tech-playwright'|'tech-magic'|'tech-superstars'|'tech-radio'|'tech-tv'|'tech-vr_center'|'tech-zoo'|'tech-casino'|'tech-dazzle'|'tech-casino_vault'|'tech-otb'|'tech-online_gambling'|'tech-bolognium_vaults'|'tech-mining'|'tech-bayer_process'|'tech-elysis_process'|'tech-smelting'|'tech-steel'|'tech-blast_furnace'|'tech-bessemer_process'|'tech-oxygen_converter'|'tech-electric_arc_furnace'|'tech-hellfire_furnace'|'tech-infernium_fuel'|'tech-iridium_smelting_perk'|'tech-rotary_kiln'|'tech-metal_working'|'tech-iron_mining'|'tech-coal_mining'|'tech-storage'|'tech-reinforced_shed'|'tech-barns'|'tech-warehouse'|'tech-cameras'|'tech-pocket_dimensions'|'tech-ai_logistics'|'tech-containerization'|'tech-reinforced_crates'|'tech-cranes'|'tech-titanium_crates'|'tech-mythril_crates'|'tech-infernite_crates'|'tech-graphene_crates'|'tech-bolognium_crates'|'tech-elysanite_crates'|'tech-steel_containers'|'tech-gantry_crane'|'tech-alloy_containers'|'tech-mythril_containers'|'tech-adamantite_containers'|'tech-aerogel_containers'|'tech-bolognium_containers'|'tech-nanoweave_containers'|'tech-elysanite_containers'|'tech-evil_planning'|'tech-urban_planning'|'tech-zoning_permits'|'tech-urbanization'|'tech-assistant'|'tech-government'|'tech-theocracy'|'tech-republic'|'tech-socialist'|'tech-corpocracy'|'tech-technocracy'|'tech-federation'|'tech-magocracy'|'tech-governor'|'tech-spy'|'tech-espionage'|'tech-spy_training'|'tech-spy_gadgets'|'tech-code_breakers'|'tech-currency'|'tech-market'|'tech-tax_rates'|'tech-large_trades'|'tech-corruption'|'tech-massive_trades'|'tech-trade'|'tech-diplomacy'|'tech-freight'|'tech-wharf'|'tech-banking'|'tech-investing'|'tech-vault'|'tech-bonds'|'tech-steel_vault'|'tech-eebonds'|'tech-swiss_banking'|'tech-safety_deposit'|'tech-stock_market'|'tech-hedge_funds'|'tech-four_oh_one'|'tech-exchange'|'tech-foreign_investment'|'tech-crypto_currency'|'tech-mythril_vault'|'tech-neutronium_vault'|'tech-adamantite_vault'|'tech-graphene_vault'|'tech-home_safe'|'tech-fire_proof_safe'|'tech-tamper_proof_safe'|'tech-monument'|'tech-tourism'|'tech-xeno_tourism'|'tech-science'|'tech-library'|'tech-thesis'|'tech-research_grant'|'tech-scientific_journal'|'tech-adjunct_professor'|'tech-tesla_coil'|'tech-internet'|'tech-observatory'|'tech-world_collider'|'tech-laboratory'|'tech-virtual_assistant'|'tech-dimensional_readings'|'tech-quantum_entanglement'|'tech-expedition'|'tech-subspace_sensors'|'tech-alien_database'|'tech-orichalcum_capacitor'|'tech-advanced_biotech'|'tech-codex_infinium'|'tech-spirit_box'|'tech-spirit_researcher'|'tech-dimensional_tap'|'tech-devilish_dish'|'tech-hell_oven'|'tech-preparation_methods'|'tech-final_ingredient'|'tech-bioscience'|'tech-genetics'|'tech-crispr'|'tech-shotgun_sequencing'|'tech-de_novo_sequencing'|'tech-dna_sequencer'|'tech-rapid_sequencing'|'tech-mad_science'|'tech-electricity'|'tech-matter_replicator'|'tech-industrialization'|'tech-electronics'|'tech-fission'|'tech-arpa'|'tech-rocketry'|'tech-robotics'|'tech-lasers'|'tech-artifical_intelligence'|'tech-quantum_computing'|'tech-virtual_reality'|'tech-plasma'|'tech-shields'|'tech-ai_core'|'tech-metaphysics'|'tech-orichalcum_analysis'|'tech-cybernetics'|'tech-divinity'|'tech-blood_pact'|'tech-purify'|'tech-waygate'|'tech-demonic_infusion'|'tech-purify_essence'|'tech-gate_key'|'tech-gate_turret'|'tech-infernite_mine'|'tech-study_corrupt_gem'|'tech-soul_binding'|'tech-soul_capacitor'|'tech-absorption_chamber'|'tech-corrupt_gem_analysis'|'tech-hell_search'|'tech-codex_infernium'|'tech-lake_analysis'|'tech-lake_threat'|'tech-lake_transport'|'tech-cooling_tower'|'tech-miasma'|'tech-incorporeal'|'tech-tech_ascension'|'tech-terraforming'|'tech-cement_processing'|'tech-adamantite_processing_flier'|'tech-adamantite_processing'|'tech-graphene_processing'|'tech-crypto_mining'|'tech-fusion_power'|'tech-infernium_power'|'tech-thermomechanics'|'tech-quantum_manufacturing'|'tech-worker_drone'|'tech-uranium'|'tech-uranium_storage'|'tech-uranium_ash'|'tech-breeder_reactor'|'tech-mine_conveyor'|'tech-oil_well'|'tech-oil_depot'|'tech-oil_power'|'tech-titanium_drills'|'tech-alloy_drills'|'tech-fracking'|'tech-mythril_drills'|'tech-mass_driver'|'tech-orichalcum_driver'|'tech-polymer'|'tech-fluidized_bed_reactor'|'tech-synthetic_fur'|'tech-nanoweave'|'tech-stanene'|'tech-nano_tubes'|'tech-scarletite'|'tech-pillars'|'tech-reclaimer'|'tech-shovel'|'tech-iron_shovel'|'tech-steel_shovel'|'tech-titanium_shovel'|'tech-alloy_shovel'|'tech-mythril_shovel'|'tech-adamantite_shovel'|'tech-stone_axe'|'tech-copper_axes'|'tech-iron_saw'|'tech-steel_saw'|'tech-iron_axes'|'tech-steel_axes'|'tech-titanium_axes'|'tech-chainsaws'|'tech-copper_sledgehammer'|'tech-iron_sledgehammer'|'tech-steel_sledgehammer'|'tech-titanium_sledgehammer'|'tech-copper_pickaxe'|'tech-iron_pickaxe'|'tech-steel_pickaxe'|'tech-jackhammer'|'tech-jackhammer_mk2'|'tech-adamantite_hammer'|'tech-elysanite_hammer'|'tech-copper_hoe'|'tech-iron_hoe'|'tech-steel_hoe'|'tech-titanium_hoe'|'tech-adamantite_hoe'|'tech-cyber_limbs'|'tech-slave_pens'|'tech-slave_market'|'tech-ceremonial_dagger'|'tech-last_rites'|'tech-ancient_infusion'|'tech-garrison'|'tech-mercs'|'tech-signing_bonus'|'tech-hospital'|'tech-bac_tanks'|'tech-boot_camp'|'tech-vr_training'|'tech-bows'|'tech-flintlock_rifle'|'tech-machine_gun'|'tech-bunk_beds'|'tech-rail_guns'|'tech-laser_rifles'|'tech-plasma_rifles'|'tech-disruptor_rifles'|'tech-gauss_rifles'|'tech-cyborg_soldiers'|'tech-ethereal_weapons'|'tech-space_marines'|'tech-hammocks'|'tech-cruiser'|'tech-armor'|'tech-plate_armor'|'tech-kevlar'|'tech-nanoweave_vest'|'tech-laser_turret'|'tech-plasma_turret'|'tech-black_powder'|'tech-dynamite'|'tech-anfo'|'tech-super_tnt'|'tech-mad'|'tech-cement'|'tech-rebar'|'tech-steel_rebar'|'tech-portland_cement'|'tech-screw_conveyor'|'tech-adamantite_screws'|'tech-otherworldly_binder'|'tech-hunter_process'|'tech-kroll_process'|'tech-cambridge_process'|'tech-pynn_partical'|'tech-matter_compression'|'tech-higgs_boson'|'tech-dimensional_compression'|'tech-theology'|'tech-fanaticism'|'tech-alt_fanaticism'|'tech-ancient_theology'|'tech-study'|'tech-study_alt'|'tech-encoding'|'tech-deify'|'tech-deify_alt'|'tech-infusion'|'tech-indoctrination'|'tech-missionary'|'tech-zealotry'|'tech-anthropology'|'tech-alt_anthropology'|'tech-mythology'|'tech-archaeology'|'tech-merchandising'|'tech-astrophysics'|'tech-rover'|'tech-probes'|'tech-starcharts'|'tech-colonization'|'tech-red_tower'|'tech-space_manufacturing'|'tech-exotic_lab'|'tech-hydroponics'|'tech-dyson_sphere'|'tech-dyson_swarm'|'tech-swarm_plant'|'tech-space_sourced'|'tech-swarm_plant_ai'|'tech-swarm_control_ai'|'tech-quantum_swarm'|'tech-perovskite_cell'|'tech-swarm_convection'|'tech-orichalcum_panels'|'tech-dyson_net'|'tech-dyson_sphere2'|'tech-orichalcum_sphere'|'tech-elysanite_sphere'|'tech-gps'|'tech-nav_beacon'|'tech-subspace_signal'|'tech-atmospheric_mining'|'tech-helium_attractor'|'tech-ram_scoops'|'tech-elerium_prospecting'|'tech-zero_g_mining'|'tech-elerium_mining'|'tech-laser_mining'|'tech-plasma_mining'|'tech-elerium_tech'|'tech-elerium_reactor'|'tech-neutronium_housing'|'tech-unification'|'tech-unification2'|'tech-unite'|'tech-genesis'|'tech-star_dock'|'tech-interstellar'|'tech-genesis_ship'|'tech-geck'|'tech-genetic_decay'|'tech-stabilize_decay'|'tech-tachyon'|'tech-warp_drive'|'tech-habitat'|'tech-graphene'|'tech-aerogel'|'tech-mega_manufacturing'|'tech-luxury_condo'|'tech-stellar_engine'|'tech-mass_ejector'|'tech-asteroid_redirect'|'tech-exotic_infusion'|'tech-infusion_check'|'tech-infusion_confirm'|'tech-stabilize_blackhole'|'tech-veil'|'tech-mana_syphon'|'tech-gravitational_waves'|'tech-gravity_convection'|'tech-wormholes'|'tech-portal'|'tech-fortifications'|'tech-war_drones'|'tech-demon_attractor'|'tech-combat_droids'|'tech-repair_droids'|'tech-advanced_predators'|'tech-enhanced_droids'|'tech-sensor_drone'|'tech-map_terrain'|'tech-calibrated_sensors'|'tech-shield_generator'|'tech-enhanced_sensors'|'tech-xeno_linguistics'|'tech-xeno_culture'|'tech-cultural_exchange'|'tech-shore_leave'|'tech-xeno_gift'|'tech-industrial_partnership'|'tech-embassy_housing'|'tech-advanced_telemetry'|'tech-defense_platform'|'tech-scout_ship'|'tech-corvette_ship'|'tech-frigate_ship'|'tech-cruiser_ship'|'tech-dreadnought'|'tech-ship_dock'|'tech-ore_processor'|'tech-scavenger'|'tech-coordinates'|'tech-chthonian_survey'|'tech-gateway_depot'|'tech-soul_forge'|'tech-soul_attractor'|'tech-soul_absorption'|'tech-soul_link'|'tech-soul_bait'|'tech-gun_emplacement'|'tech-advanced_emplacement'|'tech-dial_it_to_11'|'tech-limit_collider'|'tech-mana'|'tech-ley_lines'|'tech-rituals'|'tech-crafting_ritual'|'tech-mana_nexus'|'tech-clerics'|'tech-conjuring'|'tech-res_conjuring'|'tech-alchemy'|'tech-transmutation'|'tech-secret_society'|'tech-cultists'|'tech-conceal_ward'|'tech-subtle_rituals'|'tech-pylon_camouflage'|'tech-fake_tech'|'tech-concealment'|'tech-improved_concealment'|'tech-outerplane_summon'|'tech-dark_bomb'|'tech-bribe_sphinx'|'tech-alien_biotech'|'tech-zero_g_lab'|'tech-operating_base'|'tech-munitions_depot'|'tech-fob'|'tech-bac_tanks_tp'|'tech-medkit'|'tech-sam_site'|'tech-data_cracker'|'tech-ai_core_tp'|'tech-ai_optimizations'|'tech-synthetic_life'|'tech-protocol66'|'tech-protocol66a'|'tech-terraforming_tp'|'tech-quantium'|'tech-anitgrav_bunk'|'tech-higgs_boson_tp'|'tech-long_range_probes'|'tech-strange_signal'|'tech-data_analysis'|'tech-mass_relay'|'tech-nav_data'|'tech-sensor_logs'|'tech-dronewar'|'tech-drone_tank'|'tech-stanene_tp'|'tech-graphene_tp'|'tech-virtual_reality_tp'|'tech-electrolysis'|'tech-storehouse'|'tech-adamantite_vault_tp'|'tech-titan_bank'|'tech-hydrogen_plant'|'tech-water_mining'|'tech-mercury_smelting'|'tech-iridium_smelting'|'tech-adamantite_crates'|'tech-bolognium_crates_tp'|'tech-adamantite_containers_tp'|'tech-quantium_containers'|'tech-unobtainium_containers'|'tech-reinforced_shelving'|'tech-garage_shelving'|'tech-warehouse_shelving'|'tech-elerium_extraction'|'tech-orichalcum_panels_tp'|'tech-shipyard'|'tech-ship_lasers'|'tech-pulse_lasers'|'tech-ship_plasma'|'tech-ship_phaser'|'tech-ship_disruptor'|'tech-destroyer_ship'|'tech-cruiser_ship_tp'|'tech-h_cruiser_ship'|'tech-dreadnought_ship'|'tech-pulse_engine'|'tech-photon_engine'|'tech-vacuum_drive'|'tech-ship_fusion'|'tech-ship_elerium'|'tech-quantum_signatures'|'tech-interstellar_drive'|'tech-alien_outpost'|'tech-jumpgates'|'tech-system_survey'|'tech-repository'|'tech-fusion_generator'|'tech-tau_cultivation'|'tech-tau_manufacturing'|'tech-weasels'|'tech-jeff'|'tech-womling_fun'|'tech-womling_lab'|'tech-womling_mining'|'tech-womling_firstaid'|'tech-womling_logistics'|'tech-womling_repulser'|'tech-womling_farming'|'tech-womling_housing'|'tech-womling_support'|'tech-womling_recycling'|'tech-asteroid_analysis'|'tech-shark_repellent'|'tech-belt_mining'|'tech-adv_belt_mining'|'tech-space_whaling'|'tech-infectious_disease_lab'|'tech-isolation_protocol'|'tech-focus_cure'|'tech-decode_virus'|'tech-vaccine_campaign'|'tech-vax_strat1'|'tech-vax_strat2'|'tech-vax_strat3'|'tech-vax_strat4'|'tech-cloning'|'tech-clone_degradation'|'tech-digital_paradise'|'tech-ringworld'|'tech-iso_gambling'|'tech-outpost_boost'|'tech-cultural_center'|'tech-outer_tau_survey'|'tech-alien_research'|'tech-womling_gene_therapy'|'tech-food_culture'|'tech-advanced_refinery'|'tech-advanced_pit_mining'|'tech-useless_junk'|'tech-advanced_asteroid_mining'|'tech-advanced_material_synthesis'|'tech-matrioshka_brain'|'tech-ignition_device'|'tech-replicator'|'tech-womling_unlock'|'tech-garden_of_eden'|'tech-asphodel_flowers'|'tech-ghost_traps'|'tech-research_station'|'tech-soul_engine'|'tech-railway_to_hell'|'tech-purification'|'tech-asphodel_mech'|'tech-asphodel_storage'|'tech-asphodel_stabilizer'|'tech-edenic_bunker'|'tech-bliss_den'|'tech-hallowed_housing'|'tech-outer_plane_study'|'tech-camouflage'|'tech-celestial_tactics'|'tech-active_camouflage'|'tech-special_ops_training'|'tech-spectral_training'|'tech-elysanite_mining'|'tech-sacred_smelter'|'tech-fire_support_base'|'tech-pillbox'|'tech-elerium_cannon'|'tech-elerium_containment'|'tech-ambrosia'|'tech-eternal_bank'|'tech-wisdom'|'tech-rushmore'|'tech-reincarnation'|'tech-otherworldly_cement'|'tech-ancient_crafters'|'tech-spirit_syphon'|'tech-spirit_capacitor'|'tech-suction_force'|'tech-soul_compactor'|'tech-tomb'|'tech-energy_drain'|'tech-divine_infuser';
     const techIds: { [key in TechIdKey]: Technology; }
     // Settings. (settings is really a proxy, but that's an implementation detail)
     // Interface that looks like settings/settingsRaw.
@@ -4017,6 +4072,290 @@ declare global {
 "bld_m_portal-dish_life_infuser": number;
 "bld_w_portal-dish_life_infuser": number;
 "bld_s_portal-dish_life_infuser": boolean;
+"mutableTrait_p_gloomy": number;
+"mutableTrait_purge_gloomy": boolean;
+"mutableTrait_gain_gloomy": boolean;
+"challenge_ultra_sludge": boolean;
+"batinterstellar-elysanite_sphere": boolean;
+"bld_p_interstellar-elysanite_sphere": number;
+"bld_m_interstellar-elysanite_sphere": number;
+"bld_w_interstellar-elysanite_sphere": number;
+"batportal-edenic_gate": boolean;
+"bld_p_portal-edenic_gate": number;
+"bld_m_portal-edenic_gate": number;
+"bld_w_portal-edenic_gate": number;
+"bateden-survery_meadows": boolean;
+"bld_p_eden-survery_meadows": number;
+"bld_m_eden-survery_meadows": number;
+"bld_w_eden-survery_meadows": number;
+"bateden-encampment": boolean;
+"bld_p_eden-encampment": number;
+"bld_m_eden-encampment": number;
+"bld_w_eden-encampment": number;
+"bld_s_eden-encampment": boolean;
+"bateden-soul_engine": boolean;
+"bld_p_eden-soul_engine": number;
+"bld_m_eden-soul_engine": number;
+"bld_w_eden-soul_engine": number;
+"bld_s_eden-soul_engine": boolean;
+"bateden-mech_station": boolean;
+"bld_p_eden-mech_station": number;
+"bld_m_eden-mech_station": number;
+"bld_w_eden-mech_station": number;
+"bateden-asphodel_harvester": boolean;
+"bld_p_eden-asphodel_harvester": number;
+"bld_m_eden-asphodel_harvester": number;
+"bld_w_eden-asphodel_harvester": number;
+"bld_s_eden-asphodel_harvester": boolean;
+"bld_s2_eden-asphodel_harvester": boolean;
+"bateden-ectoplasm_processor": boolean;
+"bld_p_eden-ectoplasm_processor": number;
+"bld_m_eden-ectoplasm_processor": number;
+"bld_w_eden-ectoplasm_processor": number;
+"bld_s_eden-ectoplasm_processor": boolean;
+"bateden-research_station": boolean;
+"bld_p_eden-research_station": number;
+"bld_m_eden-research_station": number;
+"bld_w_eden-research_station": number;
+"bld_s_eden-research_station": boolean;
+"bateden-warehouse": boolean;
+"bld_p_eden-warehouse": number;
+"bld_m_eden-warehouse": number;
+"bld_w_eden-warehouse": number;
+"bateden-stabilizer": boolean;
+"bld_p_eden-stabilizer": number;
+"bld_m_eden-stabilizer": number;
+"bld_w_eden-stabilizer": number;
+"bateden-rune_gate": boolean;
+"bld_p_eden-rune_gate": number;
+"bld_m_eden-rune_gate": number;
+"bld_w_eden-rune_gate": number;
+"bateden-bunker": boolean;
+"bld_p_eden-bunker": number;
+"bld_m_eden-bunker": number;
+"bld_w_eden-bunker": number;
+"bld_s_eden-bunker": boolean;
+"bateden-bliss_den": boolean;
+"bld_p_eden-bliss_den": number;
+"bld_m_eden-bliss_den": number;
+"bld_w_eden-bliss_den": number;
+"bld_s_eden-bliss_den": boolean;
+"bateden-rectory": boolean;
+"bld_m_eden-rectory": number;
+"bld_w_eden-rectory": number;
+"bld_s_eden-rectory": boolean;
+"bateden-survey_fields": boolean;
+"bld_p_eden-survey_fields": number;
+"bld_m_eden-survey_fields": number;
+"bld_w_eden-survey_fields": number;
+"bateden-ambush_patrol": boolean;
+"bld_p_eden-ambush_patrol": number;
+"bld_m_eden-ambush_patrol": number;
+"bld_w_eden-ambush_patrol": number;
+"bateden-raid_supplies": boolean;
+"bld_p_eden-raid_supplies": number;
+"bld_m_eden-raid_supplies": number;
+"bld_w_eden-raid_supplies": number;
+"bateden-siege_fortress": boolean;
+"bld_p_eden-siege_fortress": number;
+"bld_m_eden-siege_fortress": number;
+"bld_w_eden-siege_fortress": number;
+"bateden-scout_elysium": boolean;
+"bld_p_eden-scout_elysium": number;
+"bld_m_eden-scout_elysium": number;
+"bld_w_eden-scout_elysium": number;
+"bateden-fire_support_base": boolean;
+"bld_p_eden-fire_support_base": number;
+"bld_m_eden-fire_support_base": number;
+"bld_w_eden-fire_support_base": number;
+"bateden-elysanite_mine": boolean;
+"bld_p_eden-elysanite_mine": number;
+"bld_m_eden-elysanite_mine": number;
+"bld_w_eden-elysanite_mine": number;
+"bld_s_eden-elysanite_mine": boolean;
+"bateden-sacred_smelter": boolean;
+"bld_p_eden-sacred_smelter": number;
+"bld_m_eden-sacred_smelter": number;
+"bld_w_eden-sacred_smelter": number;
+"bld_s_eden-sacred_smelter": boolean;
+"bateden-elerium_containment": boolean;
+"bld_p_eden-elerium_containment": number;
+"bld_m_eden-elerium_containment": number;
+"bld_w_eden-elerium_containment": number;
+"bld_s_eden-elerium_containment": boolean;
+"bateden-pillbox": boolean;
+"bld_p_eden-pillbox": number;
+"bld_m_eden-pillbox": number;
+"bld_w_eden-pillbox": number;
+"bld_s_eden-pillbox": boolean;
+"bateden-restaurant": boolean;
+"bld_p_eden-restaurant": number;
+"bld_m_eden-restaurant": number;
+"bld_w_eden-restaurant": number;
+"bld_s_eden-restaurant": boolean;
+"bateden-eternal_bank": boolean;
+"bld_p_eden-eternal_bank": number;
+"bld_m_eden-eternal_bank": number;
+"bld_w_eden-eternal_bank": number;
+"bateden-archive": boolean;
+"bld_p_eden-archive": number;
+"bld_m_eden-archive": number;
+"bld_w_eden-archive": number;
+"bld_s_eden-archive": boolean;
+"bateden-north_pier": boolean;
+"bld_p_eden-north_pier": number;
+"bld_m_eden-north_pier": number;
+"bld_w_eden-north_pier": number;
+"bateden-rushmore": boolean;
+"bld_p_eden-rushmore": number;
+"bld_m_eden-rushmore": number;
+"bld_w_eden-rushmore": number;
+"bateden-reincarnation": boolean;
+"bld_p_eden-reincarnation": number;
+"bld_m_eden-reincarnation": number;
+"bld_w_eden-reincarnation": number;
+"bateden-eden_cement": boolean;
+"bld_p_eden-eden_cement": number;
+"bld_m_eden-eden_cement": number;
+"bld_w_eden-eden_cement": number;
+"bld_s_eden-eden_cement": boolean;
+"bateden-south_pier": boolean;
+"bld_p_eden-south_pier": number;
+"bld_m_eden-south_pier": number;
+"bld_w_eden-south_pier": number;
+"bateden-spirit_battery": boolean;
+"bld_p_eden-spirit_battery": number;
+"bld_m_eden-spirit_battery": number;
+"bld_w_eden-spirit_battery": number;
+"bld_s_eden-spirit_battery": boolean;
+"bateden-spirit_vacuum": boolean;
+"bld_p_eden-spirit_vacuum": number;
+"bld_m_eden-spirit_vacuum": number;
+"bld_w_eden-spirit_vacuum": number;
+"bld_s_eden-spirit_vacuum": boolean;
+"bateden-soul_compactor": boolean;
+"bld_p_eden-soul_compactor": number;
+"bld_m_eden-soul_compactor": number;
+"bld_w_eden-soul_compactor": number;
+"bateden-scout_palace": boolean;
+"bld_p_eden-scout_palace": number;
+"bld_m_eden-scout_palace": number;
+"bld_w_eden-scout_palace": number;
+"bateden-infuser": boolean;
+"bld_p_eden-infuser": number;
+"bld_m_eden-infuser": number;
+"bld_w_eden-infuser": number;
+"bateden-conduit": boolean;
+"bld_p_eden-conduit": number;
+"bld_m_eden-conduit": number;
+"bld_w_eden-conduit": number;
+"bateden-tomb": boolean;
+"bld_p_eden-tomb": number;
+"bld_m_eden-tomb": number;
+"bld_w_eden-tomb": number;
+"job_ghost_trapper": boolean;
+"job_p_ghost_trapper": number;
+"job_elysium_miner": boolean;
+"job_p_elysium_miner": number;
+"job_b1_ghost_trapper": number;
+"job_b2_ghost_trapper": number;
+"job_b3_ghost_trapper": number;
+"job_b1_elysium_miner": number;
+"job_b2_elysium_miner": number;
+"job_b3_elysium_miner": number;
+"res_storageElysanite": boolean;
+"res_storage_p_Elysanite": number;
+"res_storage_o_Elysanite": boolean;
+"res_min_storeElysanite": number;
+"res_max_storeElysanite": number;
+"res_ejectElysanite": boolean;
+"res_ejectAsphodel_Powder": boolean;
+"trait_w_kamikaze": number;
+"mutableTrait_p_artisan": number;
+"mutableTrait_purge_artisan": boolean;
+"mutableTrait_gain_artisan": boolean;
+"mutableTrait_p_stubborn": number;
+"mutableTrait_purge_stubborn": boolean;
+"mutableTrait_gain_stubborn": boolean;
+"mutableTrait_p_rogue": number;
+"mutableTrait_purge_rogue": boolean;
+"mutableTrait_gain_rogue": boolean;
+"mutableTrait_p_untrustworthy": number;
+"mutableTrait_purge_untrustworthy": boolean;
+"mutableTrait_gain_untrustworthy": boolean;
+"mutableTrait_p_living_materials": number;
+"mutableTrait_purge_living_materials": boolean;
+"mutableTrait_gain_living_materials": boolean;
+"mutableTrait_p_unstable": number;
+"mutableTrait_purge_unstable": boolean;
+"mutableTrait_gain_unstable": boolean;
+"mutableTrait_p_elemental": number;
+"mutableTrait_purge_elemental": boolean;
+"mutableTrait_gain_elemental": boolean;
+"mutableTrait_p_chicken": number;
+"mutableTrait_purge_chicken": boolean;
+"mutableTrait_gain_chicken": boolean;
+"mutableTrait_p_tusk": number;
+"mutableTrait_purge_tusk": boolean;
+"mutableTrait_gain_tusk": boolean;
+"mutableTrait_p_blubber": number;
+"mutableTrait_purge_blubber": boolean;
+"mutableTrait_gain_blubber": boolean;
+"mutableTrait_p_ocular_power": number;
+"mutableTrait_purge_ocular_power": boolean;
+"mutableTrait_gain_ocular_power": boolean;
+"mutableTrait_p_floating": number;
+"mutableTrait_purge_floating": boolean;
+"mutableTrait_gain_floating": boolean;
+"mutableTrait_p_wish": number;
+"mutableTrait_purge_wish": boolean;
+"mutableTrait_gain_wish": boolean;
+"mutableTrait_p_devious": number;
+"mutableTrait_purge_devious": boolean;
+"mutableTrait_gain_devious": boolean;
+"mutableTrait_p_grenadier": number;
+"mutableTrait_purge_grenadier": boolean;
+"mutableTrait_gain_grenadier": boolean;
+"mutableTrait_p_aggressive": number;
+"mutableTrait_purge_aggressive": boolean;
+"mutableTrait_gain_aggressive": boolean;
+"mutableTrait_p_empowered": number;
+"mutableTrait_purge_empowered": boolean;
+"mutableTrait_gain_empowered": boolean;
+"mutableTrait_p_blasphemous": number;
+"mutableTrait_purge_blasphemous": boolean;
+"mutableTrait_gain_blasphemous": boolean;
+"mutableTrait_p_astrologer": number;
+"mutableTrait_purge_astrologer": boolean;
+"mutableTrait_gain_astrologer": boolean;
+"migrationVersion": number;
+"bld_p_eden-rectory": number;
+"replicatorWeightingMode": string;
+"ocularPower_disintegration": boolean;
+"ocularPower_p_disintegration": number;
+"ocularPower_petrification": boolean;
+"ocularPower_p_petrification": number;
+"ocularPower_wound": boolean;
+"ocularPower_p_wound": number;
+"ocularPower_telekinesis": boolean;
+"ocularPower_p_telekinesis": number;
+"ocularPower_fear": boolean;
+"ocularPower_p_fear": number;
+"ocularPower_charm": boolean;
+"ocularPower_p_charm": number;
+"wishMinor": string;
+"wishMajor": string;
+"mutableTrait_p_forager": number;
+"mutableTrait_purge_forager": boolean;
+"job_forager": boolean;
+"job_p_forager": number;
+"job_b1_forager": number;
+"job_b2_forager": number;
+"job_b3_forager": number;
+"jobForagerWeighting": number;
+"govGovernorAllowFire": boolean;
+"govGovernorFireMaxCost": number;
+"log_governor_fire": boolean;
         // Generic fallback.
         [key: string]: string|number|boolean|object;
     }
@@ -4062,29 +4401,29 @@ EvalFn extends 'BuildingQueued' ? BuildingIdKey :
 EvalFn extends 'ProjectUnlocked' ? ArpaIdKey : 
 EvalFn extends 'ProjectCount' ? ArpaIdKey : 
 EvalFn extends 'ProjectProgress' ? ArpaIdKey : 
-EvalFn extends 'JobUnlocked' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
-EvalFn extends 'JobCount' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
-EvalFn extends 'JobMax' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
-EvalFn extends 'JobWorkers' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
-EvalFn extends 'JobServants' ? ('hunter'|'farmer'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
+EvalFn extends 'JobUnlocked' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'forager'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'ghost_trapper'|'elysium_miner'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
+EvalFn extends 'JobCount' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'forager'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'ghost_trapper'|'elysium_miner'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
+EvalFn extends 'JobMax' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'forager'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'ghost_trapper'|'elysium_miner'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
+EvalFn extends 'JobWorkers' ? ('unemployed'|'colonist'|'teamster'|'meditator'|'hunter'|'farmer'|'forager'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'titan_colonist'|'miner'|'coal_miner'|'cement_worker'|'professor'|'scientist'|'entertainer'|'hell_surveyor'|'space_miner'|'pit_miner'|'torturer'|'archaeologist'|'ghost_trapper'|'elysium_miner'|'banker'|'priest'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
+EvalFn extends 'JobServants' ? ('hunter'|'farmer'|'forager'|'lumberjack'|'quarry_worker'|'crystal_miner'|'scavenger'|'Scarletite'|'Quantium'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave') : 
 EvalFn extends 'ResearchUnlocked' ? TechIdKey : 
 EvalFn extends 'ResearchComplete' ? TechIdKey : 
-EvalFn extends 'ResourceUnlocked' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceQuantity' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceStorage' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceMaxCost' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceIncome' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceRatio' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceSatisfied' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceSatisfyRatio' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'ResourceDemanded' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Phage'|'Dark'|'Harmony'|'AICore'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support') : 
-EvalFn extends 'RaceId' ? ('species'|'gods'|'old_gods'|'srace'|'protoplasm'|'human'|'elven'|'orc'|'cath'|'wolven'|'vulpine'|'centaur'|'rhinotaur'|'capybara'|'kobold'|'goblin'|'gnome'|'ogre'|'cyclops'|'troll'|'tortoisan'|'gecko'|'slitheryn'|'arraak'|'pterodacti'|'dracnid'|'entish'|'cacti'|'pinguicula'|'sporgar'|'shroomi'|'moldling'|'mantis'|'scorpid'|'antid'|'sharkin'|'octigoran'|'dryad'|'satyr'|'phoenix'|'salamander'|'yeti'|'wendigo'|'tuskin'|'kamel'|'balorg'|'imp'|'seraph'|'unicorn'|'synth'|'nano'|'ghast'|'shoggoth'|'junker'|'sludge'|'custom') : 
-EvalFn extends 'RacePillared' ? ('species'|'gods'|'old_gods'|'srace'|'protoplasm'|'human'|'elven'|'orc'|'cath'|'wolven'|'vulpine'|'centaur'|'rhinotaur'|'capybara'|'kobold'|'goblin'|'gnome'|'ogre'|'cyclops'|'troll'|'tortoisan'|'gecko'|'slitheryn'|'arraak'|'pterodacti'|'dracnid'|'entish'|'cacti'|'pinguicula'|'sporgar'|'shroomi'|'moldling'|'mantis'|'scorpid'|'antid'|'sharkin'|'octigoran'|'dryad'|'satyr'|'phoenix'|'salamander'|'yeti'|'wendigo'|'tuskin'|'kamel'|'balorg'|'imp'|'seraph'|'unicorn'|'synth'|'nano'|'ghast'|'shoggoth'|'junker'|'sludge'|'custom') : 
-EvalFn extends 'RaceGenus' ? ('organism'|'humanoid'|'carnivore'|'herbivore'|'small'|'giant'|'reptilian'|'avian'|'plant'|'fungi'|'insectoid'|'aquatic'|'fey'|'heat'|'polar'|'sand'|'demonic'|'angelic'|'synthetic'|'eldritch') : 
-EvalFn extends 'MimicGenus' ? ('none'|'humanoid'|'carnivore'|'herbivore'|'small'|'giant'|'reptilian'|'avian'|'plant'|'fungi'|'insectoid'|'aquatic'|'fey'|'heat'|'polar'|'sand'|'demonic'|'angelic'|'eldritch') : 
-EvalFn extends 'TraitLevel' ? ('adaptable'|'wasteful'|'xenophobic'|'carnivore'|'beast'|'cautious'|'herbivore'|'instinct'|'small'|'weak'|'large'|'strong'|'cold_blooded'|'scales'|'flier'|'hollow_bones'|'sky_lover'|'rigid'|'high_pop'|'fast_growth'|'high_metabolism'|'photosynth'|'sappy'|'asymmetrical'|'detritivore'|'spores'|'spongy'|'submerged'|'low_light'|'elusive'|'iron_allergy'|'smoldering'|'cold_intolerance'|'chilled'|'heat_intolerance'|'scavenger'|'nomadic'|'immoral'|'evil'|'blissful'|'pompous'|'holy'|'artifical'|'powered'|'psychic'|'tormented'|'darkness'|'unfathomable'|'creative'|'diverse'|'studious'|'arrogant'|'brute'|'angry'|'lazy'|'curious'|'pack_mentality'|'tracker'|'playful'|'freespirit'|'beast_of_burden'|'sniper'|'hooved'|'rage'|'heavy'|'gnawer'|'calm'|'pack_rat'|'paranoid'|'greedy'|'merchant'|'smart'|'puny'|'dumb'|'tough'|'nearsighted'|'intelligent'|'regenerative'|'gluttony'|'slow'|'armored'|'optimistic'|'chameleon'|'slow_digestion'|'hard_of_hearing'|'resourceful'|'selenophobia'|'leathery'|'pessimistic'|'hoarder'|'solitary'|'kindling_kindred'|'pyrophobia'|'hyper'|'skittish'|'fragrant'|'sticky'|'infectious'|'parasite'|'toxic'|'nyctophilia'|'infiltrator'|'hibernator'|'cannibalize'|'frail'|'malnutrition'|'claws'|'atrophy'|'hivemind'|'tunneler'|'blood_thirst'|'apex_predator'|'invertebrate'|'suction_grip'|'befuddle'|'environmentalist'|'unorganized'|'musical'|'revive'|'slow_regen'|'forge'|'autoignition'|'blurry'|'snowy'|'ravenous'|'ghostly'|'lawless'|'mistrustful'|'humpback'|'thalassophobia'|'fiery'|'terrifying'|'slaver'|'compact'|'conniving'|'pathetic'|'spiritual'|'truthful'|'unified'|'rainbow'|'magnificent'|'noble'|'imitation'|'emotionless'|'logical'|'shapeshifter'|'deconstructor'|'linked'|'dark_dweller'|'swift'|'anthropophagite'|'living_tool'|'bloated'|'ooze'|'soul_eater'|'untapped'|'emfield'|'tactical'|'analytical'|'promiscuous'|'resilient'|'cunning'|'hardy'|'ambidextrous'|'industrious'|'content'|'fibroblast'|'metallurgist'|'gambler'|'persuasive'|'fortify'|'mastery') : 
-EvalFn extends 'ResetType' ? ('none'|'mad'|'bioseed'|'cataclysm'|'whitehole'|'vacuum'|'apocalypse'|'ascension'|'demonic'|'terraform'|'matrix'|'retire'|'eden') : 
-EvalFn extends 'Challenge' ? ('no_plasmid'|'weak_mastery'|'nerfed'|'no_crispr'|'badgenes'|'no_trade'|'no_craft'|'joyless'|'steelen'|'decay'|'emfield'|'inflation'|'sludge'|'orbit_decay'|'gravity_well'|'witch_hunter'|'junker'|'cataclysm'|'banana'|'truepath'|'lone_survivor'|'fasting') : 
+EvalFn extends 'ResourceUnlocked' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceQuantity' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceStorage' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceMaxCost' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceIncome' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceRatio' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceSatisfied' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceSatisfyRatio' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'ResourceDemanded' ? ('RNA'|'DNA'|'Money'|'Population'|'Slave'|'Mana'|'Energy'|'Sus'|'Knowledge'|'Omniscience'|'Zen'|'Crates'|'Containers'|'Food'|'Lumber'|'Chrysotile'|'Stone'|'Crystal'|'Furs'|'Copper'|'Iron'|'Aluminium'|'Cement'|'Coal'|'Oil'|'Uranium'|'Steel'|'Titanium'|'Alloy'|'Polymer'|'Iridium'|'Helium_3'|'Water'|'Deuterium'|'Neutronium'|'Adamantite'|'Infernite'|'Elerium'|'Nano_Tube'|'Graphene'|'Stanene'|'Bolognium'|'Vitreloy'|'Orichalcum'|'Asphodel_Powder'|'Elysanite'|'Unobtainium'|'Materials'|'Horseshoe'|'Nanite'|'Genes'|'Soul_Gem'|'Plywood'|'Brick'|'Wrought_Iron'|'Sheet_Metal'|'Mythril'|'Aerogel'|'Nanoweave'|'Scarletite'|'Quantium'|'Corrupt_Gem'|'Codex'|'Cipher'|'Demonic_Essence'|'Blessed_Essence'|'Blood_Stone'|'Artifact'|'Plasmid'|'AntiPlasmid'|'Supercoiled'|'Phage'|'Dark'|'Harmony'|'AICore'|'Troops'|'Supply'|'Power'|'Morale'|'Thrall'|'Womlings_Support'|'Moon_Support'|'Red_Support'|'Sun_Support'|'Belt_Support'|'Titan_Support'|'Electrolysis_Support'|'Enceladus_Support'|'Eris_Support'|'Tau_Support'|'Tau_Red_Support'|'Tau_Belt_Support'|'Alpha_Support'|'Nebula_Support'|'Gateway_Support'|'Alien_Support'|'Lake_Support'|'Spire_Support'|'Asphodel_Support') : 
+EvalFn extends 'RaceId' ? ('species'|'gods'|'old_gods'|'srace'|'protoplasm'|'human'|'elven'|'orc'|'cath'|'wolven'|'vulpine'|'centaur'|'rhinotaur'|'capybara'|'kobold'|'goblin'|'gnome'|'ogre'|'cyclops'|'troll'|'tortoisan'|'gecko'|'slitheryn'|'arraak'|'pterodacti'|'dracnid'|'entish'|'cacti'|'pinguicula'|'sporgar'|'shroomi'|'moldling'|'mantis'|'scorpid'|'antid'|'sharkin'|'octigoran'|'dryad'|'satyr'|'phoenix'|'salamander'|'yeti'|'wendigo'|'tuskin'|'kamel'|'balorg'|'imp'|'seraph'|'unicorn'|'synth'|'nano'|'ghast'|'shoggoth'|'dwarf'|'raccoon'|'lichen'|'wyvern'|'beholder'|'djinn'|'narwhal'|'bombardier'|'nephilim'|'junker'|'sludge'|'ultra_sludge'|'custom'|'hybrid') : 
+EvalFn extends 'RacePillared' ? ('species'|'gods'|'old_gods'|'srace'|'protoplasm'|'human'|'elven'|'orc'|'cath'|'wolven'|'vulpine'|'centaur'|'rhinotaur'|'capybara'|'kobold'|'goblin'|'gnome'|'ogre'|'cyclops'|'troll'|'tortoisan'|'gecko'|'slitheryn'|'arraak'|'pterodacti'|'dracnid'|'entish'|'cacti'|'pinguicula'|'sporgar'|'shroomi'|'moldling'|'mantis'|'scorpid'|'antid'|'sharkin'|'octigoran'|'dryad'|'satyr'|'phoenix'|'salamander'|'yeti'|'wendigo'|'tuskin'|'kamel'|'balorg'|'imp'|'seraph'|'unicorn'|'synth'|'nano'|'ghast'|'shoggoth'|'dwarf'|'raccoon'|'lichen'|'wyvern'|'beholder'|'djinn'|'narwhal'|'bombardier'|'nephilim'|'junker'|'sludge'|'ultra_sludge'|'custom'|'hybrid') : 
+EvalFn extends 'RaceGenus' ? ('organism'|'humanoid'|'carnivore'|'herbivore'|'small'|'giant'|'reptilian'|'avian'|'plant'|'fungi'|'insectoid'|'aquatic'|'fey'|'heat'|'polar'|'sand'|'demonic'|'angelic'|'synthetic'|'eldritch'|'hybrid') : 
+EvalFn extends 'MimicGenus' ? ('none'|'humanoid'|'carnivore'|'herbivore'|'small'|'giant'|'reptilian'|'avian'|'plant'|'fungi'|'insectoid'|'aquatic'|'fey'|'heat'|'polar'|'sand'|'demonic'|'angelic'|'eldritch'|'hybrid') : 
+EvalFn extends 'TraitLevel' ? ('adaptable'|'wasteful'|'xenophobic'|'carnivore'|'beast'|'cautious'|'herbivore'|'instinct'|'forager'|'small'|'weak'|'large'|'strong'|'cold_blooded'|'scales'|'flier'|'hollow_bones'|'sky_lover'|'rigid'|'high_pop'|'fast_growth'|'high_metabolism'|'photosynth'|'sappy'|'asymmetrical'|'detritivore'|'spores'|'spongy'|'submerged'|'low_light'|'elusive'|'iron_allergy'|'smoldering'|'cold_intolerance'|'chilled'|'heat_intolerance'|'scavenger'|'nomadic'|'immoral'|'evil'|'blissful'|'pompous'|'holy'|'artifical'|'powered'|'psychic'|'tormented'|'darkness'|'unfathomable'|'creative'|'diverse'|'studious'|'arrogant'|'brute'|'angry'|'lazy'|'curious'|'pack_mentality'|'tracker'|'playful'|'freespirit'|'beast_of_burden'|'sniper'|'hooved'|'rage'|'heavy'|'gnawer'|'calm'|'pack_rat'|'paranoid'|'greedy'|'merchant'|'smart'|'puny'|'dumb'|'tough'|'nearsighted'|'intelligent'|'regenerative'|'gluttony'|'slow'|'armored'|'optimistic'|'chameleon'|'slow_digestion'|'astrologer'|'hard_of_hearing'|'resourceful'|'selenophobia'|'leathery'|'pessimistic'|'hoarder'|'solitary'|'kindling_kindred'|'pyrophobia'|'hyper'|'skittish'|'fragrant'|'sticky'|'infectious'|'parasite'|'toxic'|'nyctophilia'|'infiltrator'|'hibernator'|'cannibalize'|'frail'|'malnutrition'|'claws'|'atrophy'|'hivemind'|'tunneler'|'blood_thirst'|'apex_predator'|'invertebrate'|'suction_grip'|'befuddle'|'environmentalist'|'unorganized'|'musical'|'revive'|'slow_regen'|'forge'|'autoignition'|'blurry'|'snowy'|'ravenous'|'ghostly'|'lawless'|'mistrustful'|'humpback'|'thalassophobia'|'fiery'|'terrifying'|'slaver'|'compact'|'conniving'|'pathetic'|'spiritual'|'truthful'|'unified'|'rainbow'|'gloomy'|'magnificent'|'noble'|'imitation'|'emotionless'|'logical'|'shapeshifter'|'deconstructor'|'linked'|'dark_dweller'|'swift'|'anthropophagite'|'living_tool'|'bloated'|'artisan'|'stubborn'|'rogue'|'untrustworthy'|'living_materials'|'unstable'|'elemental'|'chicken'|'tusk'|'blubber'|'ocular_power'|'floating'|'wish'|'devious'|'grenadier'|'aggressive'|'empowered'|'blasphemous'|'ooze'|'soul_eater'|'untapped'|'emfield'|'tactical'|'analytical'|'promiscuous'|'resilient'|'cunning'|'hardy'|'ambidextrous'|'industrious'|'content'|'fibroblast'|'metallurgist'|'gambler'|'persuasive'|'fortify'|'mastery') : 
+EvalFn extends 'ResetType' ? ('none'|'mad'|'bioseed'|'cataclysm'|'whitehole'|'vacuum'|'apocalypse'|'ascension'|'demonic'|'terraform'|'matrix'|'retire'|'eden'|'apotheosis') : 
+EvalFn extends 'Challenge' ? ('no_plasmid'|'weak_mastery'|'nerfed'|'no_crispr'|'badgenes'|'no_trade'|'no_craft'|'joyless'|'steelen'|'decay'|'emfield'|'inflation'|'sludge'|'ultra_sludge'|'orbit_decay'|'gravity_well'|'witch_hunter'|'junker'|'cataclysm'|'banana'|'truepath'|'lone_survivor'|'fasting') : 
 EvalFn extends 'Universe' ? ('bigbang'|'standard'|'heavy'|'antimatter'|'evil'|'micro'|'magic') : 
 EvalFn extends 'Government' ? ('anarchy'|'autocracy'|'democracy'|'oligarchy'|'theocracy'|'republic'|'socialist'|'corpocracy'|'technocracy'|'federation'|'magocracy') : 
 EvalFn extends 'Governor' ? ('none'|'soldier'|'criminal'|'entrepreneur'|'educator'|'spiritual'|'bluecollar'|'noble'|'media'|'sports'|'bureaucrat') : 
@@ -4092,7 +4431,7 @@ EvalFn extends 'Queue' ? ('queue'|'r_queue'|'evo') :
 EvalFn extends 'Date' ? ('day'|'moon'|'total'|'year'|'orbit'|'season'|'temp'|'impact') : 
 EvalFn extends 'Soldiers' ? ('workers'|'max'|'currentCityGarrison'|'maxCityGarrison'|'hellSoldiers'|'hellGarrison'|'hellPatrols'|'hellPatrolSize'|'wounded'|'deadSoldiers'|'crew'|'mercenaryCost') : 
 EvalFn extends 'PlanetBiome' ? ('grassland'|'oceanic'|'forest'|'desert'|'volcanic'|'tundra'|'savanna'|'swamp'|'taiga'|'ashland'|'hellscape'|'eden') : 
-EvalFn extends 'PlanetTrait' ? (''|'toxic'|'mellow'|'rage'|'stormy'|'ozone'|'magnetic'|'trashed'|'elliptical'|'flare'|'dense'|'unstable'|'permafrost'|'retrograde') : 
+EvalFn extends 'PlanetTrait' ? (''|'toxic'|'mellow'|'rage'|'stormy'|'ozone'|'magnetic'|'trashed'|'elliptical'|'flare'|'dense'|'unstable'|'permafrost'|'retrograde'|'kamikaze') : 
 EvalFn extends 'Industry' ? ('smelters'|'factories') : 
 EvalFn extends 'Other' ? ('rname'|'tpfleet'|'mrelay'|'satcost'|'bcar'|'alevel'|'tknow') :  never;
     // As much as I'd love to generate this, it's impossible unless the script itself is TypeScript-compiled...
