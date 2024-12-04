@@ -5,10 +5,11 @@
 const highPopScale = traitVal('high_pop', 0, 1);
 // By rough priority order of which to disable, last ones get disabled first.
 const buildingSoldierCount = {
-    "Barracks": ((_("TraitLevel", "chameleon") ? 1 : 2) + (_("ResearchComplete", "tech-bunk_beds") ? 1 : 0)) * highPopScale,
-    "RedSpaceBarracks": (_("ResearchComplete", "tech-hammocks") ? 4 : 2) * highPopScale,
-    "ProximaCruiser": 3 * highPopScale,
+    "Barracks": Math.min((_("TraitLevel", "chameleon") ? 1 : 2) + (_("ResearchComplete", "tech-bunk_beds") ? 1 : 0) - (_("TraitLevel", "grenadier") ? 1 : 0), 1) * highPopScale,
+    "RedSpaceBarracks": (_("ResearchComplete", "tech-hammocks") ? 4 : 2) * highPopScale / (_("TraitLevel", "grenadier") ? 2 : 1),
+    "ProximaCruiser": ((_("TraitLevel", "grenadier") ? 2 : 3) - (_("Challenge", "fasting") ? 1 : 0)) * highPopScale,
 };
+
 // Prefer Barracks > RedSpaceBarracks > ProximaCruiser to be enabled in that order.
 // This is only for power purposes and doesn't affect autoBuild priority when its enabled.
 const addOrder = ["Barracks", "RedSpaceBarracks", "ProximaCruiser"];
@@ -31,7 +32,8 @@ const computedTargets = daily(() => {
 
     // OD Red Garrisons have boot camp functions, should always be on. Don't manage it then, just let autoBuild do the trick and keep pumping them out even if our soldiers are dead.
     // It's the only way to get them back then!
-    if (_("Challenge", "orbit_decay")) delete toggleables.RedSpaceBarracks;
+    // In fasting, garrisons are unusable and should be left managed by user overrides/etc.
+    if (_("Challenge", "orbit_decay") || _("Challenge", "fasting")) delete toggleables.RedSpaceBarracks;
 
     // We need to work with the *target* hell soldier count, not how many there actually are.
     // Major difference is: We need to account for dead soldiers that would go to hell immediately, instead of looking at the current hell number.
