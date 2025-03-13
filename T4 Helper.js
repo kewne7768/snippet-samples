@@ -164,6 +164,10 @@ if (snippetData?.hasTrait?.t4farm) {
 
     if (buildings.RedSpaceport.count) {
         trigger.amount(buildings.BootCamp, 15);
+        // Pump some fabs when doing 2*
+        if (_("Challenge", "no_craft")) {
+            trigger.amount(buildings.RedFabrication, 24);
+        }
     }
 
     // Need to enter Hell but not enough soldiers? Remember this interacts with the stress/auto script.
@@ -190,8 +194,6 @@ if (snippetData?.hasTrait?.t4farm) {
     if ((WarManager.deadSoldiers === 0 || (game.global.civic?.garrison?.m_use??0) < 1) && buildings.Barracks.stateOffCount === 0) {
         trigger.amount(buildings.Barracks, 15);
     }
-
-    if (settings.prestigeType !== "ascension") return;
 
     if (buildings.BlackholeMassEjector.count && techIds["tech-calibrated_sensors"].isResearched()) {
         // Make sure we got enough Elerium going on.
@@ -224,6 +226,9 @@ if (snippetData?.hasTrait?.t4farm) {
         trigger.amount(projects.SuperCollider, 80);
     }
 
+    // START T4 ONLY SECTION
+    if (settings.prestigeType !== "ascension") return;
+
     // Some misc maxes
     settings["bld_m_space-outpost"] = 22; // Neutronium Miner
     settings["bld_m_galaxy-gateway_station"] = 12; // Gateway. This is enough for our ship setup.
@@ -242,9 +247,21 @@ if (snippetData?.hasTrait?.t4farm) {
         trigger.amount(buildings.BootCamp, 40); // don't really care about them after going into chth
         trigger.amount(buildings.FrigateShip, 3);
         trigger.amount(buildings.CruiserShip, 4);
+
+        // Minimum expected/necessary support:
+        // 30 bologship = 30.
+        // 2 scout = 2
+        // 1 corvette = 1
+        // 3 frigate = 6
+        // 4 cruiser = 12
+        const minSupport = 30 + 2 + 1 + 6 + 12; // 51
+        if (resources.Gateway_Support.currentQuantity < minSupport) {
+            trigger(buildings.GatewayStarbase.count < buildings.GatewayShipDock.count ? buildings.GatewayStarbase : buildings.GatewayShipDock);
+        }
+
         // If we're ready to attack, herbivore it up
-        // autoBuild breaks on lumber yard
-        if (buildings.FrigateShip.count >= 3 && buildings.CruiserShip.count >= 4 && buildings.ChthonianMission.isUnlocked()) {
+        // autoBuild breaks on lumber yard, so we need to disable it for this tick.
+        if (resources.Gateway_Support.currentQuantity >= minSupport && buildings.FrigateShip.count >= 3 && buildings.CruiserShip.count >= 4 && buildings.ChthonianMission.isUnlocked()) {
             if (game.global.race.shapeshifter) {
                 settings["shifterGenus"] = "ignore";
                 getVueById('sshifter')?.setShape("herbivore");
