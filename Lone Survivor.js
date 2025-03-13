@@ -78,6 +78,8 @@ settings.autoShapeshift = false;
 
 // General setting overrides.
 settings["mutableTrait_reset_dumb"] = true;
+settings["mutableTrait_reset_freespirit"] = false;
+settings["mutableTrait_reset_slow_regen"] = false;
 settings["production_Money"] = false; // Luxury Goods
 settings["generalRequestedTaxRate"] = 0;
 settings["geneticsSequence"] = "disabled";
@@ -371,7 +373,7 @@ const runBase = [
     // Rush Deify + governors, after this we try to get the replicator online
     [
         { tech: techIds["tech-ancient_theology"] },
-        { tech: techIds["tech-deify"] },
+        { tech: techIds[game.global.genes?.transcendence >= 2 ? "tech-deify_alt" : "tech-deify"] },
         { tech: techIds["tech-governor"] },
     ],
 
@@ -955,6 +957,11 @@ if (vars.ringworldMode) {
             Nano_Tube: ringworldCosts.Nano_Tube,
         });
     }
+}
+
+// Respawn us if needed
+if (resources.Population.currentQuantity === 0 && buildings.TauAssembly.isUnlocked()) {
+    buildings.TauAssembly.click();
 }
 
 // Handle misc settings
