@@ -1,3 +1,6 @@
+// Read from the script's builtin state variable and avoid running anything before we finished evolution, so that we have the full set of challenges ready.
+if (state.goal === "Evolution") return;
+
 // Demo of all kinds of features, list of techs to trigger.
 // Behaves similar to "if unlocked [X] research [X]" triggers.
 once(() => {
@@ -70,7 +73,13 @@ once(() => {
             techIds["tech-xeno_gift"],
             techIds["tech-nanoweave"], // Not priority so much as needs triggering for Nano Tubes.
             techIds["tech-orichalcum_analysis"],
-        ]);
+
+            // Early DI stuff
+            _("ResetType", "ascension") ? null : techIds["tech-cybernetics"],
+
+            techIds["tech-elysanite_hammer"],
+            techIds["tech-elerium_cannon"],
+        ].filter(n => n !== null));
     }
     if (_("Universe", "magic") && settings.prestigeType === "vacuum") {
         snippetState.pending.push(techIds["tech-veil"], techIds["tech-mana_syphon"]);
